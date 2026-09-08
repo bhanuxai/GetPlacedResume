@@ -2,6 +2,7 @@ import React from 'react';
 import { ShieldCheck } from 'lucide-react';
 import { Logo } from './Logo';
 import CircularText from './CircularText';
+import MaskedHeading from './MaskedHeading';
 
 interface FooterProps {
   onOpenPrivacy?: () => void;
@@ -16,7 +17,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPrivacy }) => {
           
           {/* Col 1: Brand */}
           <div className="md:col-span-2 space-y-3">
-            <Logo size={28} textClassName="text-lg" />
+            <Logo size={28} textClassName="text-lg font-bold" text="GETPLACEDRESUME" />
             <p className="max-w-sm text-xs text-slate-600 dark:text-[#94A3B8] leading-relaxed">
               Explainable AI-powered resume analysis evaluating semantic relevance, evidence verification, document structure, and ATS parseability.
             </p>
@@ -66,10 +67,27 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPrivacy }) => {
 
         </div>
 
+        {/* Masked Heading Brand Display */}
+        <div className="py-10 my-4 border-b border-slate-200 dark:border-[#273142] flex flex-col items-center justify-center overflow-hidden">
+          <MaskedHeading
+            text="GETPLACEDRESUME"
+            mediaType="video"
+            src="/reel.mp4"
+            poster="/reel-poster.jpg"
+            fillScale={1.3}
+            parallax={34}
+            reveal="wipe"
+            trigger="view"
+            weight={900}
+            textScale={0.11}
+            className="tracking-tight uppercase font-extrabold"
+          />
+        </div>
+
         {/* Bottom Disclaimer */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono text-slate-500 dark:text-[#64748B]">
           <p>
-            &copy; {new Date().getFullYear()} GetPlacedResume. AI-estimated compatibility scores are diagnostic tools and not guarantees of employer hiring decisions.
+            &copy; {new Date().getFullYear()} GETPLACEDRESUME. AI-estimated compatibility scores are diagnostic tools and not guarantees of employer hiring decisions.
           </p>
           <div className="flex items-center space-x-4">
             <span>SECURE CLIENT INFERENCE</span>

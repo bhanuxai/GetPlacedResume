@@ -20,8 +20,8 @@ import { DashboardSidebar } from './components/DashboardSidebar';
 import { PrivacyModal } from './components/PrivacyModal';
 import { ResumeKnowledgeBase } from './components/ResumeKnowledgeBase';
 import { Footer } from './components/Footer';
-import TextCursor from './components/TextCursor';
 import TextLoop from './components/TextLoop';
+import ScrollVelocity from './components/ScrollVelocity';
 import {
   ArrowRight,
   CheckCircle2,
@@ -212,17 +212,6 @@ export function App() {
   return (
     <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0A0D12] text-[#0F172A] dark:text-[#F8FAFC] flex flex-col font-sans transition-colors duration-200">
       
-      {/* Interactive Text Cursor Trail Animation */}
-      <TextCursor
-        text="Hello!"
-        spacing={80}
-        followMouseDirection={true}
-        randomFloat={true}
-        exitDuration={0.3}
-        removalInterval={20}
-        maxPoints={10}
-      />
-
       {/* Global Navbar with Theme Switcher */}
       <Navbar
         onTryDemo={handleTryDemo}
@@ -247,6 +236,52 @@ export function App() {
               }}
               theme={theme}
             />
+
+            {/* University Trust & Velocity Marquee Section */}
+            <section className="py-12 border-b border-slate-200 dark:border-[#273142] bg-white dark:bg-[#0E121A] transition-colors overflow-hidden">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 text-center">
+                <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/50 text-blue-600 dark:text-blue-400 text-xs font-semibold uppercase tracking-wider mb-2.5">
+                  <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse inline-block" />
+                  <span>CAMPUS TRUSTED</span>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold font-display text-slate-900 dark:text-white tracking-tight">
+                  Trusted by 150+ Students Across Leading Universities
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-[#94A3B8] max-w-xl mx-auto mt-1">
+                  Engineered for high-stakes campus placement drives, off-campus referrals, and competitive ATS screening.
+                </p>
+              </div>
+
+              <div className="py-2">
+                <ScrollVelocity
+                  texts={[
+                    'SRM UNIVERSITY ✦ VIT-AP UNIVERSITY ✦ LOVELY PROFESSIONAL UNIVERSITY (LPU) ✦ 150+ CANDIDATES PLACED ✦',
+                    'SRM INSTITUTE ✦ VIT AP TECH ✦ LPU CAMPUS ✦ 94.8% INTERVIEW SHORTLIST ✦ ATS CERTIFIED ✦'
+                  ]}
+                  velocity={45}
+                  className="font-display font-black uppercase text-xl sm:text-3xl md:text-4xl text-slate-700 dark:text-slate-300 tracking-wider py-1.5 opacity-90 hover:opacity-100 transition-opacity"
+                />
+              </div>
+
+              <div className="max-w-4xl mx-auto mt-6 px-4 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs font-mono font-bold text-slate-500 dark:text-slate-400">
+                <span className="flex items-center space-x-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#2563EB]" />
+                  <span>SRM University</span>
+                </span>
+                <span className="flex items-center space-x-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
+                  <span>VIT-AP University</span>
+                </span>
+                <span className="flex items-center space-x-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#F59E0B]" />
+                  <span>LPU (Lovely Professional University)</span>
+                </span>
+                <span className="flex items-center space-x-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
+                  <span>150+ Placed Students</span>
+                </span>
+              </div>
+            </section>
 
             {/* How It Works Section */}
             <section id="how-it-works" className="py-16 md:py-24 border-b border-slate-200 dark:border-[#273142] bg-[#F8FAFC] dark:bg-[#0A0D12] transition-colors">

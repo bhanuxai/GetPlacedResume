@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Loader2, Check } from 'lucide-react';
 import { LogoMark } from './Logo';
+import ShinyText from './ShinyText';
 
 interface AnalysisProgressProps {
   onComplete?: () => void;
@@ -34,13 +35,24 @@ export const AnalysisProgress: React.FC<AnalysisProgressProps> = () => {
     <div className="w-full max-w-xl mx-auto bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-6 sm:p-8 rounded-xs my-12 transition-colors shadow-sm dark:shadow-none">
       
       {/* Header */}
-      <div className="flex items-center space-x-3 pb-6 border-b border-slate-200 dark:border-[#273142]">
-        <LogoMark size={36} className="animate-pulse" />
-        <div>
-          <h3 className="text-base font-bold text-slate-900 dark:text-white tracking-tight uppercase">
-            GetPlacedResume Analytical Pipeline
-          </h3>
-          <p className="text-xs font-mono text-slate-600 dark:text-[#94A3B8]">
+      <div className="flex items-center space-x-3.5 pb-6 border-b border-slate-200 dark:border-[#273142]">
+        <LogoMark size={40} className="animate-pulse flex-shrink-0" />
+        <div className="flex-1 min-w-0">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 bg-slate-900 dark:bg-black/60 border border-slate-700 dark:border-[#273142] rounded-xs mb-1.5 shadow-sm">
+            <ShinyText
+              text="✨ Scanning your resume..."
+              speed={2}
+              delay={0}
+              color="#b5b5b5"
+              shineColor="#ffffff"
+              spread={120}
+              direction="left"
+              yoyo={false}
+              pauseOnHover={false}
+              className="text-xs sm:text-sm font-mono font-bold tracking-wider uppercase"
+            />
+          </div>
+          <p className="text-[11px] font-mono text-slate-500 dark:text-[#94A3B8] tracking-tight">
             PROCESSING DOCUMENT &amp; EXTRACTING SEMANTIC EVIDENCE
           </p>
         </div>

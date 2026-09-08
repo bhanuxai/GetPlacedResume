@@ -5,6 +5,7 @@ interface LogoProps {
   showText?: boolean;
   className?: string;
   textClassName?: string;
+  text?: string;
 }
 
 /**
@@ -75,7 +76,8 @@ export const Logo: React.FC<LogoProps> = ({
   size = 36,
   showText = true,
   className = "",
-  textClassName = ""
+  textClassName = "",
+  text = "GetPlacedResume"
 }) => {
   return (
     <div className={`flex items-center space-x-3 select-none ${className}`}>
@@ -84,7 +86,7 @@ export const Logo: React.FC<LogoProps> = ({
         <span
           className={`text-2xl font-bold tracking-tight text-slate-900 dark:text-white font-display transition-colors ${textClassName}`}
         >
-          GetPlacedResume
+          {text}
         </span>
       )}
     </div>
