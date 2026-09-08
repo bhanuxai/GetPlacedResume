@@ -20,7 +20,7 @@ import { DashboardSidebar } from './components/DashboardSidebar';
 import { PrivacyModal } from './components/PrivacyModal';
 import { ResumeKnowledgeBase } from './components/ResumeKnowledgeBase';
 import { Footer } from './components/Footer';
-import GlowCursor from './components/GlowCursor';
+import TextCursor from './components/TextCursor';
 import TextLoop from './components/TextLoop';
 import {
   ArrowRight,
@@ -29,7 +29,7 @@ import {
   Play
 } from 'lucide-react';
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 export function App() {
   // Theme state: defaults to light mode
@@ -212,26 +212,15 @@ export function App() {
   return (
     <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0A0D12] text-[#0F172A] dark:text-[#F8FAFC] flex flex-col font-sans transition-colors duration-200">
       
-      {/* Site-wide WebGL Cursor Glow Animation */}
-      <GlowCursor
-        fixed
-        color={theme === 'dark' ? '#67E8F9' : '#2563EB'}
-        secondaryColor={theme === 'dark' ? '#A78BFA' : '#7C3AED'}
-        trailLength={40}
-        trailWidth={8}
-        trailTaper={0.8}
-        followSpeed={0.16}
-        glowIntensity={1.9}
-        glowSpread={1.2}
-        hotspot={0.65}
-        brightness={1.25}
-        opacity={1}
-        pulseSpeed={1.1}
-        noiseStrength={0.035}
-        idleFade
-        idleTimeout={700}
-        fadeDuration={900}
-        blendMode={theme === 'dark' ? 'screen' : 'normal'}
+      {/* Interactive Text Cursor Trail Animation */}
+      <TextCursor
+        text="Hello!"
+        spacing={80}
+        followMouseDirection={true}
+        randomFloat={true}
+        exitDuration={0.3}
+        removalInterval={20}
+        maxPoints={10}
       />
 
       {/* Global Navbar with Theme Switcher */}
