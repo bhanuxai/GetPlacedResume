@@ -53,10 +53,10 @@ export const ScoreCard: React.FC<ScoreCardProps> = ({
       : "#DC2626";
 
   return (
-    <div className="w-full bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-6 sm:p-8 rounded-xs transition-colors shadow-sm dark:shadow-none">
+    <div className="w-full bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] p-6 sm:p-8 rounded-xs transition-colors shadow-sm dark:shadow-none">
       
       {/* Top Meta Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-[#273142]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-[#262626]">
         <div>
           <div className="flex items-center space-x-2">
             <span className="w-2 h-2 rounded-full" style={{ backgroundColor: tierColor }} />
@@ -67,14 +67,14 @@ export const ScoreCard: React.FC<ScoreCardProps> = ({
         </div>
 
         <div className="flex items-center space-x-3 font-mono text-xs text-slate-600 dark:text-[#94A3B8]">
-          <span className="px-2 py-0.5 bg-slate-100 dark:bg-[#0A0D12] border border-slate-300 dark:border-[#273142] rounded-xs uppercase">
+          <span className="px-2 py-0.5 bg-slate-100 dark:bg-[#000000] border border-slate-300 dark:border-[#262626] rounded-xs uppercase">
             PROFILE: {profileType.toUpperCase()}
           </span>
-          <span className="hidden sm:inline text-slate-300 dark:text-[#273142]">|</span>
+          <span className="hidden sm:inline text-slate-300 dark:text-[#262626]">|</span>
           <span className="hidden sm:inline">{processedAt}</span>
           <button
             onClick={() => window.print()}
-            className="no-print flex items-center space-x-1 px-2.5 py-1 bg-slate-100 hover:bg-slate-200 dark:bg-[#1A202C] dark:hover:bg-[#222938] text-slate-800 dark:text-white border border-slate-300 dark:border-[#273142] rounded-xs transition-colors"
+            className="no-print flex items-center space-x-1 px-2.5 py-1 bg-slate-100 hover:bg-slate-200 dark:bg-[#171717] dark:hover:bg-[#1f1f1f] text-slate-800 dark:text-white border border-slate-300 dark:border-[#262626] rounded-xs transition-colors"
             title="Export / Print Report as PDF"
           >
             <Printer className="w-3.5 h-3.5 text-[#2563EB]" />
@@ -95,7 +95,7 @@ export const ScoreCard: React.FC<ScoreCardProps> = ({
                 cx="80"
                 cy="80"
                 r={radius}
-                className="stroke-slate-200 dark:stroke-[#1E2633]"
+                className="stroke-slate-200 dark:stroke-[#141414]"
                 strokeWidth={strokeWidth}
                 fill="none"
               />
@@ -147,7 +147,7 @@ export const ScoreCard: React.FC<ScoreCardProps> = ({
             </p>
           </div>
 
-          <div className="bg-slate-50 dark:bg-[#0A0D12] border border-slate-300 dark:border-[#273142] p-3.5 space-y-2 text-xs">
+          <div className="bg-slate-50 dark:bg-[#000000] border border-slate-300 dark:border-[#262626] p-3.5 space-y-2 text-xs">
             <div className="flex items-start space-x-2 text-slate-700 dark:text-[#94A3B8]">
               <Info className="w-4 h-4 text-[#2563EB] flex-shrink-0 mt-0.5" />
               <span>

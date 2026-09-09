@@ -18,10 +18,10 @@ export const JobDescriptionInput: React.FC<JobDescriptionInputProps> = ({
   onLoadPreset
 }) => {
   return (
-    <div className="w-full bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-5 sm:p-6 rounded-xs transition-colors shadow-sm dark:shadow-none">
+    <div className="w-full bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] p-5 sm:p-6 rounded-xs transition-colors shadow-sm dark:shadow-none">
       
       {/* Header & Presets */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-200 dark:border-[#273142]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-200 dark:border-[#262626]">
         <div>
           <h2 className="text-base font-bold text-slate-900 dark:text-white tracking-tight flex items-center space-x-2">
             <span className="w-2 h-2 bg-[#2563EB] inline-block" />
@@ -39,19 +39,19 @@ export const JobDescriptionInput: React.FC<JobDescriptionInputProps> = ({
           <div className="flex flex-wrap gap-1.5">
             <button
               onClick={() => onLoadPreset('ml_engineer')}
-              className="px-2 py-1 text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:bg-[#0A0D12] dark:hover:bg-[#1A202C] text-slate-800 dark:text-[#F8FAFC] border border-slate-300 dark:border-[#273142] rounded-xs transition-colors"
+              className="px-2 py-1 text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:bg-[#000000] dark:hover:bg-[#171717] text-slate-800 dark:text-[#F8FAFC] border border-slate-300 dark:border-[#262626] rounded-xs transition-colors"
             >
               ML Engineer
             </button>
             <button
               onClick={() => onLoadPreset('data_analyst')}
-              className="px-2 py-1 text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:bg-[#0A0D12] dark:hover:bg-[#1A202C] text-slate-800 dark:text-[#F8FAFC] border border-slate-300 dark:border-[#273142] rounded-xs transition-colors"
+              className="px-2 py-1 text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:bg-[#000000] dark:hover:bg-[#171717] text-slate-800 dark:text-[#F8FAFC] border border-slate-300 dark:border-[#262626] rounded-xs transition-colors"
             >
               Data Analyst
             </button>
             <button
               onClick={() => onLoadPreset('fullstack_engineer')}
-              className="px-2 py-1 text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:bg-[#0A0D12] dark:hover:bg-[#1A202C] text-slate-800 dark:text-[#F8FAFC] border border-slate-300 dark:border-[#273142] rounded-xs transition-colors"
+              className="px-2 py-1 text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:bg-[#000000] dark:hover:bg-[#171717] text-slate-800 dark:text-[#F8FAFC] border border-slate-300 dark:border-[#262626] rounded-xs transition-colors"
             >
               Full Stack
             </button>
@@ -70,7 +70,7 @@ export const JobDescriptionInput: React.FC<JobDescriptionInputProps> = ({
             value={jobTitle}
             onChange={(e) => onJobTitleChange(e.target.value)}
             placeholder="e.g. Senior Machine Learning Engineer"
-            className="w-full bg-slate-50 dark:bg-[#0A0D12] border border-slate-300 dark:border-[#273142] focus:border-[#2563EB] px-3 py-2 text-sm text-slate-900 dark:text-white font-mono placeholder-slate-400 dark:placeholder-[#64748B] outline-none rounded-xs"
+            className="w-full bg-slate-50 dark:bg-[#000000] border border-slate-300 dark:border-[#262626] focus:border-[#2563EB] px-3 py-2 text-sm text-slate-900 dark:text-white font-mono placeholder-slate-400 dark:placeholder-[#64748B] outline-none rounded-xs"
           />
         </div>
       </div>
@@ -85,7 +85,7 @@ export const JobDescriptionInput: React.FC<JobDescriptionInputProps> = ({
           onChange={(e) => onJobDescriptionChange(e.target.value)}
           placeholder="Paste full job description, requirements, responsibilities, and preferred qualifications here..."
           rows={9}
-          className="w-full bg-slate-50 dark:bg-[#0A0D12] border border-slate-300 dark:border-[#273142] focus:border-[#2563EB] p-3 text-sm text-slate-900 dark:text-white font-mono placeholder-slate-400 dark:placeholder-[#64748B] outline-none rounded-xs resize-y"
+          className="w-full bg-slate-50 dark:bg-[#000000] border border-slate-300 dark:border-[#262626] focus:border-[#2563EB] p-3 text-sm text-slate-900 dark:text-white font-mono placeholder-slate-400 dark:placeholder-[#64748B] outline-none rounded-xs resize-y"
         />
         
         <div className="flex justify-between items-center text-xs text-slate-500 dark:text-[#94A3B8] font-mono mt-2">

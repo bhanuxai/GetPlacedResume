@@ -59,10 +59,10 @@ export const RequirementMatch: React.FC<RequirementMatchProps> = ({ matches }) =
   };
 
   return (
-    <div className="w-full bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-6 sm:p-8 rounded-xs transition-colors shadow-sm dark:shadow-none">
+    <div className="w-full bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] p-6 sm:p-8 rounded-xs transition-colors shadow-sm dark:shadow-none">
       
       {/* Header & Filter Controls */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-[#273142]">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-[#262626]">
         <div>
           <h3 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight flex items-center space-x-2">
             <span className="w-2 h-2 bg-[#2563EB] inline-block" />
@@ -83,7 +83,7 @@ export const RequirementMatch: React.FC<RequirementMatchProps> = ({ matches }) =
               className={`px-2.5 py-1 text-xs font-mono uppercase transition-colors rounded-xs border ${
                 filter === opt.id
                   ? 'bg-[#2563EB] text-white border-[#2563EB]'
-                  : 'bg-slate-100 dark:bg-[#0A0D12] text-slate-600 dark:text-[#94A3B8] border-slate-300 dark:border-[#273142] hover:text-slate-900 dark:hover:text-white'
+                  : 'bg-slate-100 dark:bg-[#000000] text-slate-600 dark:text-[#94A3B8] border-slate-300 dark:border-[#262626] hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               {opt.label}
@@ -95,7 +95,7 @@ export const RequirementMatch: React.FC<RequirementMatchProps> = ({ matches }) =
       {/* Requirement List */}
       <div className="pt-6 space-y-3">
         {filteredMatches.length === 0 ? (
-          <div className="p-8 text-center text-xs text-slate-600 dark:text-[#94A3B8] font-mono bg-slate-50 dark:bg-[#0A0D12] border border-slate-300 dark:border-[#273142]">
+          <div className="p-8 text-center text-xs text-slate-600 dark:text-[#94A3B8] font-mono bg-slate-50 dark:bg-[#000000] border border-slate-300 dark:border-[#262626]">
             No requirements match the active filter.
           </div>
         ) : (
@@ -105,7 +105,7 @@ export const RequirementMatch: React.FC<RequirementMatchProps> = ({ matches }) =
             return (
               <div
                 key={item.requirement_id}
-                className="bg-slate-50 dark:bg-[#0A0D12] border border-slate-300 dark:border-[#273142] p-4 transition-colors"
+                className="bg-slate-50 dark:bg-[#000000] border border-slate-300 dark:border-[#262626] p-4 transition-colors"
               >
                 <div
                   onClick={() => setExpandedId(isExpanded ? null : item.requirement_id)}
@@ -114,7 +114,7 @@ export const RequirementMatch: React.FC<RequirementMatchProps> = ({ matches }) =
                   <div className="flex-1">
                     <div className="flex items-center space-x-2 mb-1.5">
                       {getStatusBadge(item.match_status)}
-                      <span className="text-[10px] font-mono px-1.5 py-0.2 bg-slate-200 dark:bg-[#1A202C] text-slate-700 dark:text-[#94A3B8] border border-slate-300 dark:border-[#273142] uppercase">
+                      <span className="text-[10px] font-mono px-1.5 py-0.2 bg-slate-200 dark:bg-[#171717] text-slate-700 dark:text-[#94A3B8] border border-slate-300 dark:border-[#262626] uppercase">
                         {item.category.replace('_', ' ')}
                       </span>
                       {item.importance === 'required' && (
@@ -136,7 +136,7 @@ export const RequirementMatch: React.FC<RequirementMatchProps> = ({ matches }) =
                       <span className="block text-[10px] font-mono text-slate-500 dark:text-[#64748B]">CONFIDENCE</span>
                     </div>
 
-                    <div className="p-1 bg-white dark:bg-[#1A202C] border border-slate-300 dark:border-[#273142] text-slate-600 dark:text-[#94A3B8]">
+                    <div className="p-1 bg-white dark:bg-[#171717] border border-slate-300 dark:border-[#262626] text-slate-600 dark:text-[#94A3B8]">
                       {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                     </div>
                   </div>
@@ -144,7 +144,7 @@ export const RequirementMatch: React.FC<RequirementMatchProps> = ({ matches }) =
 
                 {/* Expanded Evidence Drawer */}
                 {isExpanded && (
-                  <div className="mt-4 pt-4 border-t border-slate-300 dark:border-[#273142]">
+                  <div className="mt-4 pt-4 border-t border-slate-300 dark:border-[#262626]">
                     <span className="text-[10px] font-mono text-slate-600 dark:text-[#94A3B8] uppercase block mb-2">
                       EXTRACTED RESUME EVIDENCE &amp; GROUNDING:
                     </span>

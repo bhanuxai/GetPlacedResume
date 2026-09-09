@@ -19,12 +19,12 @@ export default {
           muted: "#475569"
         },
         dark: {
-          bg: "#0A0D12",
-          surface: "#12161F",
-          elevated: "#1A202C",
-          hover: "#222938",
-          border: "#273142",
-          subtle: "#1E2633",
+          bg: "#000000",
+          surface: "#0A0A0A",
+          elevated: "#171717",
+          hover: "#1f1f1f",
+          border: "#262626",
+          subtle: "#141414",
           text: "#F8FAFC",
           muted: "#94A3B8"
         },

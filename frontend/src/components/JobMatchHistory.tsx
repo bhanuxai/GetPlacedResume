@@ -16,10 +16,10 @@ export const JobMatchHistory: React.FC<JobMatchHistoryProps> = ({
   onCompareWithNewJD
 }) => {
   return (
-    <div className="w-full bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-6 sm:p-8 rounded-xs transition-colors shadow-sm dark:shadow-none">
+    <div className="w-full bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] p-6 sm:p-8 rounded-xs transition-colors shadow-sm dark:shadow-none">
       
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-[#273142]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-[#262626]">
         <div>
           <h3 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight flex items-center space-x-2">
             <span className="w-2 h-2 bg-[#2563EB] inline-block" />
@@ -41,7 +41,7 @@ export const JobMatchHistory: React.FC<JobMatchHistoryProps> = ({
       {/* History Items Grid */}
       <div className="pt-6 space-y-3">
         {history.length === 0 ? (
-          <div className="p-8 text-center text-xs text-slate-600 dark:text-[#94A3B8] font-mono bg-slate-50 dark:bg-[#0A0D12] border border-slate-300 dark:border-[#273142]">
+          <div className="p-8 text-center text-xs text-slate-600 dark:text-[#94A3B8] font-mono bg-slate-50 dark:bg-[#000000] border border-slate-300 dark:border-[#262626]">
             No previous job analyses logged. Run another job description to benchmark comparative fit.
           </div>
         ) : (
@@ -54,13 +54,13 @@ export const JobMatchHistory: React.FC<JobMatchHistoryProps> = ({
               <div
                 key={rec.id}
                 onClick={() => onSelectRecord(rec)}
-                className={`cursor-pointer p-4 bg-slate-50 dark:bg-[#0A0D12] border transition-colors flex items-center justify-between ${
-                  isActive ? 'border-[#2563EB] bg-blue-50/60 dark:bg-[#12161F]' : 'border-slate-300 dark:border-[#273142] hover:border-[#2563EB]'
+                className={`cursor-pointer p-4 bg-slate-50 dark:bg-[#000000] border transition-colors flex items-center justify-between ${
+                  isActive ? 'border-[#2563EB] bg-blue-50/60 dark:bg-[#0A0A0A]' : 'border-slate-300 dark:border-[#262626] hover:border-[#2563EB]'
                 }`}
               >
                 <div className="flex items-center space-x-4">
                   <div
-                    className="w-12 h-12 flex flex-col items-center justify-center font-mono font-bold text-slate-900 dark:text-white border bg-white dark:bg-[#0A0D12]"
+                    className="w-12 h-12 flex flex-col items-center justify-center font-mono font-bold text-slate-900 dark:text-white border bg-white dark:bg-[#000000]"
                     style={{ borderColor: scoreColor }}
                   >
                     <span className="text-base">{rec.score}</span>

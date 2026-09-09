@@ -218,7 +218,7 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0A0D12] text-[#0F172A] dark:text-[#F8FAFC] flex flex-col font-sans transition-colors duration-200 relative selection:bg-blue-500 selection:text-white">
+    <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#000000] text-[#0F172A] dark:text-[#F8FAFC] flex flex-col font-sans transition-colors duration-200 relative selection:bg-blue-500 selection:text-white">
       
       {/* Background Interactive CursorGrid */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-30 dark:opacity-40">
@@ -265,7 +265,7 @@ export function App() {
             />
 
             {/* University Trust & Velocity Marquee Section */}
-            <section className="py-12 border-b border-slate-200 dark:border-[#273142] bg-white dark:bg-[#0E121A] transition-colors overflow-hidden">
+            <section className="py-12 border-b border-slate-200 dark:border-[#262626] bg-white dark:bg-[#050505] transition-colors overflow-hidden">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 text-center">
                 <h3 className="text-xl sm:text-2xl font-bold font-display text-slate-900 dark:text-white tracking-tight">
                   Trusted by 150+ Students Across Leading Universities
@@ -307,7 +307,7 @@ export function App() {
 
               {/* Real-time CountUp Performance Metrics */}
               <div className="max-w-5xl mx-auto px-4 mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
-                <div className="p-4 bg-slate-50 dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] rounded-xs text-center shadow-xs">
+                <div className="p-4 bg-slate-50 dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-xs text-center shadow-xs">
                   <div className="text-2xl sm:text-3xl font-black font-display text-blue-600 dark:text-blue-400">
                     <CountUp from={0} to={15420} separator="," direction="up" duration={2} className="count-up-text" />+
                   </div>
@@ -315,7 +315,7 @@ export function App() {
                     Resumes Scanned
                   </div>
                 </div>
-                <div className="p-4 bg-slate-50 dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] rounded-xs text-center shadow-xs">
+                <div className="p-4 bg-slate-50 dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-xs text-center shadow-xs">
                   <div className="text-2xl sm:text-3xl font-black font-display text-emerald-600 dark:text-emerald-400">
                     <CountUp from={0} to={94} separator="" direction="up" duration={1.5} className="count-up-text" />.8%
                   </div>
@@ -323,7 +323,7 @@ export function App() {
                     Interview Shortlist Rate
                   </div>
                 </div>
-                <div className="p-4 bg-slate-50 dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] rounded-xs text-center shadow-xs">
+                <div className="p-4 bg-slate-50 dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-xs text-center shadow-xs">
                   <div className="text-2xl sm:text-3xl font-black font-display text-amber-600 dark:text-amber-400">
                     <CountUp from={0} to={150} separator="," direction="up" duration={1.8} className="count-up-text" />+
                   </div>
@@ -331,7 +331,7 @@ export function App() {
                     Students Placed
                   </div>
                 </div>
-                <div className="p-4 bg-slate-50 dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] rounded-xs text-center shadow-xs">
+                <div className="p-4 bg-slate-50 dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-xs text-center shadow-xs">
                   <div className="text-2xl sm:text-3xl font-black font-display text-purple-600 dark:text-purple-400">
                     <CountUp from={0} to={6} separator="" direction="up" duration={1} className="count-up-text" />
                   </div>
@@ -343,7 +343,7 @@ export function App() {
             </section>
 
             {/* How It Works Section */}
-            <section id="how-it-works" className="py-16 md:py-24 border-b border-slate-200 dark:border-[#273142] bg-[#F8FAFC] dark:bg-[#0A0D12] transition-colors">
+            <section id="how-it-works" className="py-16 md:py-24 border-b border-slate-200 dark:border-[#262626] bg-[#F8FAFC] dark:bg-[#000000] transition-colors">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
                 <div className="pb-12 text-left">
@@ -370,8 +370,8 @@ export function App() {
                       desc: "Generates an evidence-backed ATS compatibility score with line-by-line grounded recommendations and bullet point upgrades."
                     }
                   ].map((s, idx) => (
-                    <div key={idx} className="bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-6 relative shadow-sm dark:shadow-none transition-colors">
-                      <span className="text-4xl font-bold text-slate-300 dark:text-[#273142] block mb-4 font-sans">
+                    <div key={idx} className="bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] p-6 relative shadow-sm dark:shadow-none transition-colors">
+                      <span className="text-4xl font-bold text-slate-300 dark:text-[#262626] block mb-4 font-sans">
                         {s.step}
                       </span>
                       <h3 className="text-base font-bold text-slate-900 dark:text-white mb-2 font-sans">{s.title}</h3>
@@ -384,7 +384,7 @@ export function App() {
             </section>
 
             {/* Upload & Form Section directly accessible on Landing */}
-            <section id="analyze" className="py-16 md:py-24 border-b border-slate-200 dark:border-[#273142] bg-[#F8FAFC] dark:bg-[#0A0D12] transition-colors">
+            <section id="analyze" className="py-16 md:py-24 border-b border-slate-200 dark:border-[#262626] bg-[#F8FAFC] dark:bg-[#000000] transition-colors">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
                 <div className="pb-10">
@@ -434,7 +434,7 @@ export function App() {
 
                     {/* Submit Action Bar */}
                     {/* Submit Action Bar */}
-                    <div className="pt-4 flex flex-col space-y-3 bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-5 shadow-sm dark:shadow-none transition-colors">
+                    <div className="pt-4 flex flex-col space-y-3 bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] p-5 shadow-sm dark:shadow-none transition-colors">
                       {analysisError && (
                         <div className="p-3 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800/60 rounded-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-red-700 dark:text-red-300">
                           <div className="flex items-center space-x-2">
@@ -460,7 +460,7 @@ export function App() {
                         <div className="flex items-center space-x-3 w-full sm:w-auto">
                           <button
                             onClick={handleTryDemo}
-                            className="flex-1 sm:flex-initial px-4 py-3 bg-slate-100 hover:bg-slate-200 dark:bg-[#0A0D12] dark:hover:bg-[#1A202C] text-slate-800 dark:text-[#F8FAFC] border border-slate-300 dark:border-[#273142] text-xs font-semibold rounded-xs transition-colors flex items-center justify-center space-x-2 cursor-pointer"
+                            className="flex-1 sm:flex-initial px-4 py-3 bg-slate-100 hover:bg-slate-200 dark:bg-[#000000] dark:hover:bg-[#171717] text-slate-800 dark:text-[#F8FAFC] border border-slate-300 dark:border-[#262626] text-xs font-semibold rounded-xs transition-colors flex items-center justify-center space-x-2 cursor-pointer"
                           >
                             <Play className="w-3.5 h-3.5 text-[#2563EB]" />
                             <span>Load Sample Demo</span>
@@ -526,7 +526,7 @@ export function App() {
             />
 
             {/* Dashboard Content Panes */}
-            <div className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto space-y-8 bg-[#F8FAFC] dark:bg-[#0A0D12] transition-colors">
+            <div className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto space-y-8 bg-[#F8FAFC] dark:bg-[#000000] transition-colors">
               
               {/* TAB 1: OVERVIEW */}
               {activeTab === 'overview' && (
@@ -541,8 +541,8 @@ export function App() {
                   />
 
                   {/* Executive Summary & Findings */}
-                  <div className="bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-6 rounded-xs transition-colors shadow-sm dark:shadow-none">
-                    <div className="pb-4 border-b border-slate-200 dark:border-[#273142]">
+                  <div className="bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] p-6 rounded-xs transition-colors shadow-sm dark:shadow-none">
+                    <div className="pb-4 border-b border-slate-200 dark:border-[#262626]">
                       <h3 className="text-base font-bold text-slate-900 dark:text-white tracking-tight flex items-center space-x-2">
                         <span className="w-2 h-2 bg-[#2563EB] inline-block" />
                         <span>EXECUTIVE AUDIT SUMMARY</span>
@@ -559,8 +559,8 @@ export function App() {
                     </ul>
 
                     {/* Strengths & Weaknesses Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 pt-6 border-t border-slate-200 dark:border-[#273142]">
-                      <div className="bg-emerald-50/60 dark:bg-[#0A0D12] border border-[#059669] dark:border-[#10B981] p-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 pt-6 border-t border-slate-200 dark:border-[#262626]">
+                      <div className="bg-emerald-50/60 dark:bg-[#000000] border border-[#059669] dark:border-[#10B981] p-4">
                         <span className="text-[10px] font-mono text-[#059669] dark:text-[#10B981] uppercase font-bold block mb-2">
                           PRIMARY STRENGTHS:
                         </span>
@@ -574,7 +574,7 @@ export function App() {
                         </ul>
                       </div>
 
-                      <div className="bg-red-50/60 dark:bg-[#0A0D12] border border-[#DC2626] dark:border-[#EF4444] p-4">
+                      <div className="bg-red-50/60 dark:bg-[#000000] border border-[#DC2626] dark:border-[#EF4444] p-4">
                         <span className="text-[10px] font-mono text-[#DC2626] dark:text-[#EF4444] uppercase font-bold block mb-2">
                           IDENTIFIED VULNERABILITIES:
                         </span>
@@ -591,8 +591,8 @@ export function App() {
                   </div>
 
                   {/* Recruiter Review & Platform Difference Overview Banner */}
-                  <div className="bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-6 rounded-xs transition-colors shadow-sm dark:shadow-none space-y-6">
-                    <div className="pb-4 border-b border-slate-200 dark:border-[#273142] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] p-6 rounded-xs transition-colors shadow-sm dark:shadow-none space-y-6">
+                    <div className="pb-4 border-b border-slate-200 dark:border-[#262626] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div>
                         <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800/60 text-blue-700 dark:text-blue-300 font-mono text-[11px] font-bold mb-1.5 uppercase tracking-wider">
                           <Eye className="w-3.5 h-3.5" />
@@ -614,7 +614,7 @@ export function App() {
                     {/* 2-Column Split: Recruiter Scan Lens vs Why We Differ */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                       {/* Left: How a Recruiter Sees The Resume */}
-                      <div className="p-5 bg-slate-50 dark:bg-[#0A0D12] border border-slate-200 dark:border-[#273142] rounded-xs space-y-4">
+                      <div className="p-5 bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#262626] rounded-xs space-y-4">
                         <div className="flex items-center justify-between">
                           <span className="text-xs font-mono font-bold uppercase text-slate-900 dark:text-white flex items-center space-x-2">
                             <Eye className="w-4 h-4 text-[#2563EB]" />
@@ -679,7 +679,7 @@ export function App() {
                       </div>
 
                       {/* Right: How GetPlaced Differs from other ATS sites */}
-                      <div className="p-5 bg-slate-50 dark:bg-[#0A0D12] border border-slate-200 dark:border-[#273142] rounded-xs space-y-4">
+                      <div className="p-5 bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#262626] rounded-xs space-y-4">
                         <div className="flex items-center justify-between">
                           <span className="text-xs font-mono font-bold uppercase text-slate-900 dark:text-white flex items-center space-x-2">
                             <Scale className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
@@ -691,7 +691,7 @@ export function App() {
                         </div>
 
                         <div className="space-y-3 pt-1 text-xs">
-                          <div className="p-2.5 rounded-xs bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142]">
+                          <div className="p-2.5 rounded-xs bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626]">
                             <div className="flex items-center justify-between mb-1">
                               <span className="font-bold text-slate-900 dark:text-white">1. Semantic Vector NLP vs Exact Keyword Counting</span>
                             </div>
@@ -701,7 +701,7 @@ export function App() {
                             </p>
                           </div>
 
-                          <div className="p-2.5 rounded-xs bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142]">
+                          <div className="p-2.5 rounded-xs bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626]">
                             <div className="flex items-center justify-between mb-1">
                               <span className="font-bold text-slate-900 dark:text-white">2. Anti-Stuffing Guardrails vs Keyword Stuffing Pressure</span>
                             </div>
@@ -711,7 +711,7 @@ export function App() {
                             </p>
                           </div>
 
-                          <div className="p-2.5 rounded-xs bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142]">
+                          <div className="p-2.5 rounded-xs bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626]">
                             <div className="flex items-center justify-between mb-1">
                               <span className="font-bold text-slate-900 dark:text-white">3. Deterministic 6-Axis Scoring vs Black-Box Scores</span>
                             </div>
@@ -721,7 +721,7 @@ export function App() {
                             </p>
                           </div>
 
-                          <div className="p-2.5 rounded-xs bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142]">
+                          <div className="p-2.5 rounded-xs bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626]">
                             <div className="flex items-center justify-between mb-1">
                               <span className="font-bold text-slate-900 dark:text-white">4. PDF Geometry Parsing vs Flat Regex Scrapers</span>
                             </div>
@@ -742,7 +742,7 @@ export function App() {
                       <div className="flex items-center space-x-2">
                         <button
                           onClick={() => setActiveTab('recruiter-lens')}
-                          className="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-[#0A0D12] dark:hover:bg-[#1A202C] text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-[#273142] font-semibold text-xs rounded-xs transition-colors flex items-center space-x-1 cursor-pointer"
+                          className="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-[#000000] dark:hover:bg-[#171717] text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-[#262626] font-semibold text-xs rounded-xs transition-colors flex items-center space-x-1 cursor-pointer"
                         >
                           <Eye className="w-3.5 h-3.5 text-[#2563EB]" />
                           <span>Recruiter Lens Tab</span>
@@ -838,7 +838,7 @@ export function App() {
       </main>
 
       {/* Dynamic Ribbon Text Loop at Bottom of Site */}
-      <section className="relative w-full overflow-hidden border-t border-b border-slate-200 dark:border-[#273142] bg-[#F8FAFC] dark:bg-[#0A0D12] py-1 transition-colors">
+      <section className="relative w-full overflow-hidden border-t border-b border-slate-200 dark:border-[#262626] bg-[#F8FAFC] dark:bg-[#000000] py-1 transition-colors">
         <div className="w-full max-h-[120px] sm:max-h-[140px] flex items-center justify-center">
           <TextLoop
             text="GetPlacedResume ✦ ATS Intelligence ✦ Career Fit ✦ Verified Analysis"

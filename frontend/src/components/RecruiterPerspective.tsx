@@ -38,8 +38,8 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
   return (
     <div className="space-y-8">
       {/* Header Banner */}
-      <div className="bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-6 sm:p-8 rounded-xs transition-colors shadow-sm dark:shadow-none">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-[#273142]">
+      <div className="bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] p-6 sm:p-8 rounded-xs transition-colors shadow-sm dark:shadow-none">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-[#262626]">
           <div>
             <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800/60 text-blue-700 dark:text-blue-300 font-mono text-xs font-bold mb-3 uppercase tracking-wider">
               <Eye className="w-3.5 h-3.5" />
@@ -60,7 +60,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
               className={`px-3.5 py-2 text-xs font-bold rounded-xs transition-all flex items-center justify-center space-x-1.5 cursor-pointer ${
                 activeSection === 'all'
                   ? 'bg-[#2563EB] text-white shadow-xs'
-                  : 'bg-slate-100 dark:bg-[#0A0D12] text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-[#273142] hover:bg-slate-200 dark:hover:bg-[#1A202C]'
+                  : 'bg-slate-100 dark:bg-[#000000] text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-[#262626] hover:bg-slate-200 dark:hover:bg-[#171717]'
               }`}
             >
               <Layers className="w-3.5 h-3.5" />
@@ -71,7 +71,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
               className={`px-3.5 py-2 text-xs font-bold rounded-xs transition-all flex items-center justify-center space-x-1.5 cursor-pointer ${
                 activeSection === 'recruiter'
                   ? 'bg-[#2563EB] text-white shadow-xs'
-                  : 'bg-slate-100 dark:bg-[#0A0D12] text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-[#273142] hover:bg-slate-200 dark:hover:bg-[#1A202C]'
+                  : 'bg-slate-100 dark:bg-[#000000] text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-[#262626] hover:bg-slate-200 dark:hover:bg-[#171717]'
               }`}
             >
               <Eye className="w-3.5 h-3.5" />
@@ -82,7 +82,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
               className={`px-3.5 py-2 text-xs font-bold rounded-xs transition-all flex items-center justify-center space-x-1.5 cursor-pointer ${
                 activeSection === 'comparison'
                   ? 'bg-[#2563EB] text-white shadow-xs'
-                  : 'bg-slate-100 dark:bg-[#0A0D12] text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-[#273142] hover:bg-slate-200 dark:hover:bg-[#1A202C]'
+                  : 'bg-slate-100 dark:bg-[#000000] text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-[#262626] hover:bg-slate-200 dark:hover:bg-[#171717]'
               }`}
             >
               <Scale className="w-3.5 h-3.5" />
@@ -93,19 +93,19 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
 
         {/* Quick Summary Pill Bar */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
-          <div className="p-3.5 rounded-xs bg-slate-50 dark:bg-[#0A0D12] border border-slate-200 dark:border-[#273142]">
+          <div className="p-3.5 rounded-xs bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#262626]">
             <span className="text-[10px] font-mono uppercase text-slate-400 dark:text-slate-500 block mb-1">RECRUITER REALITY</span>
             <p className="text-xs font-semibold text-slate-900 dark:text-white">
               Recruiters scan in an &quot;F-Pattern&quot; looking for title alignment, stack fit, and metric proof.
             </p>
           </div>
-          <div className="p-3.5 rounded-xs bg-slate-50 dark:bg-[#0A0D12] border border-slate-200 dark:border-[#273142]">
+          <div className="p-3.5 rounded-xs bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#262626]">
             <span className="text-[10px] font-mono uppercase text-slate-400 dark:text-slate-500 block mb-1">THE LEGACY FLAW</span>
             <p className="text-xs font-semibold text-slate-900 dark:text-white">
               Other ATS sites force unnatural keyword stuffing that triggers human recruiter rejection.
             </p>
           </div>
-          <div className="p-3.5 rounded-xs bg-slate-50 dark:bg-[#0A0D12] border border-slate-200 dark:border-[#273142]">
+          <div className="p-3.5 rounded-xs bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#262626]">
             <span className="text-[10px] font-mono uppercase text-slate-400 dark:text-slate-500 block mb-1">OUR SOLUTION</span>
             <p className="text-xs font-semibold text-slate-900 dark:text-white">
               GetPlacedResume balances ATS vector parsing with human recruiter readability and proof.
@@ -115,7 +115,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
 
         {/* Live Candidate Diagnostic Block when report is loaded */}
         {report && (
-          <div className="mt-6 pt-6 border-t border-slate-200 dark:border-[#273142]">
+          <div className="mt-6 pt-6 border-t border-slate-200 dark:border-[#262626]">
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs font-mono font-bold uppercase text-slate-900 dark:text-white flex items-center space-x-2">
                 <Sparkles className="w-4 h-4 text-[#2563EB]" />
@@ -126,7 +126,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
               </span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-              <div className="p-3 bg-slate-50 dark:bg-[#0A0D12] border border-slate-200 dark:border-[#273142] rounded-xs">
+              <div className="p-3 bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#262626] rounded-xs">
                 <span className="text-[10px] font-mono text-slate-400 block mb-1">METRIC PROOF (SECONDS 4-6)</span>
                 <div className="flex items-baseline space-x-2">
                   <span className={`font-bold font-mono text-sm ${quantifiedPct >= 50 ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'}`}>
@@ -138,7 +138,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
                   {quantifiedPct >= 60 ? 'Strong metric backing catches recruiter attention quickly.' : 'Add metrics (%, $, scale) so recruiters see measurable business impact.'}
                 </p>
               </div>
-              <div className="p-3 bg-slate-50 dark:bg-[#0A0D12] border border-slate-200 dark:border-[#273142] rounded-xs">
+              <div className="p-3 bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#262626] rounded-xs">
                 <span className="text-[10px] font-mono text-slate-400 block mb-1">LAYOUT &amp; READING RISK</span>
                 <div className="flex items-baseline space-x-2">
                   <span className={`font-bold font-mono text-sm ${readingRisk === 'LOW' ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>
@@ -150,7 +150,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
                   {readingRisk === 'LOW' ? 'Clean typography passes ATS without scrambled text blocks.' : 'Multi-column tables risk jumbling text in recruiter screeners.'}
                 </p>
               </div>
-              <div className="p-3 bg-slate-50 dark:bg-[#0A0D12] border border-slate-200 dark:border-[#273142] rounded-xs">
+              <div className="p-3 bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#262626] rounded-xs">
                 <span className="text-[10px] font-mono text-slate-400 block mb-1">CORE SKILLS IN CONTEXT</span>
                 <div className="flex items-baseline space-x-2">
                   <span className="font-bold font-mono text-sm text-blue-600 dark:text-blue-400">
@@ -171,9 +171,9 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
       {/* SECTION 1: HOW A RECRUITER SEES YOUR RESUME */}
       {/* ======================================================== */}
       {(activeSection === 'all' || activeSection === 'recruiter') && (
-        <div className="bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-6 sm:p-8 rounded-xs transition-colors shadow-sm dark:shadow-none space-y-8">
+        <div className="bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] p-6 sm:p-8 rounded-xs transition-colors shadow-sm dark:shadow-none space-y-8">
           
-          <div className="pb-4 border-b border-slate-200 dark:border-[#273142] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div className="pb-4 border-b border-slate-200 dark:border-[#262626] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <div className="flex items-center space-x-2 text-blue-600 dark:text-blue-400 mb-1">
                 <Eye className="w-4 h-4" />
@@ -190,7 +190,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
 
           {/* 6-Second Chronological Eye-Path */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="p-5 bg-slate-50 dark:bg-[#0A0D12] border border-slate-200 dark:border-[#273142] rounded-xs relative">
+            <div className="p-5 bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#262626] rounded-xs relative">
               <div className="flex items-center justify-between mb-3">
                 <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300 font-mono text-[10px] font-bold rounded-full">
                   SECONDS 0 – 2
@@ -208,13 +208,13 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
                   Target: {targetRole}
                 </div>
               )}
-              <div className="mt-4 pt-3 border-t border-slate-200 dark:border-[#273142] text-[11px] font-mono text-[#059669] dark:text-[#10B981] flex items-center space-x-1.5">
+              <div className="mt-4 pt-3 border-t border-slate-200 dark:border-[#262626] text-[11px] font-mono text-[#059669] dark:text-[#10B981] flex items-center space-x-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
                 <span>Target role clarity in headline</span>
               </div>
             </div>
 
-            <div className="p-5 bg-slate-50 dark:bg-[#0A0D12] border border-slate-200 dark:border-[#273142] rounded-xs relative">
+            <div className="p-5 bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#262626] rounded-xs relative">
               <div className="flex items-center justify-between mb-3">
                 <span className="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 font-mono text-[10px] font-bold rounded-full">
                   SECONDS 2 – 4
@@ -232,13 +232,13 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
                   {strongSkillsCount} demonstrated core skills found
                 </div>
               )}
-              <div className="mt-4 pt-3 border-t border-slate-200 dark:border-[#273142] text-[11px] font-mono text-[#059669] dark:text-[#10B981] flex items-center space-x-1.5">
+              <div className="mt-4 pt-3 border-t border-slate-200 dark:border-[#262626] text-[11px] font-mono text-[#059669] dark:text-[#10B981] flex items-center space-x-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
                 <span>Grouped categories: Languages, Cloud, Frameworks</span>
               </div>
             </div>
 
-            <div className="p-5 bg-slate-50 dark:bg-[#0A0D12] border border-slate-200 dark:border-[#273142] rounded-xs relative">
+            <div className="p-5 bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#262626] rounded-xs relative">
               <div className="flex items-center justify-between mb-3">
                 <span className="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/60 text-purple-700 dark:text-purple-300 font-mono text-[10px] font-bold rounded-full">
                   SECONDS 4 – 6
@@ -256,13 +256,13 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
                   {quantifiedBullets}/{totalBullets} bullets quantified ({quantifiedPct}%)
                 </div>
               )}
-              <div className="mt-4 pt-3 border-t border-slate-200 dark:border-[#273142] text-[11px] font-mono text-[#059669] dark:text-[#10B981] flex items-center space-x-1.5">
+              <div className="mt-4 pt-3 border-t border-slate-200 dark:border-[#262626] text-[11px] font-mono text-[#059669] dark:text-[#10B981] flex items-center space-x-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
                 <span>Google XYZ: &quot;Accomplished X by doing Y as measured by Z&quot;</span>
               </div>
             </div>
 
-            <div className="p-5 bg-slate-50 dark:bg-[#0A0D12] border border-slate-200 dark:border-[#273142] rounded-xs relative">
+            <div className="p-5 bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#262626] rounded-xs relative">
               <div className="flex items-center justify-between mb-3">
                 <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 font-mono text-[10px] font-bold rounded-full">
                   SECONDS 6 – 8
@@ -280,7 +280,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
                   Layout: {readingRisk} Risk • Score: {overallScore}/100
                 </div>
               )}
-              <div className="mt-4 pt-3 border-t border-slate-200 dark:border-[#273142] text-[11px] font-mono text-[#059669] dark:text-[#10B981] flex items-center space-x-1.5">
+              <div className="mt-4 pt-3 border-t border-slate-200 dark:border-[#262626] text-[11px] font-mono text-[#059669] dark:text-[#10B981] flex items-center space-x-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
                 <span>Consistent dates, clean typography, 0 clutter</span>
               </div>
@@ -349,7 +349,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
           </div>
 
           {/* What Modern ATS Shows The Recruiter */}
-          <div className="p-5 bg-slate-50 dark:bg-[#0A0D12] border border-slate-200 dark:border-[#273142] rounded-xs">
+          <div className="p-5 bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#262626] rounded-xs">
             <h4 className="text-xs font-mono font-bold uppercase text-slate-900 dark:text-white tracking-wider mb-2 flex items-center space-x-2">
               <Target className="w-4 h-4 text-[#2563EB]" />
               <span>What Modern ATS (Workday, Greenhouse, Lever) Actually Present to Recruiters</span>
@@ -366,9 +366,9 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
       {/* SECTION 2: WHY GETPLACEDRESUME DIFFERS FROM OTHER ATS SITES */}
       {/* ======================================================== */}
       {(activeSection === 'all' || activeSection === 'comparison') && (
-        <div className="bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-6 sm:p-8 rounded-xs transition-colors shadow-sm dark:shadow-none space-y-8">
+        <div className="bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] p-6 sm:p-8 rounded-xs transition-colors shadow-sm dark:shadow-none space-y-8">
           
-          <div className="pb-4 border-b border-slate-200 dark:border-[#273142] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div className="pb-4 border-b border-slate-200 dark:border-[#262626] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <div className="flex items-center space-x-2 text-indigo-600 dark:text-indigo-400 mb-1">
                 <Scale className="w-4 h-4" />
@@ -388,103 +388,103 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
           </p>
 
           {/* Side-by-Side Comparison Table */}
-          <div className="overflow-x-auto border border-slate-200 dark:border-[#273142] rounded-xs">
+          <div className="overflow-x-auto border border-slate-200 dark:border-[#262626] rounded-xs">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="bg-slate-100 dark:bg-[#0A0D12] border-b border-slate-200 dark:border-[#273142]">
+                <tr className="bg-slate-100 dark:bg-[#000000] border-b border-slate-200 dark:border-[#262626]">
                   <th className="p-3.5 font-mono uppercase text-slate-700 dark:text-slate-300 font-bold w-1/4">
                     Evaluation Dimension
                   </th>
-                  <th className="p-3.5 font-mono uppercase text-red-600 dark:text-red-400 font-bold w-3/8 border-l border-slate-200 dark:border-[#273142]">
+                  <th className="p-3.5 font-mono uppercase text-red-600 dark:text-red-400 font-bold w-3/8 border-l border-slate-200 dark:border-[#262626]">
                     Traditional ATS Checkers (Jobscan, etc.)
                   </th>
-                  <th className="p-3.5 font-mono uppercase text-[#2563EB] dark:text-blue-400 font-bold w-3/8 border-l border-slate-200 dark:border-[#273142] bg-blue-50/40 dark:bg-blue-950/20">
+                  <th className="p-3.5 font-mono uppercase text-[#2563EB] dark:text-blue-400 font-bold w-3/8 border-l border-slate-200 dark:border-[#262626] bg-blue-50/40 dark:bg-blue-950/20">
                     GetPlacedResume Intelligence
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200 dark:divide-[#273142] font-sans">
+              <tbody className="divide-y divide-slate-200 dark:divide-[#262626] font-sans">
                 
                 <tr>
-                  <td className="p-3.5 font-semibold text-slate-900 dark:text-white bg-slate-50/50 dark:bg-[#0F131C]/40">
+                  <td className="p-3.5 font-semibold text-slate-900 dark:text-white bg-slate-50/50 dark:bg-[#0D0D0D]/40">
                     Keyword Matching
                   </td>
-                  <td className="p-3.5 text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-[#273142]">
+                  <td className="p-3.5 text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-[#262626]">
                     <strong>Exact substring counting:</strong> If JD says &quot;CI/CD&quot; and you wrote &quot;Continuous Integration &amp; Deployment&quot;, it marks you 0% and tells you to add the exact string.
                   </td>
-                  <td className="p-3.5 text-slate-900 dark:text-white border-l border-slate-200 dark:border-[#273142] bg-blue-50/20 dark:bg-blue-950/10">
+                  <td className="p-3.5 text-slate-900 dark:text-white border-l border-slate-200 dark:border-[#262626] bg-blue-50/20 dark:bg-blue-950/10">
                     <strong>Semantic Vector Cosine Similarity:</strong> Uses NLP vector embeddings and domain ontologies to recognize synonyms, sub-skills, and framework relationships.
                   </td>
                 </tr>
 
                 <tr>
-                  <td className="p-3.5 font-semibold text-slate-900 dark:text-white bg-slate-50/50 dark:bg-[#0F131C]/40">
+                  <td className="p-3.5 font-semibold text-slate-900 dark:text-white bg-slate-50/50 dark:bg-[#0D0D0D]/40">
                     Keyword Stuffing Handling
                   </td>
-                  <td className="p-3.5 text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-[#273142]">
+                  <td className="p-3.5 text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-[#262626]">
                     <strong>Encourages stuffing:</strong> Tells you to repeat words 5+ times to boost score, which makes your resume look unnatural and leads to instant human rejection.
                   </td>
-                  <td className="p-3.5 text-slate-900 dark:text-white border-l border-slate-200 dark:border-[#273142] bg-blue-50/20 dark:bg-blue-950/10">
+                  <td className="p-3.5 text-slate-900 dark:text-white border-l border-slate-200 dark:border-[#262626] bg-blue-50/20 dark:bg-blue-950/10">
                     <strong>Anti-Stuffing Penalty &amp; Context Verification:</strong> Requires skills to appear in meaningful experience bullets with action verbs, protecting your human pass rate.
                   </td>
                 </tr>
 
                 <tr>
-                  <td className="p-3.5 font-semibold text-slate-900 dark:text-white bg-slate-50/50 dark:bg-[#0F131C]/40">
+                  <td className="p-3.5 font-semibold text-slate-900 dark:text-white bg-slate-50/50 dark:bg-[#0D0D0D]/40">
                     Scoring Methodology
                   </td>
-                  <td className="p-3.5 text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-[#273142]">
+                  <td className="p-3.5 text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-[#262626]">
                     <strong>Opaque Black Box:</strong> Single vanity percentage with no breakdown of why you scored 62% or how each section contributed.
                   </td>
-                  <td className="p-3.5 text-slate-900 dark:text-white border-l border-slate-200 dark:border-[#273142] bg-blue-50/20 dark:bg-blue-950/10">
+                  <td className="p-3.5 text-slate-900 dark:text-white border-l border-slate-200 dark:border-[#262626] bg-blue-50/20 dark:bg-blue-950/10">
                     <strong>Deterministic 6-Axis Weighted Scoring:</strong> Mathematical breakdown across Job Relevance (30%), Skills (20%), Experience (20%), ATS Parseability (15%), Content (10%), Presentation (5%).
                   </td>
                 </tr>
 
                 <tr>
-                  <td className="p-3.5 font-semibold text-slate-900 dark:text-white bg-slate-50/50 dark:bg-[#0F131C]/40">
+                  <td className="p-3.5 font-semibold text-slate-900 dark:text-white bg-slate-50/50 dark:bg-[#0D0D0D]/40">
                     Document Parsing Depth
                   </td>
-                  <td className="p-3.5 text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-[#273142]">
+                  <td className="p-3.5 text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-[#262626]">
                     <strong>Plain text regex:</strong> Reads text in flat order, missing multi-column reading bugs, table flow traps, and corrupted header data.
                   </td>
-                  <td className="p-3.5 text-slate-900 dark:text-white border-l border-slate-200 dark:border-[#273142] bg-blue-50/20 dark:bg-blue-950/10">
-                    <strong>Geometric Layout Engine:</strong> Inspects PDF bounding boxes via <code className="text-[11px] font-mono bg-slate-200 dark:bg-[#1E2633] px-1 py-0.5 rounded-xs">pdfplumber</code> to check multi-column read order, table cells, header/footer collision, and glyph issues.
+                  <td className="p-3.5 text-slate-900 dark:text-white border-l border-slate-200 dark:border-[#262626] bg-blue-50/20 dark:bg-blue-950/10">
+                    <strong>Geometric Layout Engine:</strong> Inspects PDF bounding boxes via <code className="text-[11px] font-mono bg-slate-200 dark:bg-[#141414] px-1 py-0.5 rounded-xs">pdfplumber</code> to check multi-column read order, table cells, header/footer collision, and glyph issues.
                   </td>
                 </tr>
 
                 <tr>
-                  <td className="p-3.5 font-semibold text-slate-900 dark:text-white bg-slate-50/50 dark:bg-[#0F131C]/40">
+                  <td className="p-3.5 font-semibold text-slate-900 dark:text-white bg-slate-50/50 dark:bg-[#0D0D0D]/40">
                     Candidate Profiling
                   </td>
-                  <td className="p-3.5 text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-[#273142]">
+                  <td className="p-3.5 text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-[#262626]">
                     <strong>One-size-fits-all:</strong> Punishes students and freshers for not having 5+ years of corporate experience.
                   </td>
-                  <td className="p-3.5 text-slate-900 dark:text-white border-l border-slate-200 dark:border-[#273142] bg-blue-50/20 dark:bg-blue-950/10">
+                  <td className="p-3.5 text-slate-900 dark:text-white border-l border-slate-200 dark:border-[#262626] bg-blue-50/20 dark:bg-blue-950/10">
                     <strong>Adaptive Profile Calibrations:</strong> Supports Campus/Fresher mode (prioritizes projects &amp; academic competencies) vs Experienced &amp; Career Transition modes.
                   </td>
                 </tr>
 
                 <tr>
-                  <td className="p-3.5 font-semibold text-slate-900 dark:text-white bg-slate-50/50 dark:bg-[#0F131C]/40">
+                  <td className="p-3.5 font-semibold text-slate-900 dark:text-white bg-slate-50/50 dark:bg-[#0D0D0D]/40">
                     Actionable Improvements
                   </td>
-                  <td className="p-3.5 text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-[#273142]">
+                  <td className="p-3.5 text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-[#262626]">
                     <strong>Generic paywalled tips:</strong> Hides meaningful advice behind $29/mo subscriptions or suggests generic canned bullet points.
                   </td>
-                  <td className="p-3.5 text-slate-900 dark:text-white border-l border-slate-200 dark:border-[#273142] bg-blue-50/20 dark:bg-blue-950/10">
+                  <td className="p-3.5 text-slate-900 dark:text-white border-l border-slate-200 dark:border-[#262626] bg-blue-50/20 dark:bg-blue-950/10">
                     <strong>Grounded Line-by-Line Evidence:</strong> Analyzes each bullet point against the Google XYZ formula and suggests contextual upgrades grounded in your verified stack.
                   </td>
                 </tr>
 
                 <tr>
-                  <td className="p-3.5 font-semibold text-slate-900 dark:text-white bg-slate-50/50 dark:bg-[#0F131C]/40">
+                  <td className="p-3.5 font-semibold text-slate-900 dark:text-white bg-slate-50/50 dark:bg-[#0D0D0D]/40">
                     Data Privacy &amp; Retention
                   </td>
-                  <td className="p-3.5 text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-[#273142]">
+                  <td className="p-3.5 text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-[#262626]">
                     <strong>Data monetization:</strong> Saves resumes to databases, trains commercial models on your data, or sells recruitment leads.
                   </td>
-                  <td className="p-3.5 text-slate-900 dark:text-white border-l border-slate-200 dark:border-[#273142] bg-blue-50/20 dark:bg-blue-950/10">
+                  <td className="p-3.5 text-slate-900 dark:text-white border-l border-slate-200 dark:border-[#262626] bg-blue-50/20 dark:bg-blue-950/10">
                     <strong>100% In-Memory Ephemeral Analysis:</strong> Resumes are processed in RAM and discarded immediately. Zero third-party model training or storage.
                   </td>
                 </tr>
@@ -495,7 +495,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
 
           {/* Architectural Pillars Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2">
-            <div className="p-5 bg-slate-50 dark:bg-[#0A0D12] border border-slate-200 dark:border-[#273142] rounded-xs">
+            <div className="p-5 bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#262626] rounded-xs">
               <div className="w-8 h-8 rounded-xs bg-blue-100 dark:bg-blue-950/60 text-[#2563EB] flex items-center justify-center mb-3">
                 <Target className="w-4 h-4" />
               </div>
@@ -507,7 +507,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
               </p>
             </div>
 
-            <div className="p-5 bg-slate-50 dark:bg-[#0A0D12] border border-slate-200 dark:border-[#273142] rounded-xs">
+            <div className="p-5 bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#262626] rounded-xs">
               <div className="w-8 h-8 rounded-xs bg-emerald-100 dark:bg-emerald-950/60 text-[#059669] flex items-center justify-center mb-3">
                 <Search className="w-4 h-4" />
               </div>
@@ -519,7 +519,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
               </p>
             </div>
 
-            <div className="p-5 bg-slate-50 dark:bg-[#0A0D12] border border-slate-200 dark:border-[#273142] rounded-xs">
+            <div className="p-5 bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#262626] rounded-xs">
               <div className="w-8 h-8 rounded-xs bg-purple-100 dark:bg-purple-950/60 text-[#8B5CF6] flex items-center justify-center mb-3">
                 <Sparkles className="w-4 h-4" />
               </div>
@@ -544,7 +544,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
               </button>
               <button
                 onClick={() => onNavigateTab('ats-format')}
-                className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-[#0A0D12] dark:hover:bg-[#1A202C] text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-[#273142] font-semibold text-xs rounded-xs transition-colors flex items-center space-x-2 cursor-pointer"
+                className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-[#000000] dark:hover:bg-[#171717] text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-[#262626] font-semibold text-xs rounded-xs transition-colors flex items-center space-x-2 cursor-pointer"
               >
                 <span>Inspect Document Layout Parseability</span>
                 <ArrowRight className="w-3.5 h-3.5" />

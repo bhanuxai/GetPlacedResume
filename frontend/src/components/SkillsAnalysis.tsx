@@ -51,10 +51,10 @@ export const SkillsAnalysis: React.FC<SkillsAnalysisProps> = ({ skills }) => {
   ];
 
   return (
-    <div className="w-full bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-6 sm:p-8 rounded-xs transition-colors shadow-sm dark:shadow-none">
+    <div className="w-full bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] p-6 sm:p-8 rounded-xs transition-colors shadow-sm dark:shadow-none">
       
       {/* Header */}
-      <div className="pb-6 border-b border-slate-200 dark:border-[#273142]">
+      <div className="pb-6 border-b border-slate-200 dark:border-[#262626]">
         <h3 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight flex items-center space-x-2">
           <span className="w-2 h-2 bg-[#2563EB] inline-block" />
           <span>SKILLS &amp; COMPETENCY MATRIX</span>
@@ -69,14 +69,14 @@ export const SkillsAnalysis: React.FC<SkillsAnalysisProps> = ({ skills }) => {
         {groups.map((grp, idx) => {
           const Icon = grp.icon;
           return (
-            <div key={idx} className="bg-slate-50 dark:bg-[#0A0D12] border border-slate-300 dark:border-[#273142] p-5 flex flex-col justify-between transition-colors">
+            <div key={idx} className="bg-slate-50 dark:bg-[#000000] border border-slate-300 dark:border-[#262626] p-5 flex flex-col justify-between transition-colors">
               <div>
-                <div className="flex items-start justify-between gap-2 pb-3 border-b border-slate-200 dark:border-[#273142]">
+                <div className="flex items-start justify-between gap-2 pb-3 border-b border-slate-200 dark:border-[#262626]">
                   <div className="flex items-center space-x-2">
                     <Icon className="w-4 h-4 flex-shrink-0" style={{ color: grp.color }} />
                     <span className="text-sm font-bold text-slate-900 dark:text-white">{grp.title}</span>
                   </div>
-                  <span className="font-mono text-xs font-bold text-slate-900 dark:text-white px-2 py-0.5 bg-white dark:bg-[#1A202C] border border-slate-300 dark:border-[#273142]">
+                  <span className="font-mono text-xs font-bold text-slate-900 dark:text-white px-2 py-0.5 bg-white dark:bg-[#171717] border border-slate-300 dark:border-[#262626]">
                     {grp.items.length}
                   </span>
                 </div>
@@ -95,7 +95,7 @@ export const SkillsAnalysis: React.FC<SkillsAnalysisProps> = ({ skills }) => {
                     grp.items.map((skill, sIdx) => (
                       <span
                         key={sIdx}
-                        className="px-2.5 py-1 text-xs font-mono font-medium rounded-xs border bg-white dark:bg-[#12161F] text-slate-800 dark:text-[#F8FAFC]"
+                        className="px-2.5 py-1 text-xs font-mono font-medium rounded-xs border bg-white dark:bg-[#0A0A0A] text-slate-800 dark:text-[#F8FAFC]"
                         style={{
                           borderColor: grp.color
                         }}
@@ -107,7 +107,7 @@ export const SkillsAnalysis: React.FC<SkillsAnalysisProps> = ({ skills }) => {
                 </div>
               </div>
 
-              <div className="mt-4 pt-3 border-t border-slate-200 dark:border-[#1E2633] text-[11px] text-slate-500 dark:text-[#64748B] font-mono">
+              <div className="mt-4 pt-3 border-t border-slate-200 dark:border-[#141414] text-[11px] text-slate-500 dark:text-[#64748B] font-mono">
                 STATUS: {grp.items.length > 0 ? `${grp.items.length} TOKENS LOGGED` : 'NONE DETECTED'}
               </div>
             </div>

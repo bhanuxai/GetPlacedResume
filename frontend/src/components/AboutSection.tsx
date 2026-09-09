@@ -21,7 +21,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme = 'light' }) =
   ];
 
   return (
-    <section id="about" className="py-16 md:py-24 border-b border-slate-200 dark:border-[#273142] bg-white dark:bg-[#0E121A] transition-colors relative overflow-hidden">
+    <section id="about" className="py-16 md:py-24 border-b border-slate-200 dark:border-[#262626] bg-white dark:bg-[#050505] transition-colors relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="text-center max-w-3xl mx-auto mb-12">
@@ -37,7 +37,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme = 'light' }) =
         </div>
 
         {/* LogoLoop Infinite Scroll */}
-        <div className="py-6 my-4 bg-slate-50 dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] rounded-xs overflow-hidden">
+        <div className="py-6 my-4 bg-slate-50 dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-xs overflow-hidden">
           <div className="text-center text-[11px] font-mono uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-4">
             Core Languages &amp; Frameworks Powering The Platform
           </div>
@@ -51,7 +51,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme = 'light' }) =
               hoverSpeed={0}
               scaleOnHover
               fadeOut
-              fadeOutColor={isDark ? "#12161F" : "#F8FAFC"}
+              fadeOutColor={isDark ? "#0A0A0A" : "#F8FAFC"}
               ariaLabel="Technologies used to build GetPlacedResume"
             />
           </div>
@@ -59,7 +59,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme = 'light' }) =
 
         {/* Tech Stack Breakdown Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
-          <div className="p-5 bg-slate-50 dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] rounded-xs">
+          <div className="p-5 bg-slate-50 dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-xs">
             <div className="flex items-center space-x-3 mb-3">
               <div className="p-2 bg-blue-100 dark:bg-blue-950/60 rounded-xs text-[#2563EB]">
                 <Code2 className="w-5 h-5" />
@@ -74,7 +74,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme = 'light' }) =
             </p>
           </div>
 
-          <div className="p-5 bg-slate-50 dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] rounded-xs">
+          <div className="p-5 bg-slate-50 dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-xs">
             <div className="flex items-center space-x-3 mb-3">
               <div className="p-2 bg-emerald-100 dark:bg-emerald-950/60 rounded-xs text-[#059669]">
                 <Cpu className="w-5 h-5" />
@@ -89,7 +89,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme = 'light' }) =
             </p>
           </div>
 
-          <div className="p-5 bg-slate-50 dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] rounded-xs">
+          <div className="p-5 bg-slate-50 dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-xs">
             <div className="flex items-center space-x-3 mb-3">
               <div className="p-2 bg-cyan-100 dark:bg-cyan-950/60 rounded-xs text-[#0891B2]">
                 <Zap className="w-5 h-5" />
@@ -104,7 +104,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme = 'light' }) =
             </p>
           </div>
 
-          <div className="p-5 bg-slate-50 dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] rounded-xs">
+          <div className="p-5 bg-slate-50 dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-xs">
             <div className="flex items-center space-x-3 mb-3">
               <div className="p-2 bg-purple-100 dark:bg-purple-950/60 rounded-xs text-[#8B5CF6]">
                 <ShieldCheck className="w-5 h-5" />

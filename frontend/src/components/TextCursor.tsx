@@ -161,7 +161,7 @@ export const TextCursor: React.FC<TextCursorProps> = ({
                   }
                 })
               }}
-              className="absolute select-none whitespace-nowrap text-sm sm:text-base font-bold font-display tracking-tight text-slate-800 dark:text-slate-200 pointer-events-none drop-shadow-sm bg-white/80 dark:bg-slate-900/80 px-2 py-0.5 rounded-full border border-slate-300 dark:border-slate-700 backdrop-blur-xs"
+              className="absolute select-none whitespace-nowrap text-sm sm:text-base font-bold font-display tracking-tight text-slate-800 dark:text-slate-200 pointer-events-none drop-shadow-sm bg-white/80 dark:bg-black/80 px-2 py-0.5 rounded-full border border-slate-300 dark:border-[#262626] backdrop-blur-xs"
               style={{ left: item.x, top: item.y }}
             >
               {text}

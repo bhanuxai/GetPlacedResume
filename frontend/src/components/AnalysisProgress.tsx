@@ -32,13 +32,13 @@ export const AnalysisProgress: React.FC<AnalysisProgressProps> = () => {
   }, []);
 
   return (
-    <div className="w-full max-w-xl mx-auto bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-6 sm:p-8 rounded-xs my-12 transition-colors shadow-sm dark:shadow-none">
+    <div className="w-full max-w-xl mx-auto bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] p-6 sm:p-8 rounded-xs my-12 transition-colors shadow-sm dark:shadow-none">
       
       {/* Header */}
-      <div className="flex items-center space-x-3.5 pb-6 border-b border-slate-200 dark:border-[#273142]">
+      <div className="flex items-center space-x-3.5 pb-6 border-b border-slate-200 dark:border-[#262626]">
         <LogoMark size={40} className="animate-pulse flex-shrink-0" />
         <div className="flex-1 min-w-0">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 bg-slate-900 dark:bg-black/60 border border-slate-700 dark:border-[#273142] rounded-xs mb-1.5 shadow-sm">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 bg-slate-900 dark:bg-black/60 border border-slate-700 dark:border-[#262626] rounded-xs mb-1.5 shadow-sm">
             <ShinyText
               text="✨ Scanning your resume..."
               speed={2}
@@ -76,7 +76,7 @@ export const AnalysisProgress: React.FC<AnalysisProgressProps> = () => {
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
                   </div>
                 ) : (
-                  <div className="w-5 h-5 bg-slate-100 dark:bg-[#1E2633] border border-slate-300 dark:border-[#273142] flex items-center justify-center rounded-xs text-slate-500 dark:text-[#64748B] font-mono text-[10px]">
+                  <div className="w-5 h-5 bg-slate-100 dark:bg-[#141414] border border-slate-300 dark:border-[#262626] flex items-center justify-center rounded-xs text-slate-500 dark:text-[#64748B] font-mono text-[10px]">
                     0{stage.id}
                   </div>
                 )}
@@ -100,7 +100,7 @@ export const AnalysisProgress: React.FC<AnalysisProgressProps> = () => {
       </div>
 
       {/* Progress Bar */}
-      <div className="w-full bg-slate-100 dark:bg-[#0A0D12] border border-slate-300 dark:border-[#273142] h-2 rounded-xs overflow-hidden">
+      <div className="w-full bg-slate-100 dark:bg-[#000000] border border-slate-300 dark:border-[#262626] h-2 rounded-xs overflow-hidden">
         <div
           className="bg-[#2563EB] h-full transition-all duration-300"
           style={{ width: `${(currentStage / STAGES.length) * 100}%` }}

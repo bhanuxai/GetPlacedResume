@@ -139,7 +139,7 @@ export const ResumeKnowledgeBase: React.FC<ResumeKnowledgeBaseProps> = ({ onScro
   ];
 
   return (
-    <section id="resume-guide" className="py-16 md:py-24 border-b border-slate-200 dark:border-[#273142] bg-[#F8FAFC] dark:bg-[#0A0D12] transition-colors">
+    <section id="resume-guide" className="py-16 md:py-24 border-b border-slate-200 dark:border-[#262626] bg-[#F8FAFC] dark:bg-[#000000] transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         
         {/* Section 1: Header */}
@@ -156,10 +156,10 @@ export const ResumeKnowledgeBase: React.FC<ResumeKnowledgeBaseProps> = ({ onScro
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           
           {/* Card 1: Resume */}
-          <div className="bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-6 sm:p-8 rounded-xs shadow-sm dark:shadow-none transition-colors flex flex-col justify-between">
+          <div className="bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] p-6 sm:p-8 rounded-xs shadow-sm dark:shadow-none transition-colors flex flex-col justify-between">
             <div>
               <div className="flex items-center space-x-3 mb-4">
-                <div className="w-10 h-10 bg-blue-50 dark:bg-[#1A202C] border border-[#2563EB] flex items-center justify-center rounded-xs text-[#2563EB]">
+                <div className="w-10 h-10 bg-blue-50 dark:bg-[#171717] border border-[#2563EB] flex items-center justify-center rounded-xs text-[#2563EB]">
                   <FileText className="w-5 h-5" />
                 </div>
                 <div>
@@ -172,7 +172,7 @@ export const ResumeKnowledgeBase: React.FC<ResumeKnowledgeBaseProps> = ({ onScro
                 A <strong>Resume</strong> is a concise, highly targeted 1- to 2-page marketing document created specifically for private-sector job applications. Its sole objective is to demonstrate how your specific skills, employment achievements, and technical capabilities directly solve the hiring manager's needs.
               </p>
 
-              <div className="space-y-2 pt-2 border-t border-slate-200 dark:border-[#273142] text-xs font-sans text-slate-600 dark:text-[#94A3B8]">
+              <div className="space-y-2 pt-2 border-t border-slate-200 dark:border-[#262626] text-xs font-sans text-slate-600 dark:text-[#94A3B8]">
                 <div className="flex items-start space-x-2">
                   <Check className="w-4 h-4 text-[#059669] flex-shrink-0 mt-0.5" />
                   <span><strong>Format:</strong> Tight, curated 1–2 page document.</span>
@@ -192,14 +192,14 @@ export const ResumeKnowledgeBase: React.FC<ResumeKnowledgeBaseProps> = ({ onScro
               </div>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-slate-200 dark:border-[#273142] bg-slate-50 dark:bg-[#0A0D12] p-3 text-xs font-sans text-slate-700 dark:text-[#CBD5E1]">
+            <div className="mt-6 pt-4 border-t border-slate-200 dark:border-[#262626] bg-slate-50 dark:bg-[#000000] p-3 text-xs font-sans text-slate-700 dark:text-[#CBD5E1]">
               <strong className="text-slate-900 dark:text-white block font-semibold mb-1">ATS Rule for Resumes:</strong>
               ATS engines rank resumes based on semantic relevance scores and direct alignment with required qualifications.
             </div>
           </div>
 
           {/* Card 2: CV */}
-          <div className="bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-6 sm:p-8 rounded-xs shadow-sm dark:shadow-none transition-colors flex flex-col justify-between">
+          <div className="bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] p-6 sm:p-8 rounded-xs shadow-sm dark:shadow-none transition-colors flex flex-col justify-between">
             <div>
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-10 h-10 bg-emerald-50 dark:bg-[#064E3B] border border-[#059669] flex items-center justify-center rounded-xs text-[#059669]">
@@ -215,7 +215,7 @@ export const ResumeKnowledgeBase: React.FC<ResumeKnowledgeBaseProps> = ({ onScro
                 A <strong>Curriculum Vitae (CV)</strong> is an in-depth, exhaustive record of your entire academic career, credentials, published research, scientific presentations, teaching experience, grants, fellowships, and honors. Unlike a resume, a CV has no page limit and grows continuously throughout your lifetime.
               </p>
 
-              <div className="space-y-2 pt-2 border-t border-slate-200 dark:border-[#273142] text-xs font-sans text-slate-600 dark:text-[#94A3B8]">
+              <div className="space-y-2 pt-2 border-t border-slate-200 dark:border-[#262626] text-xs font-sans text-slate-600 dark:text-[#94A3B8]">
                 <div className="flex items-start space-x-2">
                   <Check className="w-4 h-4 text-[#059669] flex-shrink-0 mt-0.5" />
                   <span><strong>Format:</strong> Comprehensive record spanning 3 to 10+ pages.</span>
@@ -235,7 +235,7 @@ export const ResumeKnowledgeBase: React.FC<ResumeKnowledgeBaseProps> = ({ onScro
               </div>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-slate-200 dark:border-[#273142] bg-slate-50 dark:bg-[#0A0D12] p-3 text-xs font-sans text-slate-700 dark:text-[#CBD5E1]">
+            <div className="mt-6 pt-4 border-t border-slate-200 dark:border-[#262626] bg-slate-50 dark:bg-[#000000] p-3 text-xs font-sans text-slate-700 dark:text-[#CBD5E1]">
               <strong className="text-slate-900 dark:text-white block font-semibold mb-1">Global Nuance:</strong>
               In the UK, Ireland, South Africa, and New Zealand, the term "CV" is often used synonymously with a 2-page resume.
             </div>
@@ -244,8 +244,8 @@ export const ResumeKnowledgeBase: React.FC<ResumeKnowledgeBaseProps> = ({ onScro
         </div>
 
         {/* Section 3: Side-by-Side Comparison Table */}
-        <div className="bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] rounded-xs shadow-sm dark:shadow-none overflow-hidden transition-colors">
-          <div className="p-6 border-b border-slate-200 dark:border-[#273142] flex items-center justify-between">
+        <div className="bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-xs shadow-sm dark:shadow-none overflow-hidden transition-colors">
+          <div className="p-6 border-b border-slate-200 dark:border-[#262626] flex items-center justify-between">
             <div className="flex items-center space-x-2.5">
               <Scale className="w-5 h-5 text-[#2563EB]" />
               <h3 className="text-lg font-bold font-display text-slate-900 dark:text-white">
@@ -257,15 +257,15 @@ export const ResumeKnowledgeBase: React.FC<ResumeKnowledgeBaseProps> = ({ onScro
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs font-sans">
               <thead>
-                <tr className="bg-slate-100 dark:bg-[#0A0D12] border-b border-slate-200 dark:border-[#273142] text-slate-900 dark:text-white font-semibold">
+                <tr className="bg-slate-100 dark:bg-[#000000] border-b border-slate-200 dark:border-[#262626] text-slate-900 dark:text-white font-semibold">
                   <th className="p-4 w-1/4">Evaluation Dimension</th>
                   <th className="p-4 w-3/8 text-[#2563EB]">Standard Resume</th>
                   <th className="p-4 w-3/8 text-[#059669]">Curriculum Vitae (CV)</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200 dark:divide-[#273142] text-slate-700 dark:text-[#CBD5E1]">
+              <tbody className="divide-y divide-slate-200 dark:divide-[#262626] text-slate-700 dark:text-[#CBD5E1]">
                 {comparisonData.map((row, idx) => (
-                  <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-[#1A202C] transition-colors">
+                  <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-[#171717] transition-colors">
                     <td className="p-4 font-semibold text-slate-900 dark:text-white">{row.feature}</td>
                     <td className="p-4 leading-relaxed">{row.resume}</td>
                     <td className="p-4 leading-relaxed">{row.cv}</td>
@@ -289,12 +289,12 @@ export const ResumeKnowledgeBase: React.FC<ResumeKnowledgeBaseProps> = ({ onScro
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {resumeSections.map((sec, idx) => (
-              <div key={idx} className="bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-5 rounded-xs flex flex-col justify-between shadow-sm dark:shadow-none transition-colors">
+              <div key={idx} className="bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] p-5 rounded-xs flex flex-col justify-between shadow-sm dark:shadow-none transition-colors">
                 <div>
                   <h4 className="text-base font-bold font-sans text-slate-900 dark:text-white mb-2">{sec.title}</h4>
                   <p className="text-xs text-slate-600 dark:text-[#94A3B8] font-sans leading-relaxed mb-4">{sec.desc}</p>
                 </div>
-                <div className="bg-slate-50 dark:bg-[#0A0D12] border-l-2 border-[#2563EB] p-2.5 text-[11px] font-sans text-slate-700 dark:text-[#CBD5E1]">
+                <div className="bg-slate-50 dark:bg-[#000000] border-l-2 border-[#2563EB] p-2.5 text-[11px] font-sans text-slate-700 dark:text-[#CBD5E1]">
                   <span className="font-bold text-[#2563EB] block">ATS Best Practice:</span>
                   {sec.atsTip}
                 </div>
@@ -317,7 +317,7 @@ export const ResumeKnowledgeBase: React.FC<ResumeKnowledgeBaseProps> = ({ onScro
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {atsTraps.map((trap, idx) => (
-              <div key={idx} className="bg-white dark:bg-[#12161F] border border-red-200 dark:border-[#DC2626]/30 p-5 rounded-xs flex items-start space-x-3.5 shadow-sm dark:shadow-none transition-colors">
+              <div key={idx} className="bg-white dark:bg-[#0A0A0A] border border-red-200 dark:border-[#DC2626]/30 p-5 rounded-xs flex items-start space-x-3.5 shadow-sm dark:shadow-none transition-colors">
                 <div className="w-7 h-7 bg-red-50 dark:bg-[#450A0A] border border-[#DC2626] flex items-center justify-center rounded-xs text-[#DC2626] flex-shrink-0 mt-0.5">
                   <X className="w-4 h-4" />
                 </div>
@@ -345,11 +345,11 @@ export const ResumeKnowledgeBase: React.FC<ResumeKnowledgeBaseProps> = ({ onScro
               return (
                 <div 
                   key={idx} 
-                  className="bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] rounded-xs shadow-sm dark:shadow-none transition-colors overflow-hidden"
+                  className="bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-xs shadow-sm dark:shadow-none transition-colors overflow-hidden"
                 >
                   <button
                     onClick={() => toggleFaq(idx)}
-                    className="w-full px-6 py-4 text-left flex items-center justify-between space-x-4 hover:bg-slate-50 dark:hover:bg-[#1A202C] transition-colors"
+                    className="w-full px-6 py-4 text-left flex items-center justify-between space-x-4 hover:bg-slate-50 dark:hover:bg-[#171717] transition-colors"
                   >
                     <span className="text-sm font-bold font-sans text-slate-900 dark:text-white">{faq.q}</span>
                     {isOpen ? (
@@ -359,7 +359,7 @@ export const ResumeKnowledgeBase: React.FC<ResumeKnowledgeBaseProps> = ({ onScro
                     )}
                   </button>
                   {isOpen && (
-                    <div className="px-6 pb-5 pt-1 border-t border-slate-100 dark:border-[#273142] text-xs font-sans text-slate-600 dark:text-[#CBD5E1] leading-relaxed">
+                    <div className="px-6 pb-5 pt-1 border-t border-slate-100 dark:border-[#262626] text-xs font-sans text-slate-600 dark:text-[#CBD5E1] leading-relaxed">
                       {faq.a}
                     </div>
                   )}
@@ -371,7 +371,7 @@ export const ResumeKnowledgeBase: React.FC<ResumeKnowledgeBaseProps> = ({ onScro
 
         {/* Call to Action Bar */}
         {onScrollToWorkbench && (
-          <div className="bg-slate-100 dark:bg-[#12161F] border border-slate-300 dark:border-[#273142] p-6 sm:p-8 rounded-xs flex flex-col sm:flex-row items-center justify-between gap-6 transition-colors">
+          <div className="bg-slate-100 dark:bg-[#0A0A0A] border border-slate-300 dark:border-[#262626] p-6 sm:p-8 rounded-xs flex flex-col sm:flex-row items-center justify-between gap-6 transition-colors">
             <div>
               <h3 className="text-lg font-bold font-display text-slate-900 dark:text-white">
                 Ready to audit your resume with GetPlacedResume?

@@ -10,10 +10,10 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onOpenPrivacy }) => {
   return (
-    <footer className="w-full bg-white dark:bg-[#0A0D12] border-t border-slate-200 dark:border-[#273142] py-12 text-slate-600 dark:text-[#94A3B8] text-xs transition-colors">
+    <footer className="w-full bg-white dark:bg-[#000000] border-t border-slate-200 dark:border-[#262626] py-12 text-slate-600 dark:text-[#94A3B8] text-xs transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 pb-12 border-b border-slate-200 dark:border-[#273142] items-center">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 pb-12 border-b border-slate-200 dark:border-[#262626] items-center">
           
           {/* Col 1: Brand */}
           <div className="md:col-span-2 space-y-3">
@@ -58,7 +58,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPrivacy }) => {
                 spinDuration={20}
                 className="w-28 h-28 text-[9px] font-bold text-slate-800 dark:text-slate-200 tracking-wider"
               />
-              <div className="absolute inset-0 m-auto w-12 h-12 rounded-full bg-slate-100 dark:bg-[#12161F] border border-slate-300 dark:border-[#273142] flex flex-col items-center justify-center shadow-xs select-none transition-transform group-hover:scale-105 pointer-events-none">
+              <div className="absolute inset-0 m-auto w-12 h-12 rounded-full bg-slate-100 dark:bg-[#0A0A0A] border border-slate-300 dark:border-[#262626] flex flex-col items-center justify-center shadow-xs select-none transition-transform group-hover:scale-105 pointer-events-none">
                 <span className="font-display font-extrabold text-[11px] text-[#2563EB] tracking-tighter leading-none">GPR</span>
                 <span className="text-[7px] font-mono text-slate-500 dark:text-slate-400 leading-none mt-0.5 font-semibold">2026</span>
               </div>
@@ -68,7 +68,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPrivacy }) => {
         </div>
 
         {/* Masked Heading Brand Display */}
-        <div className="py-10 my-4 border-b border-slate-200 dark:border-[#273142] flex flex-col items-center justify-center overflow-hidden">
+        <div className="py-10 my-4 border-b border-slate-200 dark:border-[#262626] flex flex-col items-center justify-center overflow-hidden">
           <MaskedHeading
             text="GETPLACEDRESUME"
             mediaType="video"

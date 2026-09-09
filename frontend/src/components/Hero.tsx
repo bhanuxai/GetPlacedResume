@@ -14,7 +14,7 @@ export const Hero: React.FC<HeroProps> = ({ onTryDemo, onScrollToUpload, theme =
   const isDark = theme === 'dark';
 
   return (
-    <section className="relative w-full border-b border-slate-200 dark:border-[#273142] bg-[#F8FAFC] dark:bg-[#0A0D12] pt-12 pb-16 md:pt-20 md:pb-24 overflow-hidden transition-colors">
+    <section className="relative w-full border-b border-slate-200 dark:border-[#262626] bg-[#F8FAFC] dark:bg-[#000000] pt-12 pb-16 md:pt-20 md:pb-24 overflow-hidden transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
@@ -86,7 +86,7 @@ export const Hero: React.FC<HeroProps> = ({ onTryDemo, onScrollToUpload, theme =
 
               <button
                 onClick={onTryDemo}
-                className="flex items-center justify-center space-x-2.5 px-6 py-3.5 bg-white hover:bg-slate-100 dark:bg-[#12161F] dark:hover:bg-[#1A202C] text-slate-800 dark:text-[#F8FAFC] border border-slate-300 dark:border-[#273142] font-semibold text-sm rounded-xs transition-colors"
+                className="flex items-center justify-center space-x-2.5 px-6 py-3.5 bg-white hover:bg-slate-100 dark:bg-[#0A0A0A] dark:hover:bg-[#171717] text-slate-800 dark:text-[#F8FAFC] border border-slate-300 dark:border-[#262626] font-semibold text-sm rounded-xs transition-colors"
               >
                 <Play className="w-4 h-4 text-[#2563EB]" />
                 <span>View Demo Report</span>

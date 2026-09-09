@@ -40,10 +40,10 @@ export const ATSFormatAnalysis: React.FC<ATSFormatAnalysisProps> = ({ report }) 
   ];
 
   return (
-    <div className="w-full bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-6 sm:p-8 rounded-xs transition-colors shadow-sm dark:shadow-none">
+    <div className="w-full bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] p-6 sm:p-8 rounded-xs transition-colors shadow-sm dark:shadow-none">
       
       {/* Header */}
-      <div className="pb-6 border-b border-slate-200 dark:border-[#273142]">
+      <div className="pb-6 border-b border-slate-200 dark:border-[#262626]">
         <h3 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight flex items-center space-x-2">
           <span className="w-2 h-2 bg-[#2563EB] inline-block" />
           <span>ATS DOCUMENT PARSEABILITY AUDIT</span>
@@ -54,9 +54,9 @@ export const ATSFormatAnalysis: React.FC<ATSFormatAnalysisProps> = ({ report }) 
       </div>
 
       {/* Parseability Score Header */}
-      <div className="py-6 flex flex-col sm:flex-row items-center justify-between gap-6 border-b border-slate-200 dark:border-[#273142]">
+      <div className="py-6 flex flex-col sm:flex-row items-center justify-between gap-6 border-b border-slate-200 dark:border-[#262626]">
         <div className="flex items-center space-x-6">
-          <div className="w-24 h-24 bg-slate-50 dark:bg-[#0A0D12] border-2 flex flex-col items-center justify-center rounded-xs" style={{ borderColor: scoreColor }}>
+          <div className="w-24 h-24 bg-slate-50 dark:bg-[#000000] border-2 flex flex-col items-center justify-center rounded-xs" style={{ borderColor: scoreColor }}>
             <span className="text-3xl font-extrabold font-mono text-slate-900 dark:text-white">
               {report.parseability_score}
             </span>
@@ -84,9 +84,9 @@ export const ATSFormatAnalysis: React.FC<ATSFormatAnalysisProps> = ({ report }) 
       </div>
 
       {/* Checklist Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-6 border-b border-slate-200 dark:border-[#273142]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-6 border-b border-slate-200 dark:border-[#262626]">
         {formatChecks.map((chk, idx) => (
-          <div key={idx} className="bg-slate-50 dark:bg-[#0A0D12] border border-slate-300 dark:border-[#273142] p-4 flex items-start space-x-3 transition-colors">
+          <div key={idx} className="bg-slate-50 dark:bg-[#000000] border border-slate-300 dark:border-[#262626] p-4 flex items-start space-x-3 transition-colors">
             <div className="mt-0.5 flex-shrink-0">
               {chk.passed ? (
                 <CheckCircle2 className="w-4 h-4 text-[#059669] dark:text-[#10B981]" />
@@ -109,14 +109,14 @@ export const ATSFormatAnalysis: React.FC<ATSFormatAnalysisProps> = ({ report }) 
         </h4>
 
         {report.detected_issues.length === 0 ? (
-          <div className="bg-emerald-50 dark:bg-[#0A0D12] border border-[#059669] dark:border-[#10B981] p-4 text-xs text-[#059669] dark:text-[#10B981] font-mono flex items-center space-x-2">
+          <div className="bg-emerald-50 dark:bg-[#000000] border border-[#059669] dark:border-[#10B981] p-4 text-xs text-[#059669] dark:text-[#10B981] font-mono flex items-center space-x-2">
             <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
             <span>Zero structural or formatting hazards identified. Document layout complies with standard ATS parsing criteria.</span>
           </div>
         ) : (
           <div className="space-y-3">
             {report.detected_issues.map((iss, idx) => (
-              <div key={idx} className="bg-slate-50 dark:bg-[#0A0D12] border border-slate-300 dark:border-[#273142] p-4 text-xs transition-colors">
+              <div key={idx} className="bg-slate-50 dark:bg-[#000000] border border-slate-300 dark:border-[#262626] p-4 text-xs transition-colors">
                 <div className="flex items-center space-x-2 mb-2">
                   <span
                     className={`px-2 py-0.5 text-[10px] font-mono font-bold uppercase rounded-xs ${
@@ -124,7 +124,7 @@ export const ATSFormatAnalysis: React.FC<ATSFormatAnalysisProps> = ({ report }) 
                         ? 'bg-red-50 dark:bg-[#450A0A] text-[#DC2626] dark:text-[#EF4444] border border-[#DC2626] dark:border-[#EF4444]'
                         : iss.severity === 'MEDIUM'
                         ? 'bg-amber-50 dark:bg-[#451A03] text-[#D97706] dark:text-[#F59E0B] border border-[#D97706] dark:border-[#F59E0B]'
-                        : 'bg-slate-100 dark:bg-[#1A202C] text-slate-700 dark:text-[#94A3B8] border border-slate-300 dark:border-[#273142]'
+                        : 'bg-slate-100 dark:bg-[#171717] text-slate-700 dark:text-[#94A3B8] border border-slate-300 dark:border-[#262626]'
                     }`}
                   >
                     {iss.severity} SEVERITY
@@ -134,7 +134,7 @@ export const ATSFormatAnalysis: React.FC<ATSFormatAnalysisProps> = ({ report }) 
 
                 <p className="text-slate-700 dark:text-[#CBD5E1] mb-2 leading-relaxed">{iss.description}</p>
                 
-                <div className="bg-white dark:bg-[#12161F] p-2.5 border border-slate-300 dark:border-[#273142] text-[11px] text-slate-600 dark:text-[#94A3B8]">
+                <div className="bg-white dark:bg-[#0A0A0A] p-2.5 border border-slate-300 dark:border-[#262626] text-[11px] text-slate-600 dark:text-[#94A3B8]">
                   <strong className="text-slate-900 dark:text-white font-mono uppercase block mb-0.5">REMEDY:</strong>
                   {iss.recommendation}
                 </div>

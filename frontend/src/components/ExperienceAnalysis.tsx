@@ -25,10 +25,10 @@ export const ExperienceAnalysis: React.FC<ExperienceAnalysisProps> = ({
   });
 
   return (
-    <div className="w-full bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-6 sm:p-8 rounded-xs transition-colors shadow-sm dark:shadow-none">
+    <div className="w-full bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] p-6 sm:p-8 rounded-xs transition-colors shadow-sm dark:shadow-none">
       
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-[#273142]">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-[#262626]">
         <div>
           <h3 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight flex items-center space-x-2">
             <span className="w-2 h-2 bg-[#2563EB] inline-block" />
@@ -49,7 +49,7 @@ export const ExperienceAnalysis: React.FC<ExperienceAnalysisProps> = ({
               className={`px-2 py-0.5 text-xs font-mono border rounded-xs transition-colors ${
                 filterGrade === gr
                   ? 'bg-[#2563EB] text-white border-[#2563EB]'
-                  : 'bg-slate-100 dark:bg-[#0A0D12] text-slate-600 dark:text-[#94A3B8] border-slate-300 dark:border-[#273142] hover:text-slate-900 dark:hover:text-white'
+                  : 'bg-slate-100 dark:bg-[#000000] text-slate-600 dark:text-[#94A3B8] border-slate-300 dark:border-[#262626] hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               {gr}
@@ -59,22 +59,22 @@ export const ExperienceAnalysis: React.FC<ExperienceAnalysisProps> = ({
       </div>
 
       {/* Summary Metrics */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-6 border-b border-slate-200 dark:border-[#273142]">
-        <div className="bg-slate-50 dark:bg-[#0A0D12] border border-slate-300 dark:border-[#273142] p-3 text-center">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-6 border-b border-slate-200 dark:border-[#262626]">
+        <div className="bg-slate-50 dark:bg-[#000000] border border-slate-300 dark:border-[#262626] p-3 text-center">
           <span className="text-xl font-bold font-mono text-slate-900 dark:text-white">{summary.roles_count}</span>
           <span className="block text-[10px] font-mono text-slate-500 dark:text-[#64748B] uppercase">Documented Roles</span>
         </div>
-        <div className="bg-slate-50 dark:bg-[#0A0D12] border border-slate-300 dark:border-[#273142] p-3 text-center">
+        <div className="bg-slate-50 dark:bg-[#000000] border border-slate-300 dark:border-[#262626] p-3 text-center">
           <span className="text-xl font-bold font-mono text-slate-900 dark:text-white">{bullets.length}</span>
           <span className="block text-[10px] font-mono text-slate-500 dark:text-[#64748B] uppercase">Analyzed Bullets</span>
         </div>
-        <div className="bg-slate-50 dark:bg-[#0A0D12] border border-slate-300 dark:border-[#273142] p-3 text-center">
+        <div className="bg-slate-50 dark:bg-[#000000] border border-slate-300 dark:border-[#262626] p-3 text-center">
           <span className="text-xl font-bold font-mono text-[#059669] dark:text-[#10B981]">
             {bullets.filter((b) => b.is_quantified).length}
           </span>
           <span className="block text-[10px] font-mono text-slate-500 dark:text-[#64748B] uppercase">Quantified Bullets</span>
         </div>
-        <div className="bg-slate-50 dark:bg-[#0A0D12] border border-slate-300 dark:border-[#273142] p-3 text-center">
+        <div className="bg-slate-50 dark:bg-[#000000] border border-slate-300 dark:border-[#262626] p-3 text-center">
           <span className="text-xl font-bold font-mono text-[#2563EB]">
             {bullets.filter((b) => b.has_strong_verb).length}
           </span>
@@ -85,12 +85,12 @@ export const ExperienceAnalysis: React.FC<ExperienceAnalysisProps> = ({
       {/* Bullet Audits List */}
       <div className="pt-6 space-y-4">
         {filteredBullets.length === 0 ? (
-          <div className="p-8 text-center text-xs text-slate-600 dark:text-[#94A3B8] font-mono bg-slate-50 dark:bg-[#0A0D12] border border-slate-300 dark:border-[#273142]">
+          <div className="p-8 text-center text-xs text-slate-600 dark:text-[#94A3B8] font-mono bg-slate-50 dark:bg-[#000000] border border-slate-300 dark:border-[#262626]">
             No bullets match this filter.
           </div>
         ) : (
           filteredBullets.map((bullet) => (
-            <div key={bullet.id} className="bg-slate-50 dark:bg-[#0A0D12] border border-slate-300 dark:border-[#273142] p-4 transition-colors">
+            <div key={bullet.id} className="bg-slate-50 dark:bg-[#000000] border border-slate-300 dark:border-[#262626] p-4 transition-colors">
               
               <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 pb-3">
                 <div className="flex-1">
@@ -117,7 +117,7 @@ export const ExperienceAnalysis: React.FC<ExperienceAnalysisProps> = ({
               </div>
 
               {/* Attributes checklist */}
-              <div className="flex flex-wrap items-center gap-3 pt-3 border-t border-slate-200 dark:border-[#1E2633] text-[11px] font-mono">
+              <div className="flex flex-wrap items-center gap-3 pt-3 border-t border-slate-200 dark:border-[#141414] text-[11px] font-mono">
                 <div className="flex items-center space-x-1 text-slate-700 dark:text-[#CBD5E1]">
                   <span className="text-slate-500 dark:text-[#94A3B8]">Verb:</span>
                   <strong className={bullet.has_strong_verb ? 'text-[#059669] dark:text-[#10B981]' : 'text-[#DC2626] dark:text-[#EF4444]'}>
@@ -140,7 +140,7 @@ export const ExperienceAnalysis: React.FC<ExperienceAnalysisProps> = ({
 
               {/* Recommendation note if grade is low */}
               {bullet.recommendation && bullet.structure_grade !== 'A' && (
-                <div className="mt-3 bg-white dark:bg-[#12161F] p-2.5 border border-slate-300 dark:border-[#273142] text-xs text-[#D97706] dark:text-[#F59E0B] flex items-start space-x-2">
+                <div className="mt-3 bg-white dark:bg-[#0A0A0A] p-2.5 border border-slate-300 dark:border-[#262626] text-xs text-[#D97706] dark:text-[#F59E0B] flex items-start space-x-2">
                   <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
                   <span>{bullet.recommendation}</span>
                 </div>

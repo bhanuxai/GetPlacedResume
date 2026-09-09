@@ -65,9 +65,9 @@ const DataGraph: React.FC<{ isDark: boolean }> = ({ isDark }) => {
     }
   });
 
-  const backDocColor = isDark ? "#12161F" : "#E2E8F0";
-  const mainDocColor = isDark ? "#1E2633" : "#FFFFFF";
-  const wireDocColor = isDark ? "#273142" : "#94A3B8";
+  const backDocColor = isDark ? "#0A0A0A" : "#E2E8F0";
+  const mainDocColor = isDark ? "#141414" : "#FFFFFF";
+  const wireDocColor = isDark ? "#262626" : "#94A3B8";
 
   return (
     <group ref={groupRef}>

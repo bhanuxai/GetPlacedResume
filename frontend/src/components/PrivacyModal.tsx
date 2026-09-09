@@ -10,8 +10,8 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/60 dark:bg-[#0A0D12]/80 flex items-center justify-center p-4">
-      <div className="w-full max-w-lg bg-white dark:bg-[#12161F] border border-slate-300 dark:border-[#273142] p-6 rounded-xs relative shadow-xl transition-colors">
+    <div className="fixed inset-0 z-50 bg-slate-900/60 dark:bg-[#000000]/80 flex items-center justify-center p-4">
+      <div className="w-full max-w-lg bg-white dark:bg-[#0A0A0A] border border-slate-300 dark:border-[#262626] p-6 rounded-xs relative shadow-xl transition-colors">
         
         {/* Close button */}
         <button
@@ -22,7 +22,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
         </button>
 
         {/* Title */}
-        <div className="flex items-center space-x-3 pb-4 border-b border-slate-200 dark:border-[#273142]">
+        <div className="flex items-center space-x-3 pb-4 border-b border-slate-200 dark:border-[#262626]">
           <div className="w-9 h-9 bg-emerald-50 dark:bg-[#064E3B] border border-[#059669] dark:border-[#10B981] flex items-center justify-center text-[#059669] dark:text-[#10B981]">
             <ShieldCheck className="w-5 h-5" />
           </div>
@@ -64,7 +64,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
         </div>
 
         {/* Notice box */}
-        <div className="bg-slate-50 dark:bg-[#0A0D12] border border-slate-300 dark:border-[#273142] p-3 text-[11px] font-mono text-slate-600 dark:text-[#94A3B8]">
+        <div className="bg-slate-50 dark:bg-[#000000] border border-slate-300 dark:border-[#262626] p-3 text-[11px] font-mono text-slate-600 dark:text-[#94A3B8]">
           STATEMENT: &quot;Your resume is processed securely and is not used to train models.&quot;
         </div>
 

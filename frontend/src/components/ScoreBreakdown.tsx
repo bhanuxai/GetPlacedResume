@@ -59,8 +59,8 @@ export const ScoreBreakdown: React.FC<ScoreBreakdownProps> = ({ breakdown }) => 
   ];
 
   return (
-    <div className="w-full bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-6 sm:p-8 rounded-xs transition-colors shadow-sm dark:shadow-none">
-      <div className="pb-6 border-b border-slate-200 dark:border-[#273142]">
+    <div className="w-full bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] p-6 sm:p-8 rounded-xs transition-colors shadow-sm dark:shadow-none">
+      <div className="pb-6 border-b border-slate-200 dark:border-[#262626]">
         <h3 className="text-base sm:text-lg font-bold font-sans text-slate-900 dark:text-white tracking-tight flex items-center space-x-2">
           <span className="w-2 h-2 bg-[#2563EB] inline-block" />
           <span>EXPLAINABLE SCORING BREAKDOWN</span>
@@ -77,11 +77,11 @@ export const ScoreBreakdown: React.FC<ScoreBreakdownProps> = ({ breakdown }) => 
           const percentage = (dim.score / dim.max) * 100;
 
           return (
-            <div key={idx} className="bg-slate-50 dark:bg-[#0A0D12] border border-slate-300 dark:border-[#273142] p-4 flex flex-col justify-between transition-colors">
+            <div key={idx} className="bg-slate-50 dark:bg-[#000000] border border-slate-300 dark:border-[#262626] p-4 flex flex-col justify-between transition-colors">
               <div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2.5">
-                    <div className="w-7 h-7 bg-white dark:bg-[#1A202C] border border-slate-300 dark:border-[#273142] flex items-center justify-center">
+                    <div className="w-7 h-7 bg-white dark:bg-[#171717] border border-slate-300 dark:border-[#262626] flex items-center justify-center">
                       <Icon className="w-4 h-4 text-slate-900 dark:text-white" />
                     </div>
                     <span className="text-sm font-bold text-slate-900 dark:text-white">{dim.title}</span>
@@ -98,7 +98,7 @@ export const ScoreBreakdown: React.FC<ScoreBreakdownProps> = ({ breakdown }) => 
 
               {/* Solid Progress Bar */}
               <div className="mt-4">
-                <div className="w-full bg-slate-200 dark:bg-[#1A202C] h-2 rounded-xs overflow-hidden">
+                <div className="w-full bg-slate-200 dark:bg-[#171717] h-2 rounded-xs overflow-hidden">
                   <div
                     className="h-full transition-all duration-500"
                     style={{
