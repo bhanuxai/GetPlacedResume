@@ -138,18 +138,3 @@ export interface JobMatchRecord {
   report: AnalysisReport;
 }
 
-export interface AutoUpdateResult {
-  updated_resume_text: string;
-  projected_score: number;
-  score_increase: number;
-  changes_made: string[];
-  job_title?: string;
-  sections?: {
-    header: string;
-    summary: string;
-    skills: string;
-    experience: string;
-    projects: string;
-    education: string;
-  };
-}

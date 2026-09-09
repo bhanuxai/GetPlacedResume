@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
-import { AnalysisReport, JobMatchRecord, AutoUpdateResult } from './types';
+import { AnalysisReport, JobMatchRecord } from './types';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { UploadZone } from './components/UploadZone';
@@ -19,7 +19,6 @@ import { JobMatchHistory } from './components/JobMatchHistory';
 import { DashboardSidebar } from './components/DashboardSidebar';
 import { PrivacyModal } from './components/PrivacyModal';
 import { ResumeKnowledgeBase } from './components/ResumeKnowledgeBase';
-import { AutoUpdateModal } from './components/AutoUpdateModal';
 import { Footer } from './components/Footer';
 import TextLoop from './components/TextLoop';
 import ScrollVelocity from './components/ScrollVelocity';
@@ -94,92 +93,6 @@ export function App() {
         console.warn('Backend not yet reachable on mount, sample data ready as fallback.', err);
       });
   }, []);
-
-  // Auto-Update Resume state
-  const [isAutoUpdateOpen, setIsAutoUpdateOpen] = useState(false);
-  const [isAutoUpdating, setIsAutoUpdating] = useState(false);
-  const [autoUpdateResult, setAutoUpdateResult] = useState<AutoUpdateResult | null>(null);
-
-  const handleTriggerAutoUpdate = async () => {
-    setIsAutoUpdateOpen(true);
-    setIsAutoUpdating(true);
-
-    try {
-      const textToOptimize = resumeText.trim() || sampleResume || 'Experienced Software Engineer with technical expertise.';
-      const jdToOptimize = jobDescription.trim() || presets['ml_engineer'] || 'Software Engineer';
-
-      const res = await fetch(`${API_BASE_URL}/api/auto-update-resume`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          resume_text: textToOptimize,
-          job_description: jdToOptimize,
-          original_score: report?.overall_score || 70
-        })
-      });
-
-      if (!res.ok) {
-        throw new Error('Failed to auto-update resume');
-      }
-
-      const data: AutoUpdateResult = await res.json();
-      setAutoUpdateResult(data);
-    } catch (err: any) {
-      console.error('Auto-update error:', err);
-    } finally {
-      setIsAutoUpdating(false);
-    }
-  };
-
-  const handleApplyAndReAnalyze = async (newResumeText: string) => {
-    setResumeText(newResumeText);
-    setFile(null);
-
-    setIsAnalyzing(true);
-    setAnalysisError(null);
-
-    const formData = new FormData();
-    formData.append('resume_text', newResumeText);
-    formData.append('job_description', jobDescription || presets['ml_engineer'] || 'Software Engineer');
-    formData.append('profile_mode', profileMode);
-    if (jobTitle.trim()) {
-      formData.append('job_title', jobTitle.trim());
-    }
-
-    try {
-      const res = await fetch(`${API_BASE_URL}/api/analyze`, {
-        method: 'POST',
-        body: formData
-      });
-
-      if (!res.ok) {
-        throw new Error('Re-analysis failed');
-      }
-
-      const data: AnalysisReport = await res.json();
-      const recordId = `hist_${Date.now()}`;
-      const record: JobMatchRecord = {
-        id: recordId,
-        jobTitle: data.job_title || jobTitle || 'Target Role',
-        score: data.overall_score,
-        tier: data.tier,
-        date: new Date().toLocaleDateString(),
-        report: data
-      };
-
-      setReport(data);
-      setHistory((prev) => [record, ...prev]);
-      setActiveHistoryId(recordId);
-      setActiveTab('overview');
-
-      confetti({ particleCount: 120, spread: 80, origin: { y: 0.5 } });
-    } catch (err: any) {
-      console.error(err);
-      setAnalysisError(err.message || 'Failed to re-analyze resume.');
-    } finally {
-      setIsAnalyzing(false);
-    }
-  };
 
   const handleLoadPreset = (key: string) => {
     if (presets[key]) {
@@ -605,7 +518,6 @@ export function App() {
               activeTab={activeTab}
               onTabChange={setActiveTab}
               onNewAnalysis={() => setView('landing')}
-              onAutoUpdate={handleTriggerAutoUpdate}
               overallScore={report.overall_score}
               tier={report.tier}
             />
@@ -624,35 +536,6 @@ export function App() {
                     processedAt={report.processed_at}
                     jobTitle={report.job_title}
                   />
-
-                  {/* One-Click Auto-Update Callout Banner */}
-                  <div className="p-4 sm:p-5 rounded-xs bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-md">
-                    <div className="flex items-center space-x-3.5">
-                      <div className="p-2.5 bg-white/15 rounded-xs backdrop-blur-xs flex-shrink-0">
-                        <Sparkles className="w-6 h-6 text-yellow-300 animate-pulse" />
-                      </div>
-                      <div>
-                        <div className="flex items-center space-x-2">
-                          <h4 className="text-sm sm:text-base font-bold font-display">
-                            Want AI to update your resume automatically?
-                          </h4>
-                          <span className="text-[10px] font-mono uppercase px-2 py-0.5 bg-white/20 rounded-full font-bold">
-                            1-CLICK
-                          </span>
-                        </div>
-                        <p className="text-xs text-blue-100 mt-0.5">
-                          Automatically rewrites bullets, enriches missing keywords into skills, and formats for 90+ ATS passability.
-                        </p>
-                      </div>
-                    </div>
-                    <button
-                      onClick={handleTriggerAutoUpdate}
-                      className="flex-shrink-0 flex items-center justify-center space-x-2 px-5 py-2.5 bg-white text-[#2563EB] hover:bg-blue-50 font-bold text-xs rounded-xs shadow-sm transition-all cursor-pointer hover:scale-[1.02]"
-                    >
-                      <Sparkles className="w-3.5 h-3.5 text-[#2563EB]" />
-                      <span>Auto-Update Resume By Itself</span>
-                    </button>
-                  </div>
 
                   {/* Executive Summary & Findings */}
                   <div className="bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-6 rounded-xs transition-colors shadow-sm dark:shadow-none">
@@ -748,7 +631,6 @@ export function App() {
                 <ResumeImprovement
                   suggestions={report.improvement_suggestions}
                   baseScore={report.overall_score}
-                  onOpenAutoUpdate={handleTriggerAutoUpdate}
                 />
               )}
 
@@ -802,17 +684,6 @@ export function App() {
 
       {/* Global Footer */}
       <Footer onOpenPrivacy={() => setIsPrivacyOpen(true)} />
-
-      {/* Auto-Update Resume Modal */}
-      <AutoUpdateModal
-        isOpen={isAutoUpdateOpen}
-        onClose={() => setIsAutoUpdateOpen(false)}
-        result={autoUpdateResult}
-        originalText={resumeText || sampleResume || ''}
-        originalScore={report?.overall_score || 70}
-        isLoading={isAutoUpdating}
-        onApplyAndReAnalyze={handleApplyAndReAnalyze}
-      />
 
       {/* Privacy Guarantee Modal */}
       <PrivacyModal

@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 import { ImprovementSuggestion } from '../types';
-import { Check, X, Copy, CheckCheck, ShieldCheck, TrendingUp, Sparkles } from 'lucide-react';
+import { Check, X, Copy, CheckCheck, ShieldCheck, TrendingUp } from 'lucide-react';
 
 interface ResumeImprovementProps {
   suggestions: ImprovementSuggestion[];
   baseScore?: number;
-  onOpenAutoUpdate?: () => void;
 }
 
 export const ResumeImprovement: React.FC<ResumeImprovementProps> = ({
   suggestions: initialSuggestions,
-  baseScore = 75,
-  onOpenAutoUpdate
+  baseScore = 75
 }) => {
   const [suggestions, setSuggestions] = useState<ImprovementSuggestion[]>(initialSuggestions);
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -83,38 +81,6 @@ export const ResumeImprovement: React.FC<ResumeImprovementProps> = ({
           </div>
         </div>
       </div>
-
-      {/* One-Click Auto-Update Banner */}
-      {onOpenAutoUpdate && (
-        <div className="mt-5 p-4 rounded-xs bg-gradient-to-r from-blue-50 via-indigo-50/60 to-blue-50 dark:from-blue-950/30 dark:via-indigo-950/20 dark:to-blue-950/10 border border-blue-200 dark:border-blue-800/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center space-x-3.5">
-            <div className="p-2.5 bg-[#2563EB] text-white rounded-xs flex-shrink-0 shadow-xs">
-              <Sparkles className="w-5 h-5 animate-pulse text-yellow-300" />
-            </div>
-            <div>
-              <div className="flex items-center space-x-2">
-                <h4 className="text-sm font-bold text-slate-900 dark:text-white">
-                  Want this done automatically?
-                </h4>
-                <span className="text-[10px] font-mono font-bold uppercase px-2 py-0.5 bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300 rounded-full">
-                  1-Click Auto-Tailor
-                </span>
-              </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
-                Let AI automatically apply all bullet upgrades, synthesize missing target skills, and format your entire resume for a 90+ ATS score.
-              </p>
-            </div>
-          </div>
-
-          <button
-            onClick={onOpenAutoUpdate}
-            className="flex-shrink-0 flex items-center justify-center space-x-2 px-4 py-2 bg-[#2563EB] hover:bg-blue-700 text-white text-xs font-bold rounded-xs shadow-xs transition-all hover:shadow-blue-500/20"
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Auto-Update Resume Now</span>
-          </button>
-        </div>
-      )}
 
       {/* Rationale & Action Bar */}
       <div className="my-6 bg-slate-50 dark:bg-[#0A0D12] border border-slate-300 dark:border-[#273142] p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs transition-colors">

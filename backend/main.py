@@ -15,7 +15,6 @@ from services.bullet_analyzer import BulletAnalyzer
 from services.project_analyzer import ProjectAnalyzer
 from services.scoring_engine import ScoringEngine
 from services.recommendation_engine import RecommendationEngine
-from services.resume_updater import ResumeUpdater
 from sample_data import SAMPLE_RESUME_TEXT, SAMPLE_JOB_DESCRIPTIONS
 
 app = FastAPI(
@@ -53,41 +52,6 @@ class TextAnalysisRequest(BaseModel):
     job_description: str
     profile_mode: Optional[str] = "auto"
     job_title: Optional[str] = None
-
-class AutoUpdateRequest(BaseModel):
-    resume_text: str
-    job_description: str
-    original_score: Optional[int] = 70
-
-@app.post("/api/auto-update-resume")
-def auto_update_resume(request: AutoUpdateRequest):
-    if not request.resume_text.strip():
-        raise HTTPException(status_code=400, detail="Resume content cannot be empty.")
-    if not request.job_description.strip():
-        raise HTTPException(status_code=400, detail="Job description cannot be empty.")
-
-    meta = {
-        "format": "text",
-        "page_count": 1,
-        "is_scanned": False,
-        "two_column": False,
-        "table_count": 0,
-        "header_footer_risk": False,
-        "font_issues": [],
-        "issues": []
-    }
-    resume = ResumeParser.parse(request.resume_text, meta)
-    job = JobParser.parse(request.job_description)
-    _, skills_analysis = SemanticMatcher.match_all(resume, job)
-    bullet_analyses = BulletAnalyzer.analyze_resume_bullets(resume)
-
-    return ResumeUpdater.auto_update(
-        resume=resume,
-        job=job,
-        skills_analysis=skills_analysis,
-        bullet_analyses=bullet_analyses,
-        original_score=request.original_score or 70
-    )
 
 @app.post("/api/analyze-text", response_model=AnalysisReport)
 def analyze_text(request: TextAnalysisRequest):
