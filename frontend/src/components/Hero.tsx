@@ -1,6 +1,8 @@
 import React from 'react';
 import { ArrowRight, Play, CheckCircle2, Shield, Layers } from 'lucide-react';
 import ParticleText from './ParticleText';
+import CountUp from './CountUp';
+import GlareHover from './GlareHover';
 
 interface HeroProps {
   onTryDemo: () => void;
@@ -19,6 +21,19 @@ export const Hero: React.FC<HeroProps> = ({ onTryDemo, onScrollToUpload, theme =
           {/* Left Column: Editorial Headline & Actions */}
           <div className="lg:col-span-7 flex flex-col items-start space-y-6">
             
+            {/* Live Scanned Resumes Counter Badge */}
+            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800/60 text-xs text-blue-700 dark:text-blue-300 font-medium shadow-xs">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
+              </span>
+              <span>Scanned over</span>
+              <span className="font-mono font-bold text-slate-900 dark:text-white">
+                <CountUp from={0} to={15420} separator="," direction="up" duration={2} className="count-up-text" />+
+              </span>
+              <span>resumes for placement drives</span>
+            </div>
+
             {/* Main Headline */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 dark:text-white leading-[1.08] font-display">
               Know how well your resume fits the job.
@@ -47,13 +62,27 @@ export const Hero: React.FC<HeroProps> = ({ onTryDemo, onScrollToUpload, theme =
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 pt-4 w-full sm:w-auto">
-              <button
+              <GlareHover
+                as="button"
                 onClick={onScrollToUpload}
-                className="flex items-center justify-center space-x-2.5 px-6 py-3.5 bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-semibold text-sm rounded-xs transition-colors shadow-none"
+                width="auto"
+                height="auto"
+                background="#2563EB"
+                borderRadius="2px"
+                borderColor="transparent"
+                glareColor="#ffffff"
+                glareOpacity={0.3}
+                glareAngle={-30}
+                glareSize={300}
+                transitionDuration={800}
+                playOnce={false}
+                className="w-full sm:w-auto px-6 py-3.5 text-white font-semibold text-sm cursor-pointer shadow-none hover:bg-[#1D4ED8] transition-colors"
               >
-                <span>Analyze My Resume</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
+                <div className="flex items-center justify-center space-x-2.5">
+                  <span>Analyze My Resume</span>
+                  <ArrowRight className="w-4 h-4" />
+                </div>
+              </GlareHover>
 
               <button
                 onClick={onTryDemo}

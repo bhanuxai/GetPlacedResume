@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
-import { AnalysisReport, JobMatchRecord } from './types';
+import { AnalysisReport, JobMatchRecord, AutoUpdateResult } from './types';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { UploadZone } from './components/UploadZone';
@@ -19,14 +19,20 @@ import { JobMatchHistory } from './components/JobMatchHistory';
 import { DashboardSidebar } from './components/DashboardSidebar';
 import { PrivacyModal } from './components/PrivacyModal';
 import { ResumeKnowledgeBase } from './components/ResumeKnowledgeBase';
+import { AutoUpdateModal } from './components/AutoUpdateModal';
 import { Footer } from './components/Footer';
 import TextLoop from './components/TextLoop';
 import ScrollVelocity from './components/ScrollVelocity';
+import CursorGrid from './components/CursorGrid';
+import GlareHover from './components/GlareHover';
+import CountUp from './components/CountUp';
+import { AboutSection } from './components/AboutSection';
 import {
   ArrowRight,
   CheckCircle2,
   AlertCircle,
-  Play
+  Play,
+  Sparkles
 } from 'lucide-react';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -88,6 +94,92 @@ export function App() {
         console.warn('Backend not yet reachable on mount, sample data ready as fallback.', err);
       });
   }, []);
+
+  // Auto-Update Resume state
+  const [isAutoUpdateOpen, setIsAutoUpdateOpen] = useState(false);
+  const [isAutoUpdating, setIsAutoUpdating] = useState(false);
+  const [autoUpdateResult, setAutoUpdateResult] = useState<AutoUpdateResult | null>(null);
+
+  const handleTriggerAutoUpdate = async () => {
+    setIsAutoUpdateOpen(true);
+    setIsAutoUpdating(true);
+
+    try {
+      const textToOptimize = resumeText.trim() || sampleResume || 'Experienced Software Engineer with technical expertise.';
+      const jdToOptimize = jobDescription.trim() || presets['ml_engineer'] || 'Software Engineer';
+
+      const res = await fetch(`${API_BASE_URL}/api/auto-update-resume`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          resume_text: textToOptimize,
+          job_description: jdToOptimize,
+          original_score: report?.overall_score || 70
+        })
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to auto-update resume');
+      }
+
+      const data: AutoUpdateResult = await res.json();
+      setAutoUpdateResult(data);
+    } catch (err: any) {
+      console.error('Auto-update error:', err);
+    } finally {
+      setIsAutoUpdating(false);
+    }
+  };
+
+  const handleApplyAndReAnalyze = async (newResumeText: string) => {
+    setResumeText(newResumeText);
+    setFile(null);
+
+    setIsAnalyzing(true);
+    setAnalysisError(null);
+
+    const formData = new FormData();
+    formData.append('resume_text', newResumeText);
+    formData.append('job_description', jobDescription || presets['ml_engineer'] || 'Software Engineer');
+    formData.append('profile_mode', profileMode);
+    if (jobTitle.trim()) {
+      formData.append('job_title', jobTitle.trim());
+    }
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/analyze`, {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!res.ok) {
+        throw new Error('Re-analysis failed');
+      }
+
+      const data: AnalysisReport = await res.json();
+      const recordId = `hist_${Date.now()}`;
+      const record: JobMatchRecord = {
+        id: recordId,
+        jobTitle: data.job_title || jobTitle || 'Target Role',
+        score: data.overall_score,
+        tier: data.tier,
+        date: new Date().toLocaleDateString(),
+        report: data
+      };
+
+      setReport(data);
+      setHistory((prev) => [record, ...prev]);
+      setActiveHistoryId(recordId);
+      setActiveTab('overview');
+
+      confetti({ particleCount: 120, spread: 80, origin: { y: 0.5 } });
+    } catch (err: any) {
+      console.error(err);
+      setAnalysisError(err.message || 'Failed to re-analyze resume.');
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
 
   const handleLoadPreset = (key: string) => {
     if (presets[key]) {
@@ -210,8 +302,27 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0A0D12] text-[#0F172A] dark:text-[#F8FAFC] flex flex-col font-sans transition-colors duration-200">
+    <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0A0D12] text-[#0F172A] dark:text-[#F8FAFC] flex flex-col font-sans transition-colors duration-200 relative selection:bg-blue-500 selection:text-white">
       
+      {/* Background Interactive CursorGrid */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-30 dark:opacity-40">
+        <CursorGrid
+          cellSize={70}
+          color="#D946EF"
+          radius={140}
+          falloff="smooth"
+          holdTime={400}
+          fadeDuration={800}
+          lineWidth={1.2}
+          maxOpacity={1}
+          fillOpacity={0}
+          gridOpacity={0}
+          cellRadius={0}
+          clickPulse
+          pulseSpeed={600}
+        />
+      </div>
+
       {/* Global Navbar with Theme Switcher */}
       <Navbar
         onTryDemo={handleTryDemo}
@@ -223,7 +334,7 @@ export function App() {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1">
+      <main className="flex-1 relative z-10">
         
         {/* VIEW 1: LANDING PAGE */}
         {view === 'landing' && (
@@ -276,6 +387,42 @@ export function App() {
                   <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
                   <span>150+ Placed Students</span>
                 </span>
+              </div>
+
+              {/* Real-time CountUp Performance Metrics */}
+              <div className="max-w-5xl mx-auto px-4 mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="p-4 bg-slate-50 dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] rounded-xs text-center shadow-xs">
+                  <div className="text-2xl sm:text-3xl font-black font-display text-blue-600 dark:text-blue-400">
+                    <CountUp from={0} to={15420} separator="," direction="up" duration={2} className="count-up-text" />+
+                  </div>
+                  <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400 mt-1 uppercase tracking-wider">
+                    Resumes Scanned
+                  </div>
+                </div>
+                <div className="p-4 bg-slate-50 dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] rounded-xs text-center shadow-xs">
+                  <div className="text-2xl sm:text-3xl font-black font-display text-emerald-600 dark:text-emerald-400">
+                    <CountUp from={0} to={94} separator="" direction="up" duration={1.5} className="count-up-text" />.8%
+                  </div>
+                  <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400 mt-1 uppercase tracking-wider">
+                    Interview Shortlist Rate
+                  </div>
+                </div>
+                <div className="p-4 bg-slate-50 dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] rounded-xs text-center shadow-xs">
+                  <div className="text-2xl sm:text-3xl font-black font-display text-amber-600 dark:text-amber-400">
+                    <CountUp from={0} to={150} separator="," direction="up" duration={1.8} className="count-up-text" />+
+                  </div>
+                  <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400 mt-1 uppercase tracking-wider">
+                    Students Placed
+                  </div>
+                </div>
+                <div className="p-4 bg-slate-50 dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] rounded-xs text-center shadow-xs">
+                  <div className="text-2xl sm:text-3xl font-black font-display text-purple-600 dark:text-purple-400">
+                    <CountUp from={0} to={6} separator="" direction="up" duration={1} className="count-up-text" />
+                  </div>
+                  <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400 mt-1 uppercase tracking-wider">
+                    ATS Scoring Axes
+                  </div>
+                </div>
               </div>
             </section>
 
@@ -370,29 +517,62 @@ export function App() {
                     </div>
 
                     {/* Submit Action Bar */}
-                    <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-5 shadow-sm dark:shadow-none transition-colors">
-                      <div className="text-xs text-slate-600 dark:text-[#94A3B8]">
-                        <span className="font-mono text-slate-900 dark:text-white block">INPUT STATUS:</span>
-                        <span>{file ? `1 File (${file.name})` : resumeText ? `${resumeText.length} chars` : 'No resume loaded'} | {jobDescription ? `${jobDescription.split(/\s+/).filter(Boolean).length} JD words` : 'No JD loaded'}</span>
-                      </div>
+                    {/* Submit Action Bar */}
+                    <div className="pt-4 flex flex-col space-y-3 bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-5 shadow-sm dark:shadow-none transition-colors">
+                      {analysisError && (
+                        <div className="p-3 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800/60 rounded-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-red-700 dark:text-red-300">
+                          <div className="flex items-center space-x-2">
+                            <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-400 flex-shrink-0" />
+                            <span>{analysisError}</span>
+                          </div>
+                          <button
+                            onClick={handleTryDemo}
+                            className="text-xs font-bold text-[#2563EB] dark:text-blue-400 hover:underline flex items-center space-x-1 cursor-pointer self-start sm:self-auto"
+                          >
+                            <Play className="w-3.5 h-3.5" />
+                            <span>Load sample resume &amp; job description</span>
+                          </button>
+                        </div>
+                      )}
 
-                      <div className="flex items-center space-x-3 w-full sm:w-auto">
-                        <button
-                          onClick={handleTryDemo}
-                          className="flex-1 sm:flex-initial px-4 py-3 bg-slate-100 hover:bg-slate-200 dark:bg-[#0A0D12] dark:hover:bg-[#1A202C] text-slate-800 dark:text-[#F8FAFC] border border-slate-300 dark:border-[#273142] text-xs font-semibold rounded-xs transition-colors flex items-center justify-center space-x-2"
-                        >
-                          <Play className="w-3.5 h-3.5 text-[#2563EB]" />
-                          <span>Load Sample Demo</span>
-                        </button>
+                      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div className="text-xs text-slate-600 dark:text-[#94A3B8]">
+                          <span className="font-mono text-slate-900 dark:text-white block">INPUT STATUS:</span>
+                          <span>{file ? `1 File (${file.name})` : resumeText ? `${resumeText.length} chars` : 'No resume loaded'} | {jobDescription ? `${jobDescription.split(/\s+/).filter(Boolean).length} JD words` : 'No JD loaded'}</span>
+                        </div>
 
-                        <button
-                          onClick={handleAnalyze}
-                          disabled={isAnalyzing}
-                          className="flex-1 sm:flex-initial px-6 py-3 bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-semibold rounded-xs transition-colors flex items-center justify-center space-x-2"
-                        >
-                          <span>Analyze Resume</span>
-                          <ArrowRight className="w-4 h-4" />
-                        </button>
+                        <div className="flex items-center space-x-3 w-full sm:w-auto">
+                          <button
+                            onClick={handleTryDemo}
+                            className="flex-1 sm:flex-initial px-4 py-3 bg-slate-100 hover:bg-slate-200 dark:bg-[#0A0D12] dark:hover:bg-[#1A202C] text-slate-800 dark:text-[#F8FAFC] border border-slate-300 dark:border-[#273142] text-xs font-semibold rounded-xs transition-colors flex items-center justify-center space-x-2 cursor-pointer"
+                          >
+                            <Play className="w-3.5 h-3.5 text-[#2563EB]" />
+                            <span>Load Sample Demo</span>
+                          </button>
+
+                          <GlareHover
+                            as="button"
+                            onClick={handleAnalyze}
+                            disabled={isAnalyzing}
+                            width="auto"
+                            height="auto"
+                            background="#2563EB"
+                            borderRadius="2px"
+                            borderColor="transparent"
+                            glareColor="#ffffff"
+                            glareOpacity={0.3}
+                            glareAngle={-30}
+                            glareSize={300}
+                            transitionDuration={800}
+                            playOnce={false}
+                            className="flex-1 sm:flex-initial px-6 py-3 text-white text-xs font-semibold rounded-xs transition-colors cursor-pointer hover:bg-[#1D4ED8]"
+                          >
+                            <div className="flex items-center justify-center space-x-2">
+                              <span>Analyze Resume</span>
+                              <ArrowRight className="w-4 h-4" />
+                            </div>
+                          </GlareHover>
+                        </div>
                       </div>
                     </div>
 
@@ -401,6 +581,9 @@ export function App() {
 
               </div>
             </section>
+
+            {/* About & Technology Stack Section with LogoLoop */}
+            <AboutSection theme={theme} />
 
             {/* Resume vs CV Guide, ATS Anatomy, Common Pitfalls & FAQ */}
             <ResumeKnowledgeBase
@@ -422,6 +605,7 @@ export function App() {
               activeTab={activeTab}
               onTabChange={setActiveTab}
               onNewAnalysis={() => setView('landing')}
+              onAutoUpdate={handleTriggerAutoUpdate}
               overallScore={report.overall_score}
               tier={report.tier}
             />
@@ -440,6 +624,35 @@ export function App() {
                     processedAt={report.processed_at}
                     jobTitle={report.job_title}
                   />
+
+                  {/* One-Click Auto-Update Callout Banner */}
+                  <div className="p-4 sm:p-5 rounded-xs bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-md">
+                    <div className="flex items-center space-x-3.5">
+                      <div className="p-2.5 bg-white/15 rounded-xs backdrop-blur-xs flex-shrink-0">
+                        <Sparkles className="w-6 h-6 text-yellow-300 animate-pulse" />
+                      </div>
+                      <div>
+                        <div className="flex items-center space-x-2">
+                          <h4 className="text-sm sm:text-base font-bold font-display">
+                            Want AI to update your resume automatically?
+                          </h4>
+                          <span className="text-[10px] font-mono uppercase px-2 py-0.5 bg-white/20 rounded-full font-bold">
+                            1-CLICK
+                          </span>
+                        </div>
+                        <p className="text-xs text-blue-100 mt-0.5">
+                          Automatically rewrites bullets, enriches missing keywords into skills, and formats for 90+ ATS passability.
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={handleTriggerAutoUpdate}
+                      className="flex-shrink-0 flex items-center justify-center space-x-2 px-5 py-2.5 bg-white text-[#2563EB] hover:bg-blue-50 font-bold text-xs rounded-xs shadow-sm transition-all cursor-pointer hover:scale-[1.02]"
+                    >
+                      <Sparkles className="w-3.5 h-3.5 text-[#2563EB]" />
+                      <span>Auto-Update Resume By Itself</span>
+                    </button>
+                  </div>
 
                   {/* Executive Summary & Findings */}
                   <div className="bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-6 rounded-xs transition-colors shadow-sm dark:shadow-none">
@@ -535,6 +748,7 @@ export function App() {
                 <ResumeImprovement
                   suggestions={report.improvement_suggestions}
                   baseScore={report.overall_score}
+                  onOpenAutoUpdate={handleTriggerAutoUpdate}
                 />
               )}
 
@@ -588,6 +802,17 @@ export function App() {
 
       {/* Global Footer */}
       <Footer onOpenPrivacy={() => setIsPrivacyOpen(true)} />
+
+      {/* Auto-Update Resume Modal */}
+      <AutoUpdateModal
+        isOpen={isAutoUpdateOpen}
+        onClose={() => setIsAutoUpdateOpen(false)}
+        result={autoUpdateResult}
+        originalText={resumeText || sampleResume || ''}
+        originalScore={report?.overall_score || 70}
+        isLoading={isAutoUpdating}
+        onApplyAndReAnalyze={handleApplyAndReAnalyze}
+      />
 
       {/* Privacy Guarantee Modal */}
       <PrivacyModal

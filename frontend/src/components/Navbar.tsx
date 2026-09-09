@@ -47,6 +47,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           <a href="#scoring" className="hover:text-slate-900 dark:hover:text-white transition-colors">
             Scoring Dimensions
           </a>
+          <a href="#about" className="hover:text-slate-900 dark:hover:text-white transition-colors">
+            About &amp; Tech
+          </a>
           <button 
             onClick={onOpenPrivacy}
             className="flex items-center space-x-1.5 hover:text-slate-900 dark:hover:text-white transition-colors"

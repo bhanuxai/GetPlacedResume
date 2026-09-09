@@ -17,6 +17,7 @@ interface DashboardSidebarProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
   onNewAnalysis: () => void;
+  onAutoUpdate?: () => void;
   overallScore: number;
   tier: string;
 }
@@ -25,6 +26,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
   activeTab,
   onTabChange,
   onNewAnalysis,
+  onAutoUpdate,
   overallScore,
   tier
 }) => {
@@ -72,6 +74,17 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
             </span>
           </div>
         </div>
+
+        {/* 1-Click Auto-Update Resume Button */}
+        {onAutoUpdate && (
+          <button
+            onClick={onAutoUpdate}
+            className="w-full flex items-center justify-center space-x-2 px-3.5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-xs rounded-xs shadow-md transition-all mb-4 group cursor-pointer"
+          >
+            <Sparkles className="w-4 h-4 text-yellow-300 animate-pulse flex-shrink-0" />
+            <span className="tracking-tight">Auto-Update Resume</span>
+          </button>
+        )}
 
         {/* Nav List - Horizontal on mobile, vertical on desktop */}
         <nav className="flex lg:flex-col overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0 gap-1 lg:space-y-1">
