@@ -19,6 +19,7 @@ import { JobMatchHistory } from './components/JobMatchHistory';
 import { DashboardSidebar } from './components/DashboardSidebar';
 import { PrivacyModal } from './components/PrivacyModal';
 import { ResumeKnowledgeBase } from './components/ResumeKnowledgeBase';
+import { RecruiterPerspective } from './components/RecruiterPerspective';
 import { Footer } from './components/Footer';
 import TextLoop from './components/TextLoop';
 import ScrollVelocity from './components/ScrollVelocity';
@@ -31,7 +32,9 @@ import {
   CheckCircle2,
   AlertCircle,
   Play,
-  Sparkles
+  Sparkles,
+  Eye,
+  Scale
 } from 'lucide-react';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -587,9 +590,187 @@ export function App() {
                     </div>
                   </div>
 
+                  {/* Recruiter Review & Platform Difference Overview Banner */}
+                  <div className="bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142] p-6 rounded-xs transition-colors shadow-sm dark:shadow-none space-y-6">
+                    <div className="pb-4 border-b border-slate-200 dark:border-[#273142] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div>
+                        <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800/60 text-blue-700 dark:text-blue-300 font-mono text-[11px] font-bold mb-1.5 uppercase tracking-wider">
+                          <Eye className="w-3.5 h-3.5" />
+                          <span>Recruiter Perspective &amp; ATS Difference</span>
+                        </div>
+                        <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight flex items-center space-x-2">
+                          <span>How Recruiters Review Your Resume &amp; Why GetPlaced ATS Differs</span>
+                        </h3>
+                      </div>
+                      <button
+                        onClick={() => setActiveTab('recruiter-lens')}
+                        className="self-start sm:self-auto px-3.5 py-2 bg-[#2563EB] hover:bg-blue-700 text-white font-semibold text-xs rounded-xs transition-colors flex items-center space-x-1.5 cursor-pointer shadow-xs"
+                      >
+                        <span>Open Full Deep-Dive</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+
+                    {/* 2-Column Split: Recruiter Scan Lens vs Why We Differ */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                      {/* Left: How a Recruiter Sees The Resume */}
+                      <div className="p-5 bg-slate-50 dark:bg-[#0A0D12] border border-slate-200 dark:border-[#273142] rounded-xs space-y-4">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-mono font-bold uppercase text-slate-900 dark:text-white flex items-center space-x-2">
+                            <Eye className="w-4 h-4 text-[#2563EB]" />
+                            <span>The 6–8 Second Recruiter Reality</span>
+                          </span>
+                          <span className="text-[10px] font-mono px-2 py-0.5 bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-400 font-bold rounded-xs">
+                            EYE PATH SCAN
+                          </span>
+                        </div>
+
+                        <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                          Recruiters spend only <strong>6 to 8 seconds</strong> on an initial scan. They don&apos;t read full paragraphs—they follow an &quot;F-Pattern&quot; looking for title relevance, core stack keywords, and metrics.
+                        </p>
+
+                        <div className="space-y-2.5 pt-1">
+                          <div className="flex items-start space-x-2.5 text-xs">
+                            <span className="font-mono text-[10px] px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300 font-bold rounded-xs flex-shrink-0">
+                              0-2s
+                            </span>
+                            <div>
+                              <span className="font-bold text-slate-900 dark:text-white">Title &amp; Header Alignment:</span>
+                              <p className="text-[11px] text-slate-500 dark:text-slate-400">Target role match: {report.job_title || 'Identified in JD'}</p>
+                            </div>
+                          </div>
+
+                          <div className="flex items-start space-x-2.5 text-xs">
+                            <span className="font-mono text-[10px] px-1.5 py-0.5 bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 font-bold rounded-xs flex-shrink-0">
+                              2-4s
+                            </span>
+                            <div>
+                              <span className="font-bold text-slate-900 dark:text-white">Skills Matrix Triage:</span>
+                              <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                                {report.skills_analysis?.strongly_demonstrated?.length || 0} demonstrated skills found against target role.
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="flex items-start space-x-2.5 text-xs">
+                            <span className="font-mono text-[10px] px-1.5 py-0.5 bg-purple-100 dark:bg-purple-900/60 text-purple-700 dark:text-purple-300 font-bold rounded-xs flex-shrink-0">
+                              4-6s
+                            </span>
+                            <div>
+                              <span className="font-bold text-slate-900 dark:text-white">Quantifiable Proof &amp; Verbs:</span>
+                              <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                                {report.bullet_analyses?.filter((b) => b.is_quantified).length || 0} of {report.bullet_analyses?.length || 0} bullets have measurable metrics.
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="flex items-start space-x-2.5 text-xs">
+                            <span className="font-mono text-[10px] px-1.5 py-0.5 bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 font-bold rounded-xs flex-shrink-0">
+                              6-8s
+                            </span>
+                            <div>
+                              <span className="font-bold text-slate-900 dark:text-white">Triage Decision:</span>
+                              <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                                Reading order risk: {report.ats_format_report?.broken_reading_order_risk || 'LOW'}. Overall ATS fit: {report.overall_score}/100.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Right: How GetPlaced Differs from other ATS sites */}
+                      <div className="p-5 bg-slate-50 dark:bg-[#0A0D12] border border-slate-200 dark:border-[#273142] rounded-xs space-y-4">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-mono font-bold uppercase text-slate-900 dark:text-white flex items-center space-x-2">
+                            <Scale className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                            <span>Other ATS Sites vs. GetPlacedResume</span>
+                          </span>
+                          <span className="text-[10px] font-mono px-2 py-0.5 bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 font-bold rounded-xs">
+                            ENGINE CONTRAST
+                          </span>
+                        </div>
+
+                        <div className="space-y-3 pt-1 text-xs">
+                          <div className="p-2.5 rounded-xs bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142]">
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="font-bold text-slate-900 dark:text-white">1. Semantic Vector NLP vs Exact Keyword Counting</span>
+                            </div>
+                            <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+                              <span className="text-red-500 font-semibold">Other ATS sites:</span> Demand exact repetitive keywords (penalizing natural writing).<br />
+                              <span className="text-emerald-600 dark:text-emerald-400 font-semibold">GetPlacedResume:</span> Uses cosine vector similarity to understand synonyms, frameworks, and equivalents.
+                            </p>
+                          </div>
+
+                          <div className="p-2.5 rounded-xs bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142]">
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="font-bold text-slate-900 dark:text-white">2. Anti-Stuffing Guardrails vs Keyword Stuffing Pressure</span>
+                            </div>
+                            <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+                              <span className="text-red-500 font-semibold">Other ATS sites:</span> Urge you to force keywords 5–10 times (causing human recruiters to reject you).<br />
+                              <span className="text-emerald-600 dark:text-emerald-400 font-semibold">GetPlacedResume:</span> Requires skills to appear inside real project &amp; experience achievement bullets.
+                            </p>
+                          </div>
+
+                          <div className="p-2.5 rounded-xs bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142]">
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="font-bold text-slate-900 dark:text-white">3. Deterministic 6-Axis Scoring vs Black-Box Scores</span>
+                            </div>
+                            <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+                              <span className="text-red-500 font-semibold">Other ATS sites:</span> Show a single arbitrary vanity percentage.<br />
+                              <span className="text-emerald-600 dark:text-emerald-400 font-semibold">GetPlacedResume:</span> Transparent mathematical weights across Relevance, Skills, Experience, Layout, Content &amp; Presentation.
+                            </p>
+                          </div>
+
+                          <div className="p-2.5 rounded-xs bg-white dark:bg-[#12161F] border border-slate-200 dark:border-[#273142]">
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="font-bold text-slate-900 dark:text-white">4. PDF Geometry Parsing vs Flat Regex Scrapers</span>
+                            </div>
+                            <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+                              <span className="text-red-500 font-semibold">Other ATS sites:</span> Blind to multi-column bleed and table traps.<br />
+                              <span className="text-emerald-600 dark:text-emerald-400 font-semibold">GetPlacedResume:</span> Uses <code className="font-mono text-[10px]">pdfplumber</code> bounding boxes to verify real ATS reading order.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Bottom Action strip */}
+                    <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
+                      <div className="text-xs text-slate-500 dark:text-[#94A3B8]">
+                        Want to view the complete side-by-side comparison table and recruiter triage guide?
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <button
+                          onClick={() => setActiveTab('recruiter-lens')}
+                          className="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-[#0A0D12] dark:hover:bg-[#1A202C] text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-[#273142] font-semibold text-xs rounded-xs transition-colors flex items-center space-x-1 cursor-pointer"
+                        >
+                          <Eye className="w-3.5 h-3.5 text-[#2563EB]" />
+                          <span>Recruiter Lens Tab</span>
+                        </button>
+                        <button
+                          onClick={() => setActiveTab('improvements')}
+                          className="px-3.5 py-1.5 bg-[#2563EB] hover:bg-blue-700 text-white font-semibold text-xs rounded-xs transition-colors flex items-center space-x-1 cursor-pointer"
+                        >
+                          <Sparkles className="w-3.5 h-3.5" />
+                          <span>Fix My Bullets Now</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Dimension Breakdown summary */}
                   <ScoreBreakdown breakdown={report.score_breakdown} />
                 </div>
+              )}
+
+              {/* TAB: RECRUITER PERSPECTIVE & ATS ENGINE COMPARISON */}
+              {activeTab === 'recruiter-lens' && (
+                <RecruiterPerspective
+                  overallScore={report.overall_score}
+                  tier={report.tier}
+                  onNavigateTab={(tab) => setActiveTab(tab)}
+                  report={report}
+                />
               )}
 
               {/* TAB 2: SCORING */}

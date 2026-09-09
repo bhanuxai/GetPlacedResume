@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   LayoutDashboard,
+  Eye,
   FileText,
   Layers,
   CheckSquare,
@@ -30,6 +31,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
 }) => {
   const navItems = [
     { id: 'overview', label: 'Score & Overview', icon: LayoutDashboard },
+    { id: 'recruiter-lens', label: 'Recruiter vs Other ATS', icon: Eye },
     { id: 'scoring', label: '6-Axis Dimensions', icon: Layers },
     { id: 'requirements', label: 'Requirement Match', icon: CheckSquare },
     { id: 'skills', label: 'Skills Matrix', icon: Wrench },
