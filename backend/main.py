@@ -251,6 +251,20 @@ def submit_feedback(feedback: FeedbackRequest):
         message="Thank you! Your feedback and suggestions have been recorded to help refine our ATS evaluation models."
     )
 
+@app.get("/api/feedback")
+def get_feedbacks():
+    """
+    Returns all collected user reviews and suggestions.
+    """
+    import json
+    if os.path.exists(FEEDBACK_FILE):
+        try:
+            with open(FEEDBACK_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return []
+    return []
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
