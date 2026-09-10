@@ -37,7 +37,11 @@ import {
   Scale
 } from 'lucide-react';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_BASE_URL = 
+  import.meta.env.VITE_API_URL || 
+  (import.meta.env.PROD 
+    ? 'https://getplacedresume-backend.onrender.com' 
+    : 'http://localhost:8000');
 
 export function App() {
   // Theme state: defaults to light mode
