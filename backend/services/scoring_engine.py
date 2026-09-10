@@ -32,7 +32,12 @@ class ScoringEngine:
         total_weight = 0.0
         weighted_sim = 0.0
         for m in matches:
-            weight = 1.5 if m.importance == "required" else 1.0
+            if m.category == "responsibility":
+                weight = 1.0
+            elif m.importance == "required":
+                weight = 1.5
+            else:
+                weight = 1.0
             total_weight += weight
             if m.match_status == "STRONG_MATCH":
                 score_factor = 1.0

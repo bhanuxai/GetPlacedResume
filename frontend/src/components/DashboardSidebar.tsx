@@ -12,13 +12,15 @@ import {
   ListOrdered,
   History,
   ArrowLeft,
-  Printer
+  Printer,
+  MessageSquarePlus
 } from 'lucide-react';
 
 interface DashboardSidebarProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
   onNewAnalysis: () => void;
+  onOpenFeedback?: () => void;
   overallScore: number;
   tier: string;
 }
@@ -27,6 +29,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
   activeTab,
   onTabChange,
   onNewAnalysis,
+  onOpenFeedback,
   overallScore,
   tier
 }) => {
@@ -110,9 +113,18 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
       </div>
 
       {/* Footer Info in Sidebar */}
-      <div className="hidden lg:block pt-6 border-t border-slate-200 dark:border-[#262626] text-[11px] font-mono text-slate-500 dark:text-[#64748B] space-y-1">
-        <div>ENGINE: DETERMINISTIC + NLP</div>
-        <div>DATA PRIVACY: EPHEMERAL</div>
+      <div className="hidden lg:block pt-6 border-t border-slate-200 dark:border-[#262626] text-[11px] font-mono text-slate-500 dark:text-[#64748B] space-y-2">
+        <button
+          onClick={onOpenFeedback}
+          className="w-full px-2.5 py-1.5 bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/40 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800/60 rounded-xs flex items-center justify-center space-x-1.5 text-[11px] font-semibold transition-colors cursor-pointer"
+        >
+          <MessageSquarePlus className="w-3.5 h-3.5" />
+          <span>Review &amp; Suggestions</span>
+        </button>
+        <div className="pt-1">
+          <div>ENGINE: DETERMINISTIC + NLP</div>
+          <div>DATA PRIVACY: EPHEMERAL</div>
+        </div>
       </div>
 
     </aside>

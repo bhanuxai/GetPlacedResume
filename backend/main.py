@@ -5,7 +5,7 @@ from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from models.schemas import AnalysisReport, StructuredResume, StructuredJob
+from models.schemas import AnalysisReport, StructuredResume, StructuredJob, FeedbackRequest, FeedbackResponse
 from services.document_parser import DocumentParser
 from services.resume_parser import ResumeParser
 from services.job_parser import JobParser
@@ -217,7 +217,38 @@ def run_pipeline(
         recommendations=recommendations,
         improvement_suggestions=fix_suggestions,
         job_title=job.title,
+        company=job.company,
+        location=job.location,
         processed_at=datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+    )
+
+FEEDBACK_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "user_feedbacks.json")
+
+@app.post("/api/feedback", response_model=FeedbackResponse)
+def submit_feedback(feedback: FeedbackRequest):
+    import json
+    entry = {
+        "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        "rating": feedback.rating,
+        "satisfaction": feedback.satisfaction,
+        "feedback_text": feedback.feedback_text,
+        "email": feedback.email,
+        "category": feedback.category
+    }
+    try:
+        existing = []
+        if os.path.exists(FEEDBACK_FILE):
+            with open(FEEDBACK_FILE, "r", encoding="utf-8") as f:
+                existing = json.load(f)
+        existing.append(entry)
+        with open(FEEDBACK_FILE, "w", encoding="utf-8") as f:
+            json.dump(existing, f, indent=2)
+    except Exception as e:
+        print(f"Warning saving feedback: {e}")
+
+    return FeedbackResponse(
+        status="success",
+        message="Thank you! Your feedback and suggestions have been recorded to help refine our ATS evaluation models."
     )
 
 if __name__ == "__main__":

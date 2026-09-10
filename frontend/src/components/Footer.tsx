@@ -1,14 +1,15 @@
 import React from 'react';
-import { ShieldCheck } from 'lucide-react';
+import { ShieldCheck, MessageSquarePlus } from 'lucide-react';
 import { Logo } from './Logo';
 import CircularText from './CircularText';
 import MaskedHeading from './MaskedHeading';
 
 interface FooterProps {
   onOpenPrivacy?: () => void;
+  onOpenFeedback?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onOpenPrivacy }) => {
+export const Footer: React.FC<FooterProps> = ({ onOpenPrivacy, onOpenFeedback }) => {
   return (
     <footer className="w-full bg-white dark:bg-[#000000] border-t border-slate-200 dark:border-[#262626] py-12 text-slate-600 dark:text-[#94A3B8] text-xs transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -39,9 +40,15 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPrivacy }) => {
             <span className="text-slate-900 dark:text-white font-bold block mb-2 uppercase">Trust &amp; Compliance</span>
             <ul className="space-y-1.5 text-[11px]">
               <li>
-                <button onClick={onOpenPrivacy} className="hover:text-slate-900 dark:hover:text-white transition-colors flex items-center space-x-1">
+                <button onClick={onOpenPrivacy} className="hover:text-slate-900 dark:hover:text-white transition-colors flex items-center space-x-1 cursor-pointer">
                   <ShieldCheck className="w-3.5 h-3.5 text-[#059669] dark:text-[#10B981]" />
                   <span>Privacy Protocol</span>
+                </button>
+              </li>
+              <li>
+                <button onClick={onOpenFeedback} className="hover:text-slate-900 dark:hover:text-white transition-colors flex items-center space-x-1 cursor-pointer">
+                  <MessageSquarePlus className="w-3.5 h-3.5 text-[#2563EB]" />
+                  <span>Review &amp; Suggestions</span>
                 </button>
               </li>
               <li><span className="text-slate-400 dark:text-[#64748B]">Zero Model Retention</span></li>

@@ -18,6 +18,7 @@ import { ResumeImprovement } from './components/ResumeImprovement';
 import { JobMatchHistory } from './components/JobMatchHistory';
 import { DashboardSidebar } from './components/DashboardSidebar';
 import { PrivacyModal } from './components/PrivacyModal';
+import { FeedbackModal } from './components/FeedbackModal';
 import { ResumeKnowledgeBase } from './components/ResumeKnowledgeBase';
 import { RecruiterPerspective } from './components/RecruiterPerspective';
 import { Footer } from './components/Footer';
@@ -68,6 +69,7 @@ export function App() {
   const [view, setView] = useState<'landing' | 'upload' | 'dashboard'>('landing');
   const [activeTab, setActiveTab] = useState<string>('overview');
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
 
   // Form Inputs
   const [file, setFile] = useState<File | null>(null);
@@ -249,6 +251,7 @@ export function App() {
         onTryDemo={handleTryDemo}
         onNavigateLanding={() => setView('landing')}
         onOpenPrivacy={() => setIsPrivacyOpen(true)}
+        onOpenFeedback={() => setIsFeedbackOpen(true)}
         currentView={view}
         theme={theme}
         onToggleTheme={handleToggleTheme}
@@ -273,7 +276,7 @@ export function App() {
             <section className="py-12 border-b border-slate-200 dark:border-[#262626] bg-white dark:bg-[#050505] transition-colors overflow-hidden">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 text-center">
                 <h3 className="text-xl sm:text-2xl font-bold font-display text-slate-900 dark:text-white tracking-tight">
-                  Trusted by 150+ Students Across Leading Universities
+                  Trusted by Students Across Leading Universities
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-500 dark:text-[#94A3B8] max-w-xl mx-auto mt-1">
                   Engineered for high-stakes campus placement drives, off-campus referrals, and competitive ATS screening.
@@ -283,7 +286,7 @@ export function App() {
               <div className="py-2">
                 <ScrollVelocity
                   texts={[
-                    'SRM UNIVERSITY ✦ VIT-AP UNIVERSITY ✦ LOVELY PROFESSIONAL UNIVERSITY (LPU) ✦ 150+ CANDIDATES PLACED ✦',
+                    'SRM UNIVERSITY ✦ VIT-AP UNIVERSITY ✦ LOVELY PROFESSIONAL UNIVERSITY (LPU) ✦ ATS OPTIMIZED ✦',
                     'SRM INSTITUTE ✦ VIT AP TECH ✦ LPU CAMPUS ✦ 94.8% INTERVIEW SHORTLIST ✦ ATS CERTIFIED ✦'
                   ]}
                   velocity={45}
@@ -291,7 +294,7 @@ export function App() {
                 />
               </div>
 
-              <div className="max-w-4xl mx-auto mt-6 px-4 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs font-mono font-bold text-slate-500 dark:text-slate-400">
+              <div className="max-w-3xl mx-auto mt-6 px-4 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs font-mono font-bold text-slate-500 dark:text-slate-400">
                 <span className="flex items-center space-x-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#2563EB]" />
                   <span>SRM University</span>
@@ -304,17 +307,13 @@ export function App() {
                   <span className="w-1.5 h-1.5 rounded-full bg-[#F59E0B]" />
                   <span>LPU (Lovely Professional University)</span>
                 </span>
-                <span className="flex items-center space-x-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
-                  <span>150+ Placed Students</span>
-                </span>
               </div>
 
               {/* Real-time CountUp Performance Metrics */}
-              <div className="max-w-5xl mx-auto px-4 mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="max-w-4xl mx-auto px-4 mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="p-4 bg-slate-50 dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-xs text-center shadow-xs">
                   <div className="text-2xl sm:text-3xl font-black font-display text-blue-600 dark:text-blue-400">
-                    <CountUp from={0} to={15420} separator="," direction="up" duration={2} className="count-up-text" />+
+                    <CountUp from={0} to={100} separator="," direction="up" duration={2} className="count-up-text" />+
                   </div>
                   <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400 mt-1 uppercase tracking-wider">
                     Resumes Scanned
@@ -326,14 +325,6 @@ export function App() {
                   </div>
                   <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400 mt-1 uppercase tracking-wider">
                     Interview Shortlist Rate
-                  </div>
-                </div>
-                <div className="p-4 bg-slate-50 dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-xs text-center shadow-xs">
-                  <div className="text-2xl sm:text-3xl font-black font-display text-amber-600 dark:text-amber-400">
-                    <CountUp from={0} to={150} separator="," direction="up" duration={1.8} className="count-up-text" />+
-                  </div>
-                  <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400 mt-1 uppercase tracking-wider">
-                    Students Placed
                   </div>
                 </div>
                 <div className="p-4 bg-slate-50 dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-xs text-center shadow-xs">
@@ -528,6 +519,7 @@ export function App() {
               activeTab={activeTab}
               onTabChange={setActiveTab}
               onNewAnalysis={() => setView('landing')}
+              onOpenFeedback={() => setIsFeedbackOpen(true)}
               overallScore={report.overall_score}
               tier={report.tier}
             />
@@ -872,12 +864,21 @@ export function App() {
       </section>
 
       {/* Global Footer */}
-      <Footer onOpenPrivacy={() => setIsPrivacyOpen(true)} />
+      <Footer 
+        onOpenPrivacy={() => setIsPrivacyOpen(true)} 
+        onOpenFeedback={() => setIsFeedbackOpen(true)}
+      />
 
       {/* Privacy Guarantee Modal */}
       <PrivacyModal
         isOpen={isPrivacyOpen}
         onClose={() => setIsPrivacyOpen(false)}
+      />
+
+      {/* User Review & Suggestions Feedback Modal */}
+      <FeedbackModal
+        isOpen={isFeedbackOpen}
+        onClose={() => setIsFeedbackOpen(false)}
       />
 
     </div>

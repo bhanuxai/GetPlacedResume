@@ -1,11 +1,12 @@
 import React from 'react';
-import { ShieldCheck, Play, ArrowRight, Sun, Moon } from 'lucide-react';
+import { ShieldCheck, Play, ArrowRight, Sun, Moon, MessageSquarePlus } from 'lucide-react';
 import { Logo } from './Logo';
 
 interface NavbarProps {
   onTryDemo: () => void;
   onNavigateLanding?: () => void;
   onOpenPrivacy?: () => void;
+  onOpenFeedback?: () => void;
   currentView: 'landing' | 'upload' | 'dashboard';
   theme: 'light' | 'dark';
   onToggleTheme: () => void;
@@ -15,6 +16,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onTryDemo,
   onNavigateLanding,
   onOpenPrivacy,
+  onOpenFeedback,
   currentView,
   theme,
   onToggleTheme
@@ -51,8 +53,15 @@ export const Navbar: React.FC<NavbarProps> = ({
             About &amp; Tech
           </a>
           <button 
+            onClick={onOpenFeedback}
+            className="flex items-center space-x-1.5 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
+          >
+            <MessageSquarePlus className="w-4 h-4 text-[#2563EB]" />
+            <span>Review &amp; Suggestions</span>
+          </button>
+          <button 
             onClick={onOpenPrivacy}
-            className="flex items-center space-x-1.5 hover:text-slate-900 dark:hover:text-white transition-colors"
+            className="flex items-center space-x-1.5 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
           >
             <ShieldCheck className="w-4 h-4 text-[#059669] dark:text-[#10B981]" />
             <span>Privacy First</span>

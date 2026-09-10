@@ -3,6 +3,7 @@ import { ArrowRight, Play, CheckCircle2, Shield, Layers } from 'lucide-react';
 import ParticleText from './ParticleText';
 import CountUp from './CountUp';
 import GlareHover from './GlareHover';
+import AeroShards from './AeroShards';
 
 interface HeroProps {
   onTryDemo: () => void;
@@ -14,8 +15,46 @@ export const Hero: React.FC<HeroProps> = ({ onTryDemo, onScrollToUpload, theme =
   const isDark = theme === 'dark';
 
   return (
-    <section className="relative w-full border-b border-slate-200 dark:border-[#262626] bg-[#F8FAFC] dark:bg-[#000000] pt-12 pb-16 md:pt-20 md:pb-24 overflow-hidden transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="relative w-full border-b border-slate-200 dark:border-[#262626] bg-[#F8FAFC] dark:bg-[#120F17] pt-12 pb-16 md:pt-20 md:pb-24 overflow-hidden transition-colors min-h-[580px]">
+      {isDark && (
+        <div
+          className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden"
+          style={{ width: '100%', height: '100%', position: 'absolute' }}
+        >
+          <AeroShards
+            backgroundColor="#120F17"
+            shardColor="#896ABD"
+            accentColor="#A855F7"
+            placement="full"
+            flow="stream"
+            material="pearl"
+            detail="balanced"
+            effect="none"
+            scale={1}
+            spread={1}
+            depth={1}
+            speed={1}
+            spin={1}
+            interaction="repel"
+            density={1.5}
+            shardSize={1.1}
+            stretch={1}
+            turbulence={1}
+            glow={1}
+            edgeSoftness={2}
+            bloom={0.5}
+            grain={0.05}
+            chromaticAberration={0.0075}
+            transitionDuration={1}
+            interactionRadius={1.5}
+            interactionStrength={0.5}
+            rippleIntensity={1}
+            holdToGather={true}
+          />
+        </div>
+      )}
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           {/* Left Column: Editorial Headline & Actions */}
@@ -29,7 +68,7 @@ export const Hero: React.FC<HeroProps> = ({ onTryDemo, onScrollToUpload, theme =
               </span>
               <span>Scanned over</span>
               <span className="font-mono font-bold text-slate-900 dark:text-white">
-                <CountUp from={0} to={15420} separator="," direction="up" duration={2} className="count-up-text" />+
+                <CountUp from={0} to={100} separator="," direction="up" duration={2} className="count-up-text" />+
               </span>
               <span>resumes for placement drives</span>
             </div>

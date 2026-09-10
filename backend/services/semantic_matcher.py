@@ -91,6 +91,8 @@ class SemanticMatcher:
         missing_skills = set()
 
         for req in job.requirements:
+            if not getattr(req, "scorable", True):
+                continue
             match = cls._evaluate_requirement(req, evidence_units, skill_names, raw_resume_lower, resume)
             matches.append(match)
 
@@ -143,7 +145,7 @@ class SemanticMatcher:
         if req.category == "education":
             return cls._evaluate_education_req(req, resume)
 
-        if req.category == "experience" and re.search(r"\d+\+?\s*years", req_text_lower):
+        if req.category == "experience" and (req.minimum_years is not None or re.search(r"\d+\+?\s*years?", req_text_lower)):
             return cls._evaluate_exp_years_req(req, resume)
 
         best_score = 0.0
@@ -285,12 +287,17 @@ class SemanticMatcher:
 
     @classmethod
     def _evaluate_exp_years_req(cls, req: JobRequirement, resume: StructuredResume) -> RequirementMatch:
-        num_match = re.search(r"(\d+)\+?\s*years", req.text.lower())
-        years_required = int(num_match.group(1)) if num_match else 2
+        if req.minimum_years is not None:
+            years_required = float(req.minimum_years)
+        else:
+            num_match = re.search(r"(\d+(?:\.\d+)?)\+?\s*years?", req.text.lower())
+            years_required = float(num_match.group(1)) if num_match else 2.0
 
         exp_count = len(resume.experience)
+        display_years = int(years_required) if years_required.is_integer() else years_required
+
         if resume.profile_type in ("student", "fresher"):
-            if years_required <= 1:
+            if years_required <= 1.0:
                 return RequirementMatch(
                     requirement_id=req.id,
                     requirement_text=req.text,
@@ -310,7 +317,7 @@ class SemanticMatcher:
                     match_status="PARTIAL_MATCH",
                     confidence=0.55,
                     evidence_snippets=["Active coursework and technical project portfolio."],
-                    explanation=f"Target role requests {years_required}+ years experience. Candidate is emerging into the field."
+                    explanation=f"Target role requests {display_years}+ years professional experience. Candidate has demonstrated relevant project evidence, but tenure threshold is not fully satisfied."
                 )
 
         est_years = max(1, exp_count * 1.5)

@@ -38,9 +38,23 @@ def test_pipeline():
     print(f" - Content Quality: {report.score_breakdown.content_quality}/10")
     print(f" - Presentation: {report.score_breakdown.professional_presentation}/5")
     print(f"\nRequirement Matches ({len(report.requirement_matches)}):")
-    for rm in report.requirement_matches[:3]:
-        print(f" - [{rm.match_status}] {rm.requirement_text[:40]}... (Confidence: {rm.confidence*100:.0f}%)")
+    for rm in report.requirement_matches:
+        print(f" - [{rm.match_status}] [{rm.category}] {rm.requirement_text[:55]}... (Confidence: {rm.confidence*100:.0f}%)")
     
+    # Regression assertions:
+    for rm in report.requirement_matches:
+        t_low = rm.requirement_text.lower()
+        assert not t_low.startswith("company:"), f"Spurious company metadata found in requirement matches: {rm.requirement_text}"
+        assert not t_low.startswith("location:"), f"Spurious location metadata found in requirement matches: {rm.requirement_text}"
+        assert not t_low.startswith("about the role"), f"Spurious section heading found in requirement matches: {rm.requirement_text}"
+        assert rm.requirement_text.strip() != "Responsibilities:", f"Spurious section heading found in requirement matches: {rm.requirement_text}"
+        assert rm.category not in ("metadata", "section_heading", "context", "boilerplate"), f"Invalid category {rm.category} in scorable requirements"
+
+    # Numeric experience preservation check
+    exp_reqs = [rm for rm in report.requirement_matches if rm.category == "experience" and "1+" in rm.requirement_text]
+    assert len(exp_reqs) == 1, "Expected 1+ years experience requirement to retain its leading number"
+    assert not any(rm.requirement_text.startswith("+ years") for rm in report.requirement_matches), "Leading digit stripped from experience requirement!"
+
     print(f"\nSkills Analysis:")
     print(f" - Strongly Demonstrated: {report.skills_analysis['strongly_demonstrated']}")
     print(f" - Mentioned Only: {report.skills_analysis['mentioned_only']}")
@@ -51,9 +65,9 @@ def test_pipeline():
     print(f"Fix Suggestions: {len(report.improvement_suggestions)} suggestions generated")
     
     assert report.overall_score >= 50, "Score should be reasonable for sample resume"
-    assert len(report.requirement_matches) > 0, "Should have requirements"
+    assert len(report.requirement_matches) == 13, f"Expected 13 genuine requirements, got {len(report.requirement_matches)}"
     assert len(report.strengths) > 0, "Should have strengths"
-    print("\nALL PIPELINE TESTS PASSED!")
+    print("\nALL PIPELINE TESTS & REGRESSION ASSERTIONS PASSED!")
 
 if __name__ == "__main__":
     test_pipeline()

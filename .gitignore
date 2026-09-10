@@ -69,3 +69,6 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+
+# Runtime Data
+backend/user_feedbacks.json

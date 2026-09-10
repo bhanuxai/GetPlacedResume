@@ -60,15 +60,20 @@ class StructuredResume(BaseModel):
 class JobRequirement(BaseModel):
     id: str
     text: str
-    category: str  # required_skill, preferred_skill, responsibility, experience, education, certification, tool, domain, soft_skill
+    category: str  # required_skill, preferred_skill, responsibility, experience, education, certification, tool, domain, soft_skill, metadata, section_heading, context, boilerplate
     importance: str = "required"  # required, preferred, bonus
     keywords: List[str] = Field(default_factory=list)
+    scorable: bool = True
+    minimum_years: Optional[float] = None
 
 class StructuredJob(BaseModel):
     title: Optional[str] = None
     company: Optional[str] = None
+    location: Optional[str] = None
+    work_mode: Optional[str] = None
     summary: Optional[str] = None
     requirements: List[JobRequirement] = Field(default_factory=list)
+    all_items: List[JobRequirement] = Field(default_factory=list)
     required_skills: List[str] = Field(default_factory=list)
     preferred_skills: List[str] = Field(default_factory=list)
     min_experience_years: Optional[float] = None
@@ -174,4 +179,17 @@ class AnalysisReport(BaseModel):
     recommendations: List[Recommendation]
     improvement_suggestions: List[ImprovementSuggestion]
     job_title: Optional[str] = None
+    company: Optional[str] = None
+    location: Optional[str] = None
     processed_at: str
+
+class FeedbackRequest(BaseModel):
+    rating: int = 5
+    satisfaction: str = "Good"
+    feedback_text: str
+    email: Optional[str] = None
+    category: Optional[str] = "general"
+
+class FeedbackResponse(BaseModel):
+    status: str = "success"
+    message: str
