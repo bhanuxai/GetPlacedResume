@@ -12,17 +12,49 @@ export const RequirementMatch: React.FC<RequirementMatchProps> = ({ matches }) =
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const filterOptions = [
-    { id: 'ALL', label: 'All Requirements' },
-    { id: 'STRONG_MATCH', label: 'Strong Match' },
-    { id: 'PARTIAL_MATCH', label: 'Partial Match' },
-    { id: 'WEAK_EVIDENCE', label: 'Weak Evidence' },
+    { id: 'ALL', label: 'All' },
+    { id: 'REQUIRED', label: 'Required' },
+    { id: 'PREFERRED', label: 'Preferred' },
+    { id: 'RESPONSIBILITY', label: 'Responsibilities' },
+    { id: 'STRONG_MATCH', label: 'Strong' },
+    { id: 'PARTIAL_MATCH', label: 'Partial' },
     { id: 'MISSING', label: 'Missing' }
   ];
 
   const filteredMatches = matches.filter((m) => {
     if (filter === 'ALL') return true;
+    const prio = (m.priority || (m.importance === 'required' ? 'REQUIRED' : 'PREFERRED')).toUpperCase();
+    if (filter === 'REQUIRED') return prio === 'REQUIRED';
+    if (filter === 'PREFERRED') return prio === 'PREFERRED' || prio === 'BONUS';
+    if (filter === 'RESPONSIBILITY') return prio === 'RESPONSIBILITY';
     return m.match_status === filter;
   });
+
+  const getPriorityBadge = (item: IRequirementMatch) => {
+    const priority = (item.priority || (item.importance === 'required' ? 'REQUIRED' : 'PREFERRED')).toUpperCase();
+    if (priority === 'REQUIRED') {
+      return (
+        <span className="inline-flex items-center px-1.5 py-0.5 bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-400 border border-rose-300 dark:border-rose-800 text-[10px] font-mono uppercase font-bold tracking-tight">
+          REQUIRED QUALIFICATION
+        </span>
+      );
+    }
+    if (priority === 'PREFERRED' || priority === 'BONUS') {
+      return (
+        <span className="inline-flex items-center px-1.5 py-0.5 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-400 border border-indigo-300 dark:border-indigo-800 text-[10px] font-mono uppercase font-bold tracking-tight">
+          PREFERRED QUALIFICATION
+        </span>
+      );
+    }
+    if (priority === 'RESPONSIBILITY') {
+      return (
+        <span className="inline-flex items-center px-1.5 py-0.5 bg-sky-50 dark:bg-sky-950/60 text-sky-700 dark:text-sky-400 border border-sky-300 dark:border-sky-800 text-[10px] font-mono uppercase font-bold tracking-tight">
+          RESPONSIBILITY
+        </span>
+      );
+    }
+    return null;
+  };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -112,16 +144,12 @@ export const RequirementMatch: React.FC<RequirementMatchProps> = ({ matches }) =
                   className="cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                 >
                   <div className="flex-1">
-                    <div className="flex items-center space-x-2 mb-1.5">
+                    <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
                       {getStatusBadge(item.match_status)}
-                      <span className="text-[10px] font-mono px-1.5 py-0.2 bg-slate-200 dark:bg-[#171717] text-slate-700 dark:text-[#94A3B8] border border-slate-300 dark:border-[#262626] uppercase">
+                      {getPriorityBadge(item)}
+                      <span className="text-[10px] font-mono px-1.5 py-0.5 bg-slate-200 dark:bg-[#171717] text-slate-700 dark:text-[#94A3B8] border border-slate-300 dark:border-[#262626] uppercase">
                         {item.category.replace('_', ' ')}
                       </span>
-                      {item.importance === 'required' && (
-                        <span className="text-[10px] font-mono text-[#DC2626] dark:text-[#EF4444] uppercase font-bold">
-                          REQUIRED
-                        </span>
-                      )}
                     </div>
                     <p className="text-sm font-semibold text-slate-900 dark:text-white leading-snug">
                       {item.requirement_text}

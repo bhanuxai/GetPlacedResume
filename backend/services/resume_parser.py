@@ -175,40 +175,55 @@ class ResumeParser:
         return items
 
     @classmethod
+    def is_bullet_line(cls, line: str) -> bool:
+        return bool(re.match(r"^[\s•\-\*–—▪►✔✓\t]+", line) or re.match(r"^\(?\d{1,2}[\.\)\:\-]\s+", line))
+
+    @classmethod
     def parse_experience(cls, exp_text: str) -> List[ExperienceItem]:
         if not exp_text:
             return []
         
         items = []
-        # Split blocks by date patterns or company headers
         raw_lines = [l.strip() for l in exp_text.split("\n") if l.strip()]
         current_exp = None
 
         for line in raw_lines:
-            # Detect bullet point
-            is_bullet = line.startswith(("•", "-", "*", "–", "—", ">")) or re.match(r"^\d+\.", line)
-            
-            # Detect new job header if contains date or pipe / company keywords
-            has_date = bool(re.search(r"(?:20\d\d|19\d\d|present|current)", line, re.IGNORECASE))
-            has_title_delimiter = (" | " in line) or (" - " in line) or ("," in line and len(line) < 60)
+            is_bullet = cls.is_bullet_line(line)
+            has_date = bool(re.search(r"(?:20\d\d|19\d\d|present|current|'\d{2})", line, re.IGNORECASE))
+            has_title_delimiter = (" | " in line) or (" — " in line) or (" - " in line and len(line) < 65)
 
-            if not is_bullet and (has_date or has_title_delimiter or len(line) < 50):
-                # New role header candidate
-                parts = [p.strip() for p in re.split(r"[|–—\n]", line) if p.strip()]
+            # Check if this line is an experience header (Company, Title, Location, Date)
+            if not is_bullet and (has_date or has_title_delimiter or (len(line) < 60 and not line.endswith("."))):
+                # If current_exp exists but has no bullets and this line looks like metadata (e.g. "Berkeley, CA | June 2023 – August 2023")
+                if current_exp and not current_exp.bullets and (has_date or " | " in line):
+                    parts = [p.strip() for p in re.split(r"[|–—]", line) if p.strip()]
+                    if len(parts) >= 2:
+                        current_exp.location = parts[0]
+                        current_exp.start_date = parts[1]
+                    elif parts:
+                        if has_date:
+                            current_exp.start_date = parts[0]
+                        else:
+                            current_exp.location = parts[0]
+                    continue
+
+                parts = [p.strip() for p in re.split(r"[|–—]", line) if p.strip()]
                 title = parts[0] if parts else "Role"
                 company = parts[1] if len(parts) > 1 else "Company"
+                date_str = parts[2] if len(parts) > 2 else (parts[1] if len(parts) > 1 and has_date and not re.search(r"[a-zA-Z]{3,}\s+[a-zA-Z]{3,}", parts[1]) else None)
 
                 current_exp = ExperienceItem(
                     title=title,
                     company=company,
-                    start_date=parts[2] if len(parts) > 2 else None,
+                    start_date=date_str,
                     bullets=[],
                     technologies=[]
                 )
                 items.append(current_exp)
             else:
                 cleaned_bullet = re.sub(r"^[\s•\-\*–—\d\.\)]+", "", line).strip()
-                if cleaned_bullet:
+                # Ensure header/metadata is never added as a bullet
+                if cleaned_bullet and (" | " not in cleaned_bullet or len(cleaned_bullet.split()) > 7):
                     if not current_exp:
                         current_exp = ExperienceItem(title="Professional Experience", company="Company", bullets=[])
                         items.append(current_exp)
@@ -226,30 +241,71 @@ class ResumeParser:
         current_proj = None
 
         for line in raw_lines:
-            is_bullet = line.startswith(("•", "-", "*", "–", "—", ">")) or re.match(r"^\d+\.", line)
-            if not is_bullet and len(line) < 70 and not line.endswith("."):
-                # Project header
-                name_parts = line.split("|")
-                p_name = name_parts[0].strip()
-                techs = [t.strip() for t in name_parts[1].split(",")] if len(name_parts) > 1 else []
+            is_bullet = cls.is_bullet_line(line)
+            has_pipe = " | " in line or " |" in line or "| " in line
+            has_repo_tokens = bool(re.search(r"\b(?:github|gitlab|bitbucket|live|demo|app)\b", line, re.IGNORECASE))
+            has_date = bool(re.search(r"(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s*'?\d{2,4}|20\d\d", line, re.IGNORECASE))
+            is_meta_line = bool(re.match(r"^(?:technologies|tech\s*stack|tools|built\s*with)\s*:", line, re.IGNORECASE))
+
+            # Structural project header detection
+            if not is_bullet and (has_pipe or is_meta_line or (len(line) < 85 and not line.endswith(".") and not any(line.lower().startswith(v) for v in cls.ACTION_VERBS))):
+                if is_meta_line and current_proj:
+                    tech_part = re.sub(r"^(?:technologies|tech\s*stack|tools|built\s*with)\s*:", "", line, flags=re.IGNORECASE).strip()
+                    techs = [t.strip() for t in re.split(r"[,;•|]", tech_part) if t.strip()]
+                    current_proj.technologies.extend(techs)
+                    continue
+
+                # Project header line: separate title, technologies, URLs, dates
+                parts = [p.strip() for p in line.split("|") if p.strip()]
+                # Strip repo/date mentions from first part if combined
+                raw_name = parts[0]
+                clean_name = re.sub(r"\b(?:github|gitlab|live|demo)\b.*$", "", raw_name, flags=re.IGNORECASE).strip()
+                clean_name = clean_name or raw_name
+
+                techs = []
+                url = None
+                for part in parts[1:]:
+                    if re.search(r"\b(?:github|gitlab|live|demo|http|www)\b", part, re.IGNORECASE):
+                        url = part
+                    elif "," in part:
+                        techs.extend([t.strip() for t in part.split(",") if t.strip()])
+                    elif not re.search(r"\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s*'?\d{2,4}\b", part, re.IGNORECASE):
+                        techs.append(part)
+
                 current_proj = ProjectItem(
-                    name=p_name,
+                    name=clean_name,
                     bullets=[],
                     technologies=techs,
-                    metrics=[]
+                    metrics=[],
+                    url=url
                 )
                 projects.append(current_proj)
             else:
                 cleaned_bullet = re.sub(r"^[\s•\-\*–—\d\.\)]+", "", line).strip()
+                # Strict safety check: Never treat titles, repo links or date headers as bullets
                 if cleaned_bullet:
+                    if (has_pipe and (has_repo_tokens or has_date)) or is_meta_line:
+                        # Metadata line, not a bullet
+                        if current_proj and has_pipe:
+                            parts = [p.strip() for p in cleaned_bullet.split("|") if p.strip()]
+                            for p in parts:
+                                if "," in p:
+                                    current_proj.technologies.extend([t.strip() for t in p.split(",") if t.strip()])
+                        continue
+
                     if not current_proj:
                         current_proj = ProjectItem(name="Featured Project", bullets=[], technologies=[], metrics=[])
                         projects.append(current_proj)
                     current_proj.bullets.append(cleaned_bullet)
-                    # Detect metric in bullet
-                    metric_match = re.findall(r"(?:\d+%\s*|\$\d+[\d,]*|\d+x|\b\d+\s*(?:ms|seconds|users|requests|records|queries|GB|TB|accuracy|f1)\b)", cleaned_bullet, re.IGNORECASE)
-                    if metric_match:
-                        current_proj.metrics.extend(metric_match)
+
+                    # Multi-dimensional metric extraction
+                    metric_matches = re.findall(
+                        r"(?:\d+%\s*|\$\d+[\d,]*|\b\d+x\b|\b\d+\s*(?:ms|seconds|users|requests|records|queries|GB|TB|accuracy|f1)\b|\b\d+\s+(?:automated\s+)?(?:pytest|test)?\s*cases?\b|\b\d+\s+(?:recommendation|matching)?\s*signals?\b|\b\d+[KkMmBb]\+?\s*(?:customers?|orders?|order\s+items?|products?|users?)\b|\b\d+[-–—]\d+\s*normalized\s*scores?\b)",
+                        cleaned_bullet,
+                        re.IGNORECASE
+                    )
+                    if metric_matches:
+                        current_proj.metrics.extend(metric_matches)
 
         return projects
 

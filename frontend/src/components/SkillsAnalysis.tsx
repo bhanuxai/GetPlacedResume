@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircle2, AlertTriangle, HelpCircle, XCircle } from 'lucide-react';
+import { CheckCircle2, AlertTriangle, HelpCircle, XCircle, Sparkles } from 'lucide-react';
 
 interface SkillsAnalysisProps {
   skills: {
@@ -7,10 +7,15 @@ interface SkillsAnalysisProps {
     partially_demonstrated: string[];
     mentioned_only: string[];
     missing: string[];
+    missing_required?: string[];
+    missing_preferred?: string[];
   };
 }
 
 export const SkillsAnalysis: React.FC<SkillsAnalysisProps> = ({ skills }) => {
+  const missingReq = skills.missing_required ?? skills.missing;
+  const missingPref = skills.missing_preferred ?? [];
+
   const groups = [
     {
       title: "Strongly Demonstrated",
@@ -40,13 +45,22 @@ export const SkillsAnalysis: React.FC<SkillsAnalysisProps> = ({ skills }) => {
       emptyMsg: "Zero unsupported skill claims detected."
     },
     {
-      title: "Missing Target Competencies",
-      badge: "CRITICAL GAPS RELATIVE TO JOB DESCRIPTION",
-      items: skills.missing,
+      title: "Missing Required Competencies",
+      badge: "CRITICAL CORE QUALIFICATION GAPS",
+      items: missingReq,
       icon: XCircle,
       color: "#DC2626",
       darkColor: "#EF4444",
       emptyMsg: "Candidate addresses all mandatory skill specifications."
+    },
+    {
+      title: "Missing Preferred Qualifications",
+      badge: "DESIRED / BONUS SKILLS (NOT CORE BLOCKERS)",
+      items: missingPref,
+      icon: Sparkles,
+      color: "#8B5CF6",
+      darkColor: "#A855F7",
+      emptyMsg: "Candidate fulfills all preferred qualifications or none specified."
     }
   ];
 
@@ -64,8 +78,8 @@ export const SkillsAnalysis: React.FC<SkillsAnalysisProps> = ({ skills }) => {
         </p>
       </div>
 
-      {/* Grid of 4 Categories */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
+      {/* Grid of 5 Competency Categories */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-6">
         {groups.map((grp, idx) => {
           const Icon = grp.icon;
           return (

@@ -28,40 +28,64 @@ class ScoringEngine:
     ) -> Tuple[ScoreBreakdown, List[str], List[str], List[str]]:
 
         # 1. Job Relevance (30 pts max)
-        # Average confidence of all requirement matches with weight on required vs preferred
-        total_weight = 0.0
-        weighted_sim = 0.0
-        for m in matches:
-            if m.category == "responsibility":
-                weight = 1.0
-            elif m.importance == "required":
-                weight = 1.5
-            else:
-                weight = 1.0
-            total_weight += weight
-            if m.match_status == "STRONG_MATCH":
-                score_factor = 1.0
-            elif m.match_status == "PARTIAL_MATCH":
-                score_factor = 0.65
-            elif m.match_status == "WEAK_EVIDENCE":
-                score_factor = 0.35
-            else:
-                score_factor = 0.0
-            weighted_sim += (score_factor * m.confidence * weight)
+        # Structurally separated: Required Qualifications (highest influence), Preferred Qualifications (moderate influence),
+        # and Responsibilities (role alignment, not hard failures). Metadata & context contribute zero.
+        req_weights, req_sim = 0.0, 0.0
+        pref_weights, pref_sim = 0.0, 0.0
+        resp_weights, resp_sim = 0.0, 0.0
 
-        norm_relevance = (weighted_sim / total_weight) if total_weight > 0 else 0.70
+        for m in matches:
+            cat = getattr(m, "category", "")
+            prio = getattr(m, "priority", m.importance)
+
+            if cat in ("metadata", "section_heading", "boilerplate", "context"):
+                continue
+
+            if m.match_status == "STRONG_MATCH":
+                factor = 1.0
+            elif m.match_status == "PARTIAL_MATCH":
+                factor = 0.65
+            elif m.match_status == "WEAK_EVIDENCE":
+                factor = 0.40
+            else:
+                factor = 0.0
+
+            if prio == "preferred" or cat == "preferred_qualification":
+                pref_weights += 0.8
+                # Missing a preferred qualification is not a hard failure
+                pref_factor = max(0.40, factor) if factor == 0.0 else factor
+                pref_sim += (pref_factor * m.confidence * 0.8)
+            elif prio == "responsibility" or cat == "responsibility":
+                resp_weights += 1.0
+                # Responsibilities contribute to role alignment
+                resp_factor = max(0.45, factor) if factor == 0.0 else factor
+                resp_sim += (resp_factor * m.confidence * 1.0)
+            else:
+                # Required qualifications (experience, education, required skills)
+                req_weights += 1.6
+                req_sim += (factor * m.confidence * 1.6)
+
+        total_weight = req_weights + pref_weights + resp_weights
+        total_weighted_sim = req_sim + pref_sim + resp_sim
+        norm_relevance = (total_weighted_sim / total_weight) if total_weight > 0 else 0.70
         job_relevance_score = round(norm_relevance * 30.0, 1)
 
         # 2. Skills & Technical Competency (20 pts max)
-        # Reward demonstrated skills; penalize missing skills; do not reward keyword stuffing
+        # Separates required competencies from preferred qualifications
         num_strong = len(skills_analysis.get("strongly_demonstrated", []))
         num_partial = len(skills_analysis.get("partially_demonstrated", []))
         num_mentioned = len(skills_analysis.get("mentioned_only", []))
-        num_missing = len(skills_analysis.get("missing", []))
+        missing_req = skills_analysis.get("missing_required", [])
+        missing_pref = skills_analysis.get("missing_preferred", [])
+        num_missing_req = len(missing_req)
+        num_missing_pref = len(missing_pref)
 
-        total_req_skills = max(1, num_strong + num_partial + num_mentioned + num_missing)
-        skill_points = (num_strong * 1.0 + num_partial * 0.6 + num_mentioned * 0.25) / total_req_skills
-        skills_score = round(min(20.0, skill_points * 20.0), 1)
+        total_req_base = max(1, num_strong + num_partial + num_mentioned + num_missing_req)
+        core_skill_points = (num_strong * 1.0 + num_partial * 0.65 + num_mentioned * 0.3) / total_req_base
+        
+        # Preferred skills give modest bonus points up to cap
+        pref_bonus = min(0.15, (num_strong * 0.05)) if num_missing_pref > 0 else 0.0
+        skills_score = round(min(20.0, (core_skill_points + pref_bonus) * 20.0), 1)
 
         # 3. Experience Relevance (20 pts max)
         if resume.profile_type in ("student", "fresher"):
@@ -130,8 +154,10 @@ class ScoringEngine:
         exec_summary.append(f"AI-estimated ATS compatibility stands at {total_clamped}/100, placing this application in the '{tier}' category.")
         if num_strong >= 3:
             exec_summary.append(f"Identified strong practical demonstration across {num_strong} primary competencies.")
-        if num_missing > 0:
-            exec_summary.append(f"Detected {num_missing} required competency gaps that require attention.")
+        if num_missing_req > 0:
+            exec_summary.append(f"Detected {num_missing_req} required competency gap(s) requiring attention.")
+        elif num_missing_pref > 0:
+            exec_summary.append(f"Covers core qualifications with {num_missing_pref} preferred competency opportunities.")
         if ats_report.parseability_score >= 85:
             exec_summary.append("Document structure is cleanly parseable by modern Applicant Tracking Systems.")
         else:
@@ -143,20 +169,24 @@ class ScoringEngine:
             strengths.append("High contextual alignment between candidate background and job requirements.")
         if num_strong >= 3:
             strengths.append(f"Demonstrated applied experience with {', '.join(skills_analysis['strongly_demonstrated'][:3])}.")
-        if any(b.is_quantified for b in bullet_analyses):
-            strengths.append("Contains quantified impact metrics illustrating measurable candidate outcomes.")
+        quantified_bullets = [b for b in bullet_analyses if b.is_quantified]
+        if quantified_bullets:
+            strengths.append(f"Contains {len(quantified_bullets)} quantified achievement metrics illustrating scale and performance outcomes.")
         if ats_report.parseability_score >= 88:
             strengths.append("Excellent ATS parseability with clear section hierarchy and single-column readability.")
 
-        # Weaknesses
+        # Weaknesses - Strictly separates required gaps from preferred gaps
         weaknesses = []
-        if num_missing > 0:
-            weaknesses.append(f"Missing core competencies: {', '.join(skills_analysis['missing'][:3])}.")
+        if num_missing_req > 0:
+            weaknesses.append(f"Missing required competencies: {', '.join(missing_req[:3])}.")
+        if num_missing_pref > 0:
+            weaknesses.append(f"Preferred competency gaps: {', '.join(missing_pref[:3])}.")
         if num_mentioned > 0:
             weaknesses.append(f"Skills mentioned without practical evidence: {', '.join(skills_analysis['mentioned_only'][:2])}.")
         if ats_report.two_column_layout_detected:
             weaknesses.append("Multi-column layout presents a risk of fragmented text extraction in legacy ATS.")
-        if any(not b.is_quantified for b in bullet_analyses):
-            weaknesses.append("Several experience bullet points lack quantifiable business or technical metrics.")
+        unquantified_count = len([b for b in bullet_analyses if not b.is_quantified])
+        if unquantified_count >= 3:
+            weaknesses.append(f"{unquantified_count} experience bullet points lack quantifiable verification or impact metrics.")
 
         return breakdown, exec_summary, strengths, weaknesses

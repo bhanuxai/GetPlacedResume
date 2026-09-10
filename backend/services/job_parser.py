@@ -125,39 +125,54 @@ class JobParser:
     @classmethod
     def is_metadata_line(cls, line: str) -> Tuple[bool, Optional[str], Optional[str]]:
         """
-        Detects job metadata (company, location, salary, employment type, etc.).
+        Detects job metadata (company, location, department, team, employment type, salary, etc.).
         Returns (is_meta, meta_type, value).
         """
         l = line.strip()
         # Company
-        m = re.match(r"^(?:company(?:\s*name)?|employer|organization)\s*:\s*(.+)$", l, re.IGNORECASE)
+        m = re.match(r"^(?:company(?:\s*name)?|employer|organization|client)\s*:\s*(.+)$", l, re.IGNORECASE)
         if m:
             return True, "company", m.group(1).strip()
 
         # Location
-        m = re.match(r"^(?:location|work\s*location|based\s*in)\s*:\s*(.+)$", l, re.IGNORECASE)
+        m = re.match(r"^(?:location|work\s*location|based\s*in|job\s*location)\s*:\s*(.+)$", l, re.IGNORECASE)
         if m:
             return True, "location", m.group(1).strip()
 
-        # Work Mode
-        m = re.match(r"^(?:work\s*mode|workplace\s*type)\s*:\s*(.+)$", l, re.IGNORECASE)
+        # Department / Team
+        m = re.match(r"^(?:department|dept|team|business\s*unit|division|group)\s*:\s*(.+)$", l, re.IGNORECASE)
+        if m:
+            return True, "department", m.group(1).strip()
+
+        # Employment Type / Job Type
+        m = re.match(r"^(?:employment\s*type|job\s*type|position\s*type|role\s*type)\s*:\s*(.+)$", l, re.IGNORECASE)
+        if m:
+            return True, "employment_type", m.group(1).strip()
+
+        # Work Mode / Workplace Type
+        m = re.match(r"^(?:work\s*mode|workplace\s*type|work\s*arrangement|environment)\s*:\s*(.+)$", l, re.IGNORECASE)
         if m:
             return True, "work_mode", m.group(1).strip()
 
-        # Salary / Pay
-        m = re.match(r"^(?:salary(?:\s*range)?|compensation|pay(?:\s*rate)?)\s*:\s*(.+)$", l, re.IGNORECASE)
+        # Salary / Pay / Compensation
+        m = re.match(r"^(?:salary(?:\s*range)?|compensation|pay(?:\s*rate)?|hourly\s*rate|base\s*salary)\s*:\s*(.+)$", l, re.IGNORECASE)
         if m:
             return True, "salary", m.group(1).strip()
 
-        # Job ID
-        m = re.match(r"^(?:job\s*id|req\s*id|requisition\s*id|posting\s*id)\s*:\s*(.+)$", l, re.IGNORECASE)
+        # Job ID / Req ID / Posting ID
+        m = re.match(r"^(?:job\s*id|req\s*id|requisition\s*id|posting\s*id|reference\s*(?:no|number|id)|job\s*code)\s*:\s*(.+)$", l, re.IGNORECASE)
         if m:
             return True, "job_id", m.group(1).strip()
 
-        # Employment Type
-        m = re.match(r"^(?:employment\s*type|job\s*type)\s*:\s*(.+)$", l, re.IGNORECASE)
+        # Posting Date / Date Posted
+        m = re.match(r"^(?:posting\s*date|date\s*posted|posted\s*on|closing\s*date|apply\s*by)\s*:\s*(.+)$", l, re.IGNORECASE)
         if m:
-            return True, "employment_type", m.group(1).strip()
+            return True, "posting_date", m.group(1).strip()
+
+        # Recruiter / Contact / Application Instructions / Website
+        m = re.match(r"^(?:recruiter|contact(?:\s*person)?|reports\s*to|hiring\s*manager|application\s*instructions?|website|url)\s*:\s*(.+)$", l, re.IGNORECASE)
+        if m:
+            return True, "recruiter_contact", m.group(1).strip()
 
         return False, None, None
 
@@ -167,7 +182,7 @@ class JobParser:
         Detects introductory, recruiting, or company-mission context that should not be scored.
         """
         l = line.strip().lower()
-        if re.match(r"^(?:we\s+(?:are|'re)\s+(?:seeking|looking\s+for|hiring|building|excited\s+to)|seeking\s+an?\b|looking\s+for\s+an?\b|our\s+team\s+is|join\s+our\b|who\s+we\s+are\b|founded\s+in\b)", l):
+        if re.match(r"^(?:we\s+(?:are|'re)\s+(?:seeking|looking\s+for|hiring|building|excited\s+to)|seeking\s+an?\b|looking\s+for\s+an?\b|our\s+team\s+is|join\s+our\b|who\s+we\s+are\b|founded\s+in\b|in\s+this\s+role\s+you\s+will)", l):
             return True
 
         if current_section in ("about_role", "boilerplate") and not line.strip().startswith(("•", "-", "*")):
@@ -210,6 +225,8 @@ class JobParser:
                 text=clean,
                 category="metadata",
                 importance="bonus",
+                priority="metadata",
+                source_section="metadata",
                 scorable=False
             )
 
@@ -221,6 +238,8 @@ class JobParser:
                     text=clean,
                     category="metadata",
                     importance="bonus",
+                    priority="metadata",
+                    source_section="header",
                     scorable=False
                 )
 
@@ -232,6 +251,8 @@ class JobParser:
                 text=clean,
                 category="section_heading",
                 importance="bonus",
+                priority="metadata",
+                source_section=heading_type or "heading",
                 scorable=False
             )
 
@@ -242,6 +263,8 @@ class JobParser:
                 text=clean,
                 category="boilerplate",
                 importance="bonus",
+                priority="context",
+                source_section=current_section,
                 scorable=False
             )
 
@@ -252,6 +275,8 @@ class JobParser:
                 text=clean,
                 category="context",
                 importance="bonus",
+                priority="context",
+                source_section=current_section,
                 scorable=False
             )
 
@@ -259,34 +284,41 @@ class JobParser:
         min_years = cls.extract_min_years(clean)
         keywords = [t for t in cls.TECH_KEYWORDS if re.search(rf"\b{re.escape(t)}\b", line_lower)]
 
-        # Check education
-        if re.search(r"\b(?:bachelor|master|degree|computer\s+science|data\s+science|ph\.?d|education|diploma|stem\s+field)\b", line_lower):
+        is_preferred = (current_section == "preferred" or any(p in line_lower for p in cls.PREFERRED_INDICATORS))
+        is_resp = (current_section == "responsibilities" or (not is_preferred and re.match(r"^(?:architect|engineer|develop|build|design|implement|deploy|lead|drive|collaborate|partner|scale|maintain|create|benchmark|own|monitor)\b", line_lower)))
+
+        if is_preferred:
+            category = "preferred_qualification"
+            importance = "preferred"
+            priority = "preferred"
+        elif is_resp:
+            category = "responsibility"
+            importance = "responsibility"
+            priority = "responsibility"
+        elif re.search(r"\b(?:bachelor|master|degree|computer\s+science|data\s+science|ph\.?d|education|diploma|stem\s+field)\b", line_lower):
             category = "education"
-        # Check experience tenure
+            importance = "required"
+            priority = "required"
         elif min_years is not None or re.search(r"\b(?:years?(?:\s*of)?\s*(?:practical|professional|hands-on|industry|work)?\s*experience|track\s*record\s*of|background\s*in)\b", line_lower):
             category = "experience"
-        # Check certification
+            importance = "required"
+            priority = "required"
         elif re.search(r"\b(?:certification|certified|aws\s+certified|pmp|license)\b", line_lower):
             category = "certification"
-        # Check responsibility
-        elif current_section == "responsibilities" or re.match(r"^(?:architect|engineer|develop|build|design|implement|deploy|lead|drive|collaborate|partner|scale|maintain|create|benchmark|own|monitor)\b", line_lower):
-            category = "responsibility"
-        # Check soft skills
-        elif re.search(r"\b(?:communication|collaboration|team\s*player|leadership|problem-solving|self-starter|verbal|written)\b", line_lower):
-            category = "soft_skill"
-        # Check technical competencies
-        elif keywords or any(p in line_lower for p in ["proficiency", "proficient", "experience with", "hands-on", "familiarity with", "expertise"]):
-            category = "preferred_skill" if (current_section == "preferred" or any(p in line_lower for p in cls.PREFERRED_INDICATORS)) else "required_skill"
+            importance = "required"
+            priority = "required"
         else:
-            category = "responsibility" if current_section == "responsibilities" else ("preferred_skill" if current_section == "preferred" else "domain")
-
-        importance = "preferred" if (current_section == "preferred" or category == "preferred_skill" or any(p in line_lower for p in cls.PREFERRED_INDICATORS)) else "required"
+            category = "required_qualification"
+            importance = "required"
+            priority = "required"
 
         return JobRequirement(
             id=req_id,
             text=clean,
             category=category,
             importance=importance,
+            priority=priority,
+            source_section=current_section,
             keywords=keywords,
             scorable=True,
             minimum_years=min_years
@@ -298,6 +330,8 @@ class JobParser:
         title = cls.extract_title(lines)
         company = None
         location = None
+        department = None
+        employment_type = None
         work_mode = None
 
         all_items: List[JobRequirement] = []
@@ -321,6 +355,10 @@ class JobParser:
                         work_mode = "Remote"
                     elif "on-site" in meta_val.lower() or "onsite" in meta_val.lower():
                         work_mode = "On-site"
+                elif meta_type == "department" and not department:
+                    department = meta_val
+                elif meta_type == "employment_type" and not employment_type:
+                    employment_type = meta_val
                 elif meta_type == "work_mode" and not work_mode:
                     work_mode = meta_val
 
@@ -329,6 +367,8 @@ class JobParser:
                     text=line,
                     category="metadata",
                     importance="bonus",
+                    priority="metadata",
+                    source_section="metadata",
                     scorable=False
                 )
                 all_items.append(meta_req)
@@ -341,6 +381,8 @@ class JobParser:
                     text=line,
                     category="metadata",
                     importance="bonus",
+                    priority="metadata",
+                    source_section="header",
                     scorable=False
                 )
                 all_items.append(title_req)
@@ -355,6 +397,8 @@ class JobParser:
                     text=line,
                     category="section_heading",
                     importance="bonus",
+                    priority="metadata",
+                    source_section=heading_type or "heading",
                     scorable=False
                 )
                 all_items.append(heading_req)
@@ -366,10 +410,10 @@ class JobParser:
 
             if item.scorable:
                 requirements.append(item)
-                if item.category in ("required_skill", "tool", "domain") or (item.keywords and item.importance == "required"):
-                    required_skills.extend(item.keywords)
-                elif item.category == "preferred_skill" or (item.keywords and item.importance == "preferred"):
+                if item.priority == "preferred" or item.category == "preferred_qualification":
                     preferred_skills.extend(item.keywords)
+                elif item.priority == "required":
+                    required_skills.extend(item.keywords)
 
         # Extract overall minimum experience
         exp_match = re.search(r"(\d+)\+?\s*(?:to\s*(\d+))?\s*years?(?:\s*of)?\s*experience", jd_text, re.IGNORECASE)
@@ -388,6 +432,8 @@ class JobParser:
             title=title or "Target Position",
             company=company,
             location=location,
+            department=department,
+            employment_type=employment_type,
             work_mode=work_mode,
             summary=lines[0] if lines else "",
             requirements=requirements,

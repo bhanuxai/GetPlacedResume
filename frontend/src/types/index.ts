@@ -24,6 +24,7 @@ export interface RequirementMatch {
   requirement_text: string;
   category: string;
   importance: string;
+  priority?: "REQUIRED" | "PREFERRED" | "RESPONSIBILITY" | "BONUS" | string;
   match_status: "STRONG_MATCH" | "PARTIAL_MATCH" | "WEAK_EVIDENCE" | "MISSING" | "NOT_APPLICABLE";
   confidence: number;
   evidence_snippets: string[];
@@ -38,6 +39,8 @@ export interface BulletAnalysis {
   technical_substance: "High" | "Medium" | "Low";
   has_outcome: boolean;
   is_quantified: boolean;
+  metric_category?: string;
+  quantified_elements?: string[];
   score: number;
   structure_grade: "A" | "B" | "C" | "D";
   recommendation?: string;
@@ -112,6 +115,8 @@ export interface AnalysisReport {
     partially_demonstrated: string[];
     mentioned_only: string[];
     missing: string[];
+    missing_required?: string[];
+    missing_preferred?: string[];
   };
   experience_summary: {
     roles_count: number;

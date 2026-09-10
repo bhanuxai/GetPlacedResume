@@ -60,8 +60,10 @@ class StructuredResume(BaseModel):
 class JobRequirement(BaseModel):
     id: str
     text: str
-    category: str  # required_skill, preferred_skill, responsibility, experience, education, certification, tool, domain, soft_skill, metadata, section_heading, context, boilerplate
-    importance: str = "required"  # required, preferred, bonus
+    category: str  # required_qualification, preferred_qualification, responsibility, experience, education, certification, metadata, section_heading, context, boilerplate
+    importance: str = "required"  # required, preferred, bonus, responsibility
+    priority: str = "required"  # required, preferred, responsibility, metadata, context
+    source_section: Optional[str] = None
     keywords: List[str] = Field(default_factory=list)
     scorable: bool = True
     minimum_years: Optional[float] = None
@@ -70,6 +72,8 @@ class StructuredJob(BaseModel):
     title: Optional[str] = None
     company: Optional[str] = None
     location: Optional[str] = None
+    department: Optional[str] = None
+    employment_type: Optional[str] = None
     work_mode: Optional[str] = None
     summary: Optional[str] = None
     requirements: List[JobRequirement] = Field(default_factory=list)
@@ -85,6 +89,7 @@ class RequirementMatch(BaseModel):
     requirement_text: str
     category: str
     importance: str
+    priority: str = "required"
     match_status: str  # STRONG_MATCH, PARTIAL_MATCH, WEAK_EVIDENCE, MISSING, NOT_APPLICABLE
     confidence: float  # 0.0 - 1.0
     evidence_snippets: List[str] = Field(default_factory=list)
@@ -98,6 +103,8 @@ class BulletAnalysis(BaseModel):
     technical_substance: str = "Low"  # High, Medium, Low
     has_outcome: bool = False
     is_quantified: bool = False
+    metric_category: Optional[str] = None  # BUSINESS_IMPACT, PERFORMANCE, SCALE, DATA_VOLUME, ENGINEERING, TEST_COVERAGE, TIME, COST, USAGE
+    quantified_elements: List[str] = Field(default_factory=list)
     score: int = 50  # 0 - 100
     structure_grade: str = "C"  # A, B, C, D
     recommendation: Optional[str] = None

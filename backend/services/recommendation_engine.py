@@ -24,31 +24,46 @@ class RecommendationEngine:
         
         recs = []
 
-        # 1. Missing Core Skills (High Priority)
-        missing = skills_analysis.get("missing", [])
-        if missing:
+        # 1. Missing Required Competencies (High Priority)
+        missing_req = skills_analysis.get("missing_required", [])
+        if not missing_req and not skills_analysis.get("missing_preferred"):
+            missing_req = skills_analysis.get("missing", [])
+
+        if missing_req:
             recs.append(Recommendation(
                 id=f"rec_{uuid.uuid4().hex[:8]}",
                 priority="HIGH",
-                category="Competency Gap",
-                title=f"Address Missing Core Competencies: {', '.join(missing[:3])}",
-                description=f"The job requires or emphasizes {', '.join(missing[:3])}, but no direct or transferable evidence was identified in your resume.",
-                action_item="Incorporate relevant coursework, personal lab projects, or open-source contributions utilizing these technologies."
+                category="Required Competency Gap",
+                title=f"Address Missing Required Competencies: {', '.join(missing_req[:3])}",
+                description=f"The job requires practical competency in {', '.join(missing_req[:3])}, but no direct evidence was identified in your resume.",
+                action_item="Integrate relevant coursework, personal lab projects, or open-source implementations demonstrating these required tools."
             ))
 
-        # 2. Mentioned But Not Demonstrated (High Priority)
+        # 2. Preferred Competency Opportunities (Medium/Low Priority)
+        missing_pref = skills_analysis.get("missing_preferred", [])
+        if missing_pref:
+            recs.append(Recommendation(
+                id=f"rec_{uuid.uuid4().hex[:8]}",
+                priority="LOW",
+                category="Preferred Qualifications",
+                title=f"Preferred Competency Opportunities: {', '.join(missing_pref[:3])}",
+                description=f"The role mentions preferred experience with {', '.join(missing_pref[:3])}. While not mandatory, having these adds competitive advantage.",
+                action_item="Highlight any side projects or experiments touching these preferred tools."
+            ))
+
+        # 3. Mentioned But Not Demonstrated (Medium Priority)
         mentioned = skills_analysis.get("mentioned_only", [])
         if mentioned:
             recs.append(Recommendation(
                 id=f"rec_{uuid.uuid4().hex[:8]}",
-                priority="HIGH",
+                priority="MEDIUM",
                 category="Evidence Gap",
                 title=f"Provide Practical Evidence for {', '.join(mentioned[:2])}",
                 description=f"You listed {', '.join(mentioned[:2])} in your skills section, but recruiters and ATS cannot see where or how you applied them.",
                 action_item="Add at least one bullet point in your project or experience section detailing what you built with these tools."
             ))
 
-        # 3. ATS Layout Hazards (High/Medium Priority)
+        # 4. ATS Layout Hazards (High/Medium Priority)
         if ats_report.two_column_layout_detected:
             recs.append(Recommendation(
                 id=f"rec_{uuid.uuid4().hex[:8]}",
@@ -69,7 +84,7 @@ class RecommendationEngine:
                 action_item="Format skills and timelines using tabbed whitespace or bullet points instead of HTML/Word table cells."
             ))
 
-        # 4. Bullet Quantification (Medium Priority)
+        # 5. Bullet Quantification (Medium Priority)
         unquantified = [b for b in bullet_analyses if not b.is_quantified]
         if len(unquantified) >= 2:
             recs.append(Recommendation(
@@ -81,7 +96,7 @@ class RecommendationEngine:
                 action_item="Use the Action + What + How + Result formula to add numbers (e.g., % latency reduction, dataset volume, or user engagement)."
             ))
 
-        # 5. Missing Summary (Low Priority)
+        # 6. Missing Summary (Low Priority)
         if not resume.summary and resume.profile_type not in ("student", "fresher"):
             recs.append(Recommendation(
                 id=f"rec_{uuid.uuid4().hex[:8]}",
@@ -103,7 +118,7 @@ class RecommendationEngine:
         
         suggestions = []
 
-        # Find candidates for bullet rewrites
+        # Find genuine candidates for grounded bullet rewrites
         for b in bullet_analyses:
             if b.suggested_revision and b.original_text != b.suggested_revision:
                 suggestions.append(ImprovementSuggestion(
@@ -116,21 +131,4 @@ class RecommendationEngine:
                     status="PENDING"
                 ))
 
-        # Ensure we return at least 2-3 high quality suggestions
-        if len(suggestions) < 2 and resume.projects:
-            for p in resume.projects[:2]:
-                if p.bullets:
-                    b_orig = p.bullets[0]
-                    techs = ", ".join(p.technologies[:2]) if p.technologies else "modern frameworks"
-                    suggested = f"Architected and implemented {p.name} utilizing {techs}, optimizing computational efficiency and system reliability."
-                    suggestions.append(ImprovementSuggestion(
-                        id=f"fix_{uuid.uuid4().hex[:8]}",
-                        section=f"Project: {p.name}",
-                        original=b_orig,
-                        suggested=suggested,
-                        why="Transforms descriptive summary into a targeted, action-oriented engineering achievement.",
-                        impact="HIGH",
-                        status="PENDING"
-                    ))
-
-        return suggestions[:6]  # Return top 5-6 grounded suggestions
+        return suggestions[:6]

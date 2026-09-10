@@ -88,7 +88,8 @@ class SemanticMatcher:
         strongly_demo = set()
         partially_demo = set()
         mentioned_only = set()
-        missing_skills = set()
+        missing_required_skills = set()
+        missing_preferred_skills = set()
 
         for req in job.requirements:
             if not getattr(req, "scorable", True):
@@ -104,7 +105,10 @@ class SemanticMatcher:
                 elif match.match_status == "WEAK_EVIDENCE":
                     mentioned_only.add(kw)
                 elif match.match_status == "MISSING":
-                    missing_skills.add(kw)
+                    if req.priority == "preferred" or req.category == "preferred_qualification":
+                        missing_preferred_skills.add(kw)
+                    else:
+                        missing_required_skills.add(kw)
 
         for rs in job.required_skills:
             rs_l = rs.lower()
@@ -119,13 +123,31 @@ class SemanticMatcher:
             elif in_skills:
                 mentioned_only.add(rs)
             else:
-                missing_skills.add(rs)
+                missing_required_skills.add(rs)
+
+        for ps in job.preferred_skills:
+            ps_l = ps.lower()
+            if ps_l in [s.lower() for s in strongly_demo]:
+                continue
+            in_skills = ps_l in skill_names
+            in_evidence = any(ps_l in u["text"].lower() for u in evidence_units)
+            if in_evidence:
+                strongly_demo.add(ps)
+            elif in_skills:
+                mentioned_only.add(ps)
+            else:
+                missing_preferred_skills.add(ps)
+
+        missing_req_clean = sorted(list(missing_required_skills - strongly_demo - partially_demo - mentioned_only))
+        missing_pref_clean = sorted(list(missing_preferred_skills - strongly_demo - partially_demo - mentioned_only))
 
         skills_analysis = {
             "strongly_demonstrated": sorted(list(strongly_demo)),
             "partially_demonstrated": sorted(list(partially_demo - strongly_demo)),
             "mentioned_only": sorted(list(mentioned_only - strongly_demo - partially_demo)),
-            "missing": sorted(list(missing_skills - strongly_demo - partially_demo - mentioned_only))
+            "missing": sorted(list(set(missing_req_clean + missing_pref_clean))),
+            "missing_required": missing_req_clean,
+            "missing_preferred": missing_pref_clean
         }
 
         return matches, skills_analysis
@@ -233,6 +255,7 @@ class SemanticMatcher:
             requirement_text=req.text,
             category=req.category,
             importance=req.importance,
+            priority=getattr(req, "priority", req.importance),
             match_status=match_status,
             confidence=confidence,
             evidence_snippets=evidence_snippets[:2],
@@ -257,6 +280,7 @@ class SemanticMatcher:
                 requirement_text=req.text,
                 category=req.category,
                 importance=req.importance,
+                priority=getattr(req, "priority", req.importance),
                 match_status="STRONG_MATCH",
                 confidence=0.96,
                 evidence_snippets=evidence,
@@ -268,6 +292,7 @@ class SemanticMatcher:
                 requirement_text=req.text,
                 category=req.category,
                 importance=req.importance,
+                priority=getattr(req, "priority", req.importance),
                 match_status="PARTIAL_MATCH",
                 confidence=0.70,
                 evidence_snippets=[f"{resume.education[0].institution}"],
@@ -279,6 +304,7 @@ class SemanticMatcher:
                 requirement_text=req.text,
                 category=req.category,
                 importance=req.importance,
+                priority=getattr(req, "priority", req.importance),
                 match_status="MISSING",
                 confidence=0.15,
                 evidence_snippets=[],
@@ -303,6 +329,7 @@ class SemanticMatcher:
                     requirement_text=req.text,
                     category=req.category,
                     importance=req.importance,
+                    priority=getattr(req, "priority", req.importance),
                     match_status="STRONG_MATCH",
                     confidence=0.88,
                     evidence_snippets=["Student/Fresher profile with hands-on projects & internships."],
@@ -314,6 +341,7 @@ class SemanticMatcher:
                     requirement_text=req.text,
                     category=req.category,
                     importance=req.importance,
+                    priority=getattr(req, "priority", req.importance),
                     match_status="PARTIAL_MATCH",
                     confidence=0.55,
                     evidence_snippets=["Active coursework and technical project portfolio."],
@@ -327,6 +355,7 @@ class SemanticMatcher:
                 requirement_text=req.text,
                 category=req.category,
                 importance=req.importance,
+                priority=getattr(req, "priority", req.importance),
                 match_status="STRONG_MATCH",
                 confidence=0.92,
                 evidence_snippets=[f"Documented experience across {exp_count} professional roles."],
@@ -338,6 +367,7 @@ class SemanticMatcher:
                 requirement_text=req.text,
                 category=req.category,
                 importance=req.importance,
+                priority=getattr(req, "priority", req.importance),
                 match_status="PARTIAL_MATCH",
                 confidence=0.65,
                 evidence_snippets=[f"Track record with {exp_count} roles."],

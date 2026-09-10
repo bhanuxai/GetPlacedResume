@@ -33,11 +33,11 @@ def run_regression_tests():
     assert t4.text.startswith('2+ years'), f'Test 4 failed: number stripped: {t4.text}'
     print('[PASS] Test 4: Experience -> category=experience, minimum_years=2, scorable=True')
 
-    # Test 5 — Skill
+    # Test 5 — Skill / Required Qualification
     t5 = JobParser.classify_item('Strong proficiency in Python, PyTorch, and Scikit-learn')
-    assert t5.category == 'required_skill', f'Test 5 failed: {t5.category} != required_skill'
+    assert t5.category in ('required_skill', 'required_qualification'), f'Test 5 failed: {t5.category}'
     assert t5.scorable is True, f'Test 5 failed: scorable is {t5.scorable}'
-    print('[PASS] Test 5: Skill -> category=required_skill, scorable=True')
+    print('[PASS] Test 5: Skill -> category=required_qualification, scorable=True')
 
     # Test 6 — Context
     t6 = JobParser.classify_item('We are seeking a Machine Learning Engineer to join our Core Intelligence team.')
@@ -50,6 +50,18 @@ def run_regression_tests():
     assert t7.category == 'responsibility', f'Test 7 failed: {t7.category} != responsibility'
     assert t7.scorable is True, f'Test 7 failed: scorable is {t7.scorable}'
     print('[PASS] Test 7: Responsibility -> category=responsibility, scorable=True')
+
+    # Test 8 — Department metadata (Section 1 regression)
+    t8 = JobParser.classify_item('Department: Core Intelligence')
+    assert t8.category == 'metadata', f'Test 8 failed: {t8.category} != metadata'
+    assert t8.scorable is False, f'Test 8 failed: scorable is {t8.scorable}'
+    print('[PASS] Test 8: Department -> category=metadata, scorable=False')
+
+    # Test 9 — Preferred qualification
+    t9 = JobParser.classify_item('Hands-on experience deploying models to cloud infrastructure (AWS S3, EC2, SageMaker).', current_section='preferred')
+    assert t9.category == 'preferred_qualification', f'Test 9 failed: {t9.category} != preferred_qualification'
+    assert t9.scorable is True, f'Test 9 failed: scorable is {t9.scorable}'
+    print('[PASS] Test 9: Preferred Qualification -> category=preferred_qualification, scorable=True')
 
     # Additional Experience formats test
     formats = [

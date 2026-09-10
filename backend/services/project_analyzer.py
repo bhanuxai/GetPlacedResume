@@ -2,6 +2,8 @@ import re
 from typing import List, Optional
 from models.schemas import ProjectAnalysis, ProjectItem, StructuredJob
 
+from services.bullet_analyzer import BulletAnalyzer
+
 class ProjectAnalyzer:
     """
     Analyzes project entries individually, evaluating problem framing,
@@ -28,10 +30,9 @@ class ProjectAnalyzer:
             if re.search(rf"\b{re.escape(t)}\b", full_text, re.IGNORECASE) and t not in techs:
                 techs.append(t)
 
-        # Detect metrics
-        metrics = project.metrics or []
-        metrics_found = re.findall(r"(\d+%\s*|\$\d+[\d,]*|\b\d+x\b|\b\d+\s*(?:ms|seconds|users|requests|records|queries|accuracy|f1)\b)", full_text, re.IGNORECASE)
-        all_metrics = list(set(metrics + metrics_found))
+        # Detect metrics using unified multi-category detection
+        _, _, found_metrics = BulletAnalyzer.detect_metrics(full_text)
+        all_metrics = list(dict.fromkeys((project.metrics or []) + found_metrics))
 
         # Problem / Solution heuristic
         has_problem = any(w in full_text.lower() for w in ["address", "problem", "challenge", "bottleneck", "resolve", "to eliminate", "designed to"])
