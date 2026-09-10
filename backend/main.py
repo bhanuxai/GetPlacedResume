@@ -32,6 +32,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+def root():
+    return {
+        "message": "GetPlacedResume API is running successfully!",
+        "docs_url": "/docs",
+        "health_check": "/api/health"
+    }
+
 @app.get("/api/health")
 def health_check():
     return {
