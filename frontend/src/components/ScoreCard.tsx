@@ -74,11 +74,11 @@ export const ScoreCard: React.FC<ScoreCardProps> = ({
           <span className="hidden sm:inline">{processedAt}</span>
           <button
             onClick={() => window.print()}
-            className="no-print flex items-center space-x-1 px-2.5 py-1 bg-slate-100 hover:bg-slate-200 dark:bg-[#171717] dark:hover:bg-[#1f1f1f] text-slate-800 dark:text-white border border-slate-300 dark:border-[#262626] rounded-xs transition-colors"
-            title="Export / Print Report as PDF"
+            className="no-print flex items-center space-x-1.5 px-3 py-1 bg-[#2563EB] hover:bg-blue-700 text-white font-semibold rounded-xs transition-colors shadow-xs cursor-pointer"
+            title="Export / Print Clean PDF Report"
           >
-            <Printer className="w-3.5 h-3.5 text-[#2563EB]" />
-            <span>Print Report</span>
+            <Printer className="w-3.5 h-3.5 text-white" />
+            <span>Export PDF Report</span>
           </button>
         </div>
       </div>

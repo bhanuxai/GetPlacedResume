@@ -27,6 +27,7 @@ import CursorGrid from './components/CursorGrid';
 import GlareHover from './components/GlareHover';
 import CountUp from './components/CountUp';
 import { AboutSection } from './components/AboutSection';
+import { PrintReport } from './components/PrintReport';
 import {
   ArrowRight,
   CheckCircle2,
@@ -518,7 +519,9 @@ export function App() {
 
         {/* VIEW 2: DASHBOARD VIEW */}
         {view === 'dashboard' && report && (
-          <div className="flex flex-col lg:flex-row min-h-[calc(100vh-65px)]">
+          <>
+            <PrintReport report={report} />
+            <div className="screen-only flex flex-col lg:flex-row min-h-[calc(100vh-65px)]">
             
             {/* Sidebar Navigation */}
             <DashboardSidebar
@@ -837,12 +840,13 @@ export function App() {
             </div>
 
           </div>
+        </>
         )}
 
       </main>
 
       {/* Dynamic Ribbon Text Loop at Bottom of Site */}
-      <section className="relative w-full overflow-hidden border-t border-b border-slate-200 dark:border-[#262626] bg-[#F8FAFC] dark:bg-[#000000] py-1 transition-colors">
+      <section className="screen-only relative w-full overflow-hidden border-t border-b border-slate-200 dark:border-[#262626] bg-[#F8FAFC] dark:bg-[#000000] py-1 transition-colors">
         <div className="w-full max-h-[120px] sm:max-h-[140px] flex items-center justify-center">
           <TextLoop
             text="GetPlacedResume ✦ ATS Intelligence ✦ Career Fit ✦ Verified Analysis"
