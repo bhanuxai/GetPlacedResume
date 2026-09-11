@@ -57,6 +57,7 @@ export interface ProjectAnalysis {
   candidate_contribution: string;
   metrics_present: boolean;
   metrics_summary?: string;
+  metrics_identified?: string[];
   relevance_to_job: "High" | "Moderate" | "Low";
   relevance_score: number;
   critique: string;

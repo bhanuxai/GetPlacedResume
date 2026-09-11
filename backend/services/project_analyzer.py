@@ -18,6 +18,23 @@ class ProjectAnalyzer:
         return results
 
     @classmethod
+    def deduplicate_metrics(cls, metrics: List[str]) -> List[str]:
+        cleaned = [m.strip() for m in metrics if m and m.strip()]
+        unique = list(dict.fromkeys(cleaned))
+        result = []
+        for m in unique:
+            m_lower = m.lower()
+            is_subsumed = False
+            for other in unique:
+                other_lower = other.lower()
+                if m_lower != other_lower and m_lower in other_lower:
+                    is_subsumed = True
+                    break
+            if not is_subsumed:
+                result.append(m)
+        return result
+
+    @classmethod
     def analyze_single_project(cls, project: ProjectItem, job: Optional[StructuredJob] = None) -> ProjectAnalysis:
         bullet_text = " ".join(project.bullets)
         full_text = f"{project.name}. {project.description or ''} {bullet_text}"
@@ -30,9 +47,9 @@ class ProjectAnalyzer:
             if re.search(rf"\b{re.escape(t)}\b", full_text, re.IGNORECASE) and t not in techs:
                 techs.append(t)
 
-        # Detect metrics using unified multi-category detection
+        # Detect metrics using unified multi-category detection and subsumption deduplication
         _, _, found_metrics = BulletAnalyzer.detect_metrics(full_text)
-        all_metrics = list(dict.fromkeys((project.metrics or []) + found_metrics))
+        all_metrics = cls.deduplicate_metrics((project.metrics or []) + found_metrics)
 
         # Problem / Solution heuristic
         has_problem = any(w in full_text.lower() for w in ["address", "problem", "challenge", "bottleneck", "resolve", "to eliminate", "designed to"])
@@ -91,6 +108,7 @@ class ProjectAnalyzer:
             candidate_contribution="Primary Architect & Developer",
             metrics_present=bool(all_metrics),
             metrics_summary=", ".join(all_metrics) if all_metrics else "None specified",
+            metrics_identified=all_metrics,
             relevance_to_job=relevance_tier,
             relevance_score=relevance_score,
             critique=critique,

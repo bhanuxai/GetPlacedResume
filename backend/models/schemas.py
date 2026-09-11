@@ -120,6 +120,7 @@ class ProjectAnalysis(BaseModel):
     candidate_contribution: str = "Direct Contributor"
     metrics_present: bool = False
     metrics_summary: Optional[str] = None
+    metrics_identified: List[str] = Field(default_factory=list)
     relevance_to_job: str = "High"  # High, Moderate, Low
     relevance_score: int = 80
     critique: str = ""

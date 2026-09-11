@@ -53,6 +53,9 @@ class DocumentParser:
 
                 for page_idx, page in enumerate(pdf.pages):
                     p_text = page.extract_text(layout=False) or ""
+                    # Normalize PDF bullet font encodings (e.g. ReportLab or Word CID bullets, Wingdings)
+                    p_text = re.sub(r"\(cid:\d+\)\s*", "• ", p_text)
+                    p_text = re.sub(r"[\uf0b7\uf0a7]\s*", "• ", p_text)
                     total_chars += len(p_text.strip())
 
                     # Check for tables
@@ -110,7 +113,10 @@ class DocumentParser:
                 reader = PyPDF2.PdfReader(io.BytesIO(file_bytes))
                 page_count = len(reader.pages)
                 for page in reader.pages:
-                    extracted_text.append(page.extract_text() or "")
+                    txt = page.extract_text() or ""
+                    txt = re.sub(r"\(cid:\d+\)\s*", "• ", txt)
+                    txt = re.sub(r"[\uf0b7\uf0a7]\s*", "• ", txt)
+                    extracted_text.append(txt)
             except Exception as e2:
                 issues.append({
                     "severity": "HIGH",

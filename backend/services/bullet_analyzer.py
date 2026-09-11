@@ -29,19 +29,19 @@ WEAK_OPENINGS = [
 METRIC_PATTERNS = [
     (
         "TEST_COVERAGE",
-        re.compile(r"\b(\d+)\s+(?:automated\s+)?(?:pytest|unit\s*test|integration\s*test|test|regression)?\s*cases?\b", re.IGNORECASE)
+        re.compile(r"\b\d+\s+(?:automated\s+)?(?:pytest|unit\s*test|integration\s*test|test|regression)?\s*cases?\b", re.IGNORECASE)
     ),
     (
         "ENGINEERING",
-        re.compile(r"\b(\d+)\s+(?:recommendation|matching|ranking|search|scoring)?\s*signals?\b|\b(\d+)\s+(?:rest\s+)?(?:apis?|endpoints?|microservices?|services?|models?|layers?|pipelines?)\b", re.IGNORECASE)
+        re.compile(r"\b\d+\s+(?:recommendation|matching|ranking|search|scoring)?\s*signals?\b|\b\d+\s+(?:rest\s+)?(?:apis?|endpoints?|microservices?|services?|models?|layers?|pipelines?)\b", re.IGNORECASE)
     ),
     (
         "SCALE",
-        re.compile(r"\b(\d+(?:\.\d+)?[KkMmBb]\+?|\d{1,3}(?:,\d{3})+\+?|\d+\+?)\s*(?:customers?|users?|clients?|accounts?|tenants?|candidate\s+profiles?)\b", re.IGNORECASE)
+        re.compile(r"\b(?:\d+(?:\.\d+)?[KkMmBb]\+?|\d{1,3}(?:,\d{3})+\+?|\d+\+?)\s*(?:customers?|users?|clients?|accounts?|tenants?|candidate\s+profiles?)\b", re.IGNORECASE)
     ),
     (
         "DATA_VOLUME",
-        re.compile(r"\b(\d+(?:\.\d+)?[KkMmBb]\+?|\d{1,3}(?:,\d{3})+\+?|\d+\+?)\s*(?:orders?|order\s+items?|products?|items?|records?|queries|requests|documents?|rows?|samples?|examples?|headlines?)\b|\b\d+\s*(?:gb|tb|mb|kb|pb)\b", re.IGNORECASE)
+        re.compile(r"\b(?:\d+(?:\.\d+)?[KkMmBb]\+?|\d{1,3}(?:,\d{3})+\+?|\d+\+?)\s*(?:order\s+items?|orders?|products?|items?|records?|queries|requests|documents?|rows?|samples?|examples?|headlines?)\b|\b\d+\s*(?:gb|tb|mb|kb|pb)\b", re.IGNORECASE)
     ),
     (
         "PERFORMANCE",
@@ -69,24 +69,20 @@ class BulletAnalyzer:
         primary_category = None
 
         for category, pattern in METRIC_PATTERNS:
-            matches = pattern.findall(text)
-            if matches:
-                if not primary_category:
-                    primary_category = category
-                for m in matches:
-                    if isinstance(m, tuple):
-                        for sub in m:
-                            if sub:
-                                found_elements.append(sub)
-                    elif isinstance(m, str) and m:
-                        found_elements.append(m)
+            for m in pattern.finditer(text):
+                val = m.group(0).strip()
+                if val:
+                    if not primary_category:
+                        primary_category = category
+                    found_elements.append(val)
 
         # Fallback numeric detection for ranges or percentages e.g. "93.4%", "0-100"
         if not found_elements:
-            generic_matches = re.findall(r"\b\d+(?:\.\d+)?%|\b\d+\+?\s*(?:ms|seconds|minutes|users|records|orders)\b", text, re.IGNORECASE)
-            if generic_matches:
-                found_elements.extend(generic_matches)
-                primary_category = "PERFORMANCE"
+            for m in re.finditer(r"\b\d+(?:\.\d+)?%|\b\d+\+?\s*(?:ms|seconds|minutes|users|records|orders)\b", text, re.IGNORECASE):
+                val = m.group(0).strip()
+                if val:
+                    found_elements.append(val)
+                    primary_category = "PERFORMANCE"
 
         unique_elements = list(dict.fromkeys(found_elements))
         return bool(unique_elements), primary_category, unique_elements

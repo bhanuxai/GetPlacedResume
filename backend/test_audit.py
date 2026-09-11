@@ -62,13 +62,23 @@ Data & Cloud: PostgreSQL, Redis, Git, AWS (S3, EC2)
 
 PROJECTS
 Hoplid Interconnected Intelligence System | GitHub Aug '26
-• Validated the interconnected workflow with 5 automated Pytest cases, 0–100 normalized scores, and 150ms latency.
-• Engineered a dense vector retrieval system converting documents into embeddings with 5 recommendation signals and 4 matching signals.
+• Architected a prototype intelligence system to interconnect Recommendation,
+  Matching, and Card Rolling engines through a shared user-signal layer
+  and feedback loop.
+• Implemented weighted recommendation and compatibility scoring using 5
+  recommendation signals, 4 matching signals, cosine/Jaccard similarity, FastAPI,
+  NumPy, Pandas, and Scikit-learn.
+• Validated the interconnected workflow with 5 automated Pytest cases, supporting
+  0–100 normalized scores, recently-seen/disliked-item filtering, feedback-driven signal
+  updates, and API latency measurement.
 
 Smart Logistics & Delivery Intelligence Platform | GitHub | Live Jul '26
-• Designed a logistics intelligence platform processing 99K+ customers, 99K+ orders, 112K+ order items, and 32K+ products from the Olist dataset.
-• Built automated data preprocessing and feature pipelines in Python for route optimization.
-• Delivered an end-to-end prototype deployed using FastAPI and AWS.
+• Designed a logistics intelligence platform to optimize delivery route planning
+  using Ant Colony Optimization (ACO).
+• Integrated and processed the Olist dataset in MySQL, loading 99K+ customers,
+  99K+ orders, 112K+ order items, and 32K+ products, with a React-based dashboard.
+• Delivered an end-to-end prototype combining route optimization, structured
+  logistics data, and dashboard-based visualization.
 """
 
 def test_audit():
@@ -111,9 +121,15 @@ def test_audit():
     resume = ResumeParser.parse(STUDENT_RESUME)
     print(f"\n4. Resume Parsing:")
     print(f"   - Projects detected: {len(resume.projects)}")
+    assert len(resume.projects) == 2, f"Expected 2 projects, got {len(resume.projects)}"
+    total_proj_bullets = sum(len(p.bullets) for p in resume.projects)
+    print(f"   - Total project bullets reconstructed: {total_proj_bullets}")
+    assert total_proj_bullets == 6, f"Expected 6 logical bullets across projects, got {total_proj_bullets}"
+
     for p in resume.projects:
         print(f"     * Name: '{p.name}'")
         print(f"       Bullets ({len(p.bullets)}):")
+        assert len(p.bullets) == 3, f"Expected 3 bullets in project '{p.name}', got {len(p.bullets)}"
         for b in p.bullets:
             print(f"         - {b[:70]}...")
             assert not re.search(r"\b(?:github|live)\b", b, re.IGNORECASE) and "hoplid" not in b.lower(), f"Header leaked as bullet: {b}"
@@ -122,6 +138,7 @@ def test_audit():
     print(f"\n5. Bullet Quantification & Metric Evaluation:")
     bullets = BulletAnalyzer.analyze_resume_bullets(resume)
     print(f"   Total bullets evaluated: {len(bullets)}")
+    assert len(bullets) == 6, f"Expected exactly 6 analyzed bullets, got {len(bullets)}"
     quantified_count = 0
     for b in bullets:
         if b.is_quantified:
@@ -134,7 +151,7 @@ def test_audit():
         else:
             print(f"   [UNQUANTIFIED] '{b.original_text[:60]}...' | Grade: {b.structure_grade} | Score: {b.score}")
     print(f"   Total quantified bullets: {quantified_count}/{len(bullets)}")
-    assert quantified_count >= 3, f"Expected at least 3 quantified bullets, got {quantified_count}"
+    assert quantified_count == 3, f"Expected exactly 3 quantified bullets out of 6 (50%), got {quantified_count}"
 
     # 4. Full Pipeline Analysis
     doc_meta = {
@@ -191,10 +208,141 @@ def test_audit():
     print("\n10. Project Analyses:")
     for pa in report.project_analyses:
         print(f"    * {pa.project_name}: Relevance={pa.relevance_to_job} ({pa.relevance_score}), Complexity={pa.complexity_score}, Metrics={pa.metrics_summary}")
+        # Verify deduplicated clean metrics
+        if "Hoplid" in pa.project_name:
+            assert "5 recommendation signals" in pa.metrics_identified, f"Missing 5 recommendation signals in {pa.metrics_identified}"
+            assert "4 matching signals" in pa.metrics_identified, f"Missing 4 matching signals in {pa.metrics_identified}"
+            assert "5 automated Pytest cases" in pa.metrics_identified, f"Missing 5 automated Pytest cases in {pa.metrics_identified}"
+            assert "0–100 normalized scores" in pa.metrics_identified or "0-100 normalized scores" in pa.metrics_identified, f"Missing normalized scores in {pa.metrics_identified}"
+            assert "5" not in pa.metrics_identified, f"Raw number '5' not deduplicated in {pa.metrics_identified}"
+            assert "4" not in pa.metrics_identified, f"Raw number '4' not deduplicated in {pa.metrics_identified}"
+        elif "Logistics" in pa.project_name:
+            assert "99K+ customers" in pa.metrics_identified, f"Missing 99K+ customers in {pa.metrics_identified}"
+            assert "99K+ orders" in pa.metrics_identified, f"Missing 99K+ orders in {pa.metrics_identified}"
+            assert "112K+ order items" in pa.metrics_identified, f"Missing 112K+ order items in {pa.metrics_identified}"
+            assert "32K+ products" in pa.metrics_identified, f"Missing 32K+ products in {pa.metrics_identified}"
+            assert "112K+ order" not in pa.metrics_identified, f"Truncated '112K+ order' found in {pa.metrics_identified}"
+            assert "99K+" not in pa.metrics_identified, f"Raw '99K+' not deduplicated in {pa.metrics_identified}"
+            assert "112K+" not in pa.metrics_identified, f"Raw '112K+' not deduplicated in {pa.metrics_identified}"
 
     print("\n==================================================================")
     print("ALL AUDIT VERIFICATIONS PASSED SUCCESSFULLY!")
     print("==================================================================")
 
+def test_wrapped_bullet_1():
+    print("\n[REGRESSION TEST 1] Wrapped Bullet Reconstruction")
+    sample = """PROJECTS
+Demo Project | GitHub
+• Architected a prototype intelligence system to interconnect Recommendation,
+  Matching, and Card Rolling engines through a shared user-signal layer
+  and feedback loop.
+"""
+    resume = ResumeParser.parse(sample)
+    assert len(resume.projects) == 1, f"Expected 1 project, got {len(resume.projects)}"
+    assert len(resume.projects[0].bullets) == 1, f"Expected 1 logical bullet, got {len(resume.projects[0].bullets)}"
+    expected_text = "Architected a prototype intelligence system to interconnect Recommendation, Matching, and Card Rolling engines through a shared user-signal layer and feedback loop."
+    assert resume.projects[0].bullets[0] == expected_text, f"Mismatch in reconstructed bullet:\nGot: '{resume.projects[0].bullets[0]}'\nExpected: '{expected_text}'"
+    print("  -> PASSED: Successfully reconstructed into 1 logical bullet (NOT 3)")
+
+def test_metric_heavy_wrapped_bullet_2():
+    print("\n[REGRESSION TEST 2] Metric-Heavy Wrapped Bullet")
+    sample = """PROJECTS
+Demo Project | GitHub
+• Implemented weighted recommendation using 5 recommendation signals,
+  4 matching signals, cosine/Jaccard similarity, FastAPI, NumPy,
+  Pandas, and Scikit-learn.
+"""
+    resume = ResumeParser.parse(sample)
+    assert len(resume.projects[0].bullets) == 1, f"Expected 1 logical bullet, got {len(resume.projects[0].bullets)}"
+    bullet = resume.projects[0].bullets[0]
+    is_q, cat, elements = BulletAnalyzer.detect_metrics(bullet)
+    assert is_q is True, "Expected bullet to be quantified = True"
+    assert "5 recommendation signals" in elements, f"Missing '5 recommendation signals' in {elements}"
+    assert "4 matching signals" in elements, f"Missing '4 matching signals' in {elements}"
+    print(f"  -> PASSED: 1 logical bullet, quantified = YES ({elements})")
+
+def test_dataset_wrapped_bullet_3():
+    print("\n[REGRESSION TEST 3] Dataset Wrapped Bullet")
+    sample = """PROJECTS
+Demo Project | GitHub
+• Integrated and processed the Olist dataset in MySQL, loading 99K+
+  customers, 99K+ orders, 112K+ order items, and 32K+ products,
+  with a React-based dashboard.
+"""
+    resume = ResumeParser.parse(sample)
+    assert len(resume.projects[0].bullets) == 1, f"Expected 1 logical bullet, got {len(resume.projects[0].bullets)}"
+    bullet = resume.projects[0].bullets[0]
+    is_q, cat, elements = BulletAnalyzer.detect_metrics(bullet)
+    assert is_q is True, "Expected bullet to be quantified = True"
+    assert "99K+ customers" in elements, f"Missing '99K+ customers' in {elements}"
+    assert "99K+ orders" in elements, f"Missing '99K+ orders' in {elements}"
+    assert "112K+ order items" in elements, f"Missing '112K+ order items' in {elements}"
+    assert "32K+ products" in elements, f"Missing '32K+ products' in {elements}"
+    assert "112K+ order" not in elements, f"Found truncated '112K+ order' in {elements}"
+    print(f"  -> PASSED: 1 logical bullet, quantified = YES ({elements})")
+
+def test_pdf_extraction_six_bullets_4():
+    print("\n[REGRESSION TEST 4] Multi-Bullet PDF Extraction & Logical Reconstruction")
+    import io
+    from reportlab.lib.pagesizes import letter
+    from reportlab.pdfgen import canvas
+    from services.document_parser import DocumentParser
+
+    buf = io.BytesIO()
+    c = canvas.Canvas(buf, pagesize=letter)
+    y = 750
+    lines = [
+        "ALEX CHEN",
+        "San Francisco, CA | (555) 382-9102 | alex.chen@email.com",
+        "EDUCATION",
+        "University of California, Berkeley — Bachelor of Science in Computer Science",
+        "TECHNICAL SKILLS",
+        "Languages: Python, SQL, C++, TypeScript",
+        "Frameworks & Libraries: PyTorch, Scikit-learn, Pandas, NumPy, FastAPI, Flask",
+        "PROJECTS",
+        "Hoplid Interconnected Intelligence System | GitHub Aug '26",
+        chr(8226) + " Architected a prototype intelligence system to interconnect Recommendation,",
+        "  Matching, and Card Rolling engines through a shared user-signal layer",
+        "  and feedback loop.",
+        chr(8226) + " Implemented weighted recommendation and compatibility scoring using 5",
+        "  recommendation signals, 4 matching signals, cosine/Jaccard similarity, FastAPI,",
+        "  NumPy, Pandas, and Scikit-learn.",
+        chr(8226) + " Validated the interconnected workflow with 5 automated Pytest cases, supporting",
+        "  0–100 normalized scores, recently-seen/disliked-item filtering, feedback-driven signal",
+        "  updates, and API latency measurement.",
+        "Smart Logistics & Delivery Intelligence Platform | GitHub | Live Jul '26",
+        chr(8226) + " Designed a logistics intelligence platform to optimize delivery route planning",
+        "  using Ant Colony Optimization (ACO).",
+        chr(8226) + " Integrated and processed the Olist dataset in MySQL, loading 99K+ customers,",
+        "  99K+ orders, 112K+ order items, and 32K+ products, with a React-based dashboard.",
+        chr(8226) + " Delivered an end-to-end prototype combining route optimization, structured",
+        "  logistics data, and dashboard-based visualization."
+    ]
+
+    for l in lines:
+        c.drawString(72, y, l)
+        y -= 18
+    c.save()
+
+    buf.seek(0)
+    pdf_bytes = buf.read()
+    extracted_text, meta = DocumentParser.parse_file(pdf_bytes, "test_wrapped.pdf")
+
+    resume = ResumeParser.parse(extracted_text, meta)
+    assert len(resume.projects) == 2, f"Expected 2 projects from PDF, got {len(resume.projects)}"
+    total_bullets = sum(len(p.bullets) for p in resume.projects)
+    assert total_bullets == 6, f"Expected 6 logical bullets from PDF, got {total_bullets}"
+
+    evaluated_bullets = BulletAnalyzer.analyze_resume_bullets(resume)
+    assert len(evaluated_bullets) == 6, f"Expected 6 evaluated bullets, got {len(evaluated_bullets)}"
+    quantified = [b for b in evaluated_bullets if b.is_quantified]
+    assert len(quantified) == 3, f"Expected 3 quantified bullets from PDF (50%), got {len(quantified)}"
+    print(f"  -> PASSED: Exactly 6 logical bullets reconstructed from PDF, 3 quantified (50%)")
+
 if __name__ == "__main__":
     test_audit()
+    test_wrapped_bullet_1()
+    test_metric_heavy_wrapped_bullet_2()
+    test_dataset_wrapped_bullet_3()
+    test_pdf_extraction_six_bullets_4()
+
