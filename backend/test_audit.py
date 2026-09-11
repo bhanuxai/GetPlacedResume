@@ -339,10 +339,135 @@ def test_pdf_extraction_six_bullets_4():
     assert len(quantified) == 3, f"Expected 3 quantified bullets from PDF (50%), got {len(quantified)}"
     print(f"  -> PASSED: Exactly 6 logical bullets reconstructed from PDF, 3 quantified (50%)")
 
+def test_unbulleted_flat_projects_5():
+    print("\n[REGRESSION TEST 5] Unbulleted Flat Lines Reconstruction")
+    sample = """PROJECTS
+Hoplid Interconnected Intelligence System | GitHub Aug '26
+Architected a prototype intelligence system to interconnect Recommendation,
+Matching, and Card Rolling engines through a shared user-signal layer
+and feedback loop.
+Implemented weighted recommendation and compatibility scoring using 5
+recommendation signals, 4 matching signals, cosine/Jaccard similarity, FastAPI,
+NumPy, Pandas, and Scikit-learn.
+Validated the interconnected workflow with 5 automated Pytest cases, supporting
+0–100 normalized scores, recently-seen/disliked-item filtering, feedback-driven signal
+updates, and API latency measurement.
+
+Smart Logistics & Delivery Intelligence Platform | GitHub | Live Jul '26
+Designed a logistics intelligence platform to optimize delivery route planning
+using Ant Colony Optimization (ACO).
+Integrated and processed the Olist dataset in MySQL, loading 99K+ customers,
+99K+ orders, 112K+ order items, and 32K+ products, with a React-based dashboard.
+Delivered an end-to-end prototype combining route optimization, structured
+logistics data, and dashboard-based visualization.
+"""
+    resume = ResumeParser.parse(sample)
+    assert len(resume.projects) == 2, f"Expected 2 projects, got {len(resume.projects)}"
+    total_bullets = sum(len(p.bullets) for p in resume.projects)
+    assert total_bullets == 6, f"Expected 6 logical bullets from flat text without glyphs, got {total_bullets}"
+    evaluated = BulletAnalyzer.analyze_resume_bullets(resume)
+    assert len(evaluated) == 6, f"Expected 6 evaluated bullets, got {len(evaluated)}"
+    quantified = [b for b in evaluated if b.is_quantified]
+    assert len(quantified) == 3, f"Expected 3 quantified bullets out of 6 (50%), got {len(quantified)}"
+    print("  -> PASSED: Exactly 6 bullets reconstructed from flat text without glyphs, 3 quantified (50%)")
+
+def test_unbulleted_indented_projects_6():
+    print("\n[REGRESSION TEST 6] Unbulleted Hanging-Indent Reconstruction")
+    sample = """PROJECTS
+Hoplid Interconnected Intelligence System | GitHub Aug '26
+Architected a prototype intelligence system to interconnect Recommendation,
+  Matching, and Card Rolling engines through a shared user-signal layer
+  and feedback loop.
+Implemented weighted recommendation and compatibility scoring using 5
+  recommendation signals, 4 matching signals, cosine/Jaccard similarity, FastAPI,
+  NumPy, Pandas, and Scikit-learn.
+Validated the interconnected workflow with 5 automated Pytest cases, supporting
+  0–100 normalized scores, recently-seen/disliked-item filtering, feedback-driven signal
+  updates, and API latency measurement.
+
+Smart Logistics & Delivery Intelligence Platform | GitHub | Live Jul '26
+Designed a logistics intelligence platform to optimize delivery route planning
+  using Ant Colony Optimization (ACO).
+Integrated and processed the Olist dataset in MySQL, loading 99K+ customers,
+  99K+ orders, 112K+ order items, and 32K+ products, with a React-based dashboard.
+Delivered an end-to-end prototype combining route optimization, structured
+  logistics data, and dashboard-based visualization.
+"""
+    resume = ResumeParser.parse(sample)
+    assert len(resume.projects) == 2, f"Expected 2 projects, got {len(resume.projects)}"
+    total_bullets = sum(len(p.bullets) for p in resume.projects)
+    assert total_bullets == 6, f"Expected 6 logical bullets from indented text without glyphs, got {total_bullets}"
+    evaluated = BulletAnalyzer.analyze_resume_bullets(resume)
+    assert len(evaluated) == 6, f"Expected 6 evaluated bullets, got {len(evaluated)}"
+    quantified = [b for b in evaluated if b.is_quantified]
+    assert len(quantified) == 3, f"Expected 3 quantified bullets out of 6 (50%), got {len(quantified)}"
+    print("  -> PASSED: Exactly 6 bullets reconstructed from indented text without glyphs, 3 quantified (50%)")
+
+def test_unbulleted_pdf_extraction_7():
+    print("\n[REGRESSION TEST 7] Unbulleted PDF Extraction & Reconstruction")
+    import io
+    from reportlab.lib.pagesizes import letter
+    from reportlab.pdfgen import canvas
+    from services.document_parser import DocumentParser
+
+    buf = io.BytesIO()
+    c = canvas.Canvas(buf, pagesize=letter)
+    y = 750
+    lines = [
+        "ALEX CHEN",
+        "San Francisco, CA | (555) 382-9102 | alex.chen@email.com",
+        "EDUCATION",
+        "University of California, Berkeley — Bachelor of Science in Computer Science",
+        "TECHNICAL SKILLS",
+        "Languages: Python, SQL, C++, TypeScript",
+        "Frameworks & Libraries: PyTorch, Scikit-learn, Pandas, NumPy, FastAPI, Flask",
+        "PROJECTS",
+        "Hoplid Interconnected Intelligence System | GitHub Aug '26",
+        "Architected a prototype intelligence system to interconnect Recommendation,",
+        "  Matching, and Card Rolling engines through a shared user-signal layer",
+        "  and feedback loop.",
+        "Implemented weighted recommendation and compatibility scoring using 5",
+        "  recommendation signals, 4 matching signals, cosine/Jaccard similarity, FastAPI,",
+        "  NumPy, Pandas, and Scikit-learn.",
+        "Validated the interconnected workflow with 5 automated Pytest cases, supporting",
+        "  0–100 normalized scores, recently-seen/disliked-item filtering, feedback-driven signal",
+        "  updates, and API latency measurement.",
+        "Smart Logistics & Delivery Intelligence Platform | GitHub | Live Jul '26",
+        "Designed a logistics intelligence platform to optimize delivery route planning",
+        "  using Ant Colony Optimization (ACO).",
+        "Integrated and processed the Olist dataset in MySQL, loading 99K+ customers,",
+        "  99K+ orders, 112K+ order items, and 32K+ products, with a React-based dashboard.",
+        "Delivered an end-to-end prototype combining route optimization, structured",
+        "  logistics data, and dashboard-based visualization."
+    ]
+
+    for l in lines:
+        c.drawString(72, y, l)
+        y -= 18
+    c.save()
+
+    buf.seek(0)
+    pdf_bytes = buf.read()
+    extracted_text, meta = DocumentParser.parse_file(pdf_bytes, "test_unbulleted.pdf")
+
+    resume = ResumeParser.parse(extracted_text, meta)
+    assert len(resume.projects) == 2, f"Expected 2 projects from unbulleted PDF, got {len(resume.projects)}"
+    total_bullets = sum(len(p.bullets) for p in resume.projects)
+    assert total_bullets == 6, f"Expected 6 logical bullets from unbulleted PDF, got {total_bullets}"
+
+    evaluated_bullets = BulletAnalyzer.analyze_resume_bullets(resume)
+    assert len(evaluated_bullets) == 6, f"Expected 6 evaluated bullets, got {len(evaluated_bullets)}"
+    quantified = [b for b in evaluated_bullets if b.is_quantified]
+    assert len(quantified) == 3, f"Expected 3 quantified bullets from unbulleted PDF (50%), got {len(quantified)}"
+    print("  -> PASSED: Exactly 6 logical bullets reconstructed from unbulleted PDF, 3 quantified (50%)")
+
 if __name__ == "__main__":
     test_audit()
     test_wrapped_bullet_1()
     test_metric_heavy_wrapped_bullet_2()
     test_dataset_wrapped_bullet_3()
     test_pdf_extraction_six_bullets_4()
+    test_unbulleted_flat_projects_5()
+    test_unbulleted_indented_projects_6()
+    test_unbulleted_pdf_extraction_7()
 

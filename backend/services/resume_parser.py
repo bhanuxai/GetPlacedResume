@@ -3,6 +3,7 @@ from typing import Dict, List, Any, Optional
 from models.schemas import (
     ContactInfo, EducationItem, ExperienceItem, ProjectItem, SkillItem, StructuredResume
 )
+from services.bullet_analyzer import STRONG_ACTION_VERBS
 
 class ResumeParser:
     """
@@ -22,11 +23,12 @@ class ResumeParser:
         "leadership": r"(?:leadership|extracurricular\s+activities|volunteer\s+experience|activities)"
     }
 
-    ACTION_VERBS = {
+    ACTION_VERBS = set(STRONG_ACTION_VERBS) | {
         "built", "developed", "created", "engineered", "designed", "architected",
         "implemented", "deployed", "spearheaded", "optimized", "accelerated",
         "reduced", "increased", "boosted", "scaled", "automated", "orchestrated",
-        "authored", "integrated", "led", "managed", "trained", "tuned", "benchmarked"
+        "authored", "integrated", "led", "managed", "trained", "tuned", "benchmarked",
+        "directed", "founded", "supervised", "coordinated", "collaborated", "launched"
     }
 
     @classmethod
@@ -194,6 +196,49 @@ class ResumeParser:
         return cls.BULLET_PREFIX_REGEX.sub("", trimmed).strip()
 
     @classmethod
+    def is_new_logical_bullet(
+        cls,
+        line_str: str,
+        current_bullets: List[str],
+        prev_raw_line: Optional[str] = None
+    ) -> bool:
+        if cls.is_bullet_line(line_str):
+            return True
+        if not current_bullets:
+            return True
+
+        trimmed = line_str.strip()
+        if " | " in trimmed or re.match(r"^(?:PROJECTS|EXPERIENCE|EDUCATION|SKILLS)\b", trimmed, re.IGNORECASE):
+            return False
+        if re.search(r"\b(?:github|gitlab|bitbucket|live|demo)\b", trimmed, re.IGNORECASE) and (" |" in trimmed or "| " in trimmed):
+            return False
+
+        last_bullet = current_bullets[-1].strip()
+        prev_ended = bool(re.search(r"[\.\!\?\;]\s*$", last_bullet))
+
+        words = trimmed.split()
+        first_word = words[0] if words else ""
+        first_word_clean = re.sub(r"[^\w]", "", first_word).lower()
+        starts_action_verb = bool(first_word and first_word[0].isupper() and first_word_clean in cls.ACTION_VERBS)
+
+        has_indent = bool(re.match(r"^\s{2,}", line_str))
+        prev_had_indent = bool(prev_raw_line and re.match(r"^\s{2,}", prev_raw_line))
+        hanging_indent_reset = prev_had_indent and not has_indent
+
+        prev_had_glyph = cls.is_bullet_line(prev_raw_line) if prev_raw_line else False
+        if prev_had_glyph and has_indent:
+            return False
+
+        if prev_ended and starts_action_verb and not has_indent:
+            return True
+        if hanging_indent_reset and starts_action_verb:
+            return True
+        if prev_ended and starts_action_verb and not prev_had_glyph:
+            return True
+
+        return False
+
+    @classmethod
     def deduplicate_metrics(cls, metrics: List[str]) -> List[str]:
         cleaned = [m.strip() for m in metrics if m and m.strip()]
         unique = list(dict.fromkeys(cleaned))
@@ -216,8 +261,9 @@ class ResumeParser:
             return []
         
         items = []
-        raw_lines = [l.strip() for l in exp_text.split("\n") if l.strip()]
+        raw_lines = [l for l in exp_text.split("\n") if l.strip()]
         current_exp = None
+        prev_raw_line = None
 
         for line in raw_lines:
             line_str = line.strip()
@@ -250,6 +296,7 @@ class ResumeParser:
                             current_exp.start_date = parts[0]
                         else:
                             current_exp.location = parts[0]
+                    prev_raw_line = line
                     continue
 
                 parts = [p.strip() for p in re.split(r"[|–—]", line_str) if p.strip()]
@@ -273,11 +320,14 @@ class ResumeParser:
                         current_exp = ExperienceItem(title="Professional Experience", company="Company", bullets=[])
                         items.append(current_exp)
 
-                    if is_bullet or not current_exp.bullets:
+                    is_new = cls.is_new_logical_bullet(line, current_exp.bullets, prev_raw_line)
+                    if is_new:
                         current_exp.bullets.append(cleaned_line)
                     else:
                         # Wrapped continuation line: append to current bullet
                         current_exp.bullets[-1] = f"{current_exp.bullets[-1]} {cleaned_line}"
+
+            prev_raw_line = line
 
         return items
 
@@ -287,8 +337,9 @@ class ResumeParser:
             return []
         
         projects = []
-        raw_lines = [l.strip() for l in proj_text.split("\n") if l.strip()]
+        raw_lines = [l for l in proj_text.split("\n") if l.strip()]
         current_proj = None
+        prev_raw_line = None
 
         for line in raw_lines:
             line_str = line.strip()
@@ -325,6 +376,7 @@ class ResumeParser:
                     tech_part = re.sub(r"^(?:technologies|tech\s*stack|tools|built\s*with)\s*:", "", line_str, flags=re.IGNORECASE).strip()
                     techs = [t.strip() for t in re.split(r"[,;•|]", tech_part) if t.strip()]
                     current_proj.technologies.extend(techs)
+                    prev_raw_line = line
                     continue
 
                 # Project header line: separate title, technologies, URLs, dates
@@ -354,6 +406,7 @@ class ResumeParser:
             else:
                 cleaned_line = cls.strip_bullet_marker(line_str)
                 if not cleaned_line:
+                    prev_raw_line = line
                     continue
 
                 # Safety check: Never treat standalone metadata lines as bullets
@@ -363,13 +416,15 @@ class ResumeParser:
                         for p in parts:
                             if "," in p:
                                 current_proj.technologies.extend([t.strip() for t in p.split(",") if t.strip()])
+                    prev_raw_line = line
                     continue
 
                 if not current_proj:
                     current_proj = ProjectItem(name="Featured Project", bullets=[], technologies=[], metrics=[])
                     projects.append(current_proj)
 
-                if is_bullet or not current_proj.bullets:
+                is_new = cls.is_new_logical_bullet(line, current_proj.bullets, prev_raw_line)
+                if is_new:
                     # New bullet
                     current_proj.bullets.append(cleaned_line)
                 else:
@@ -386,6 +441,8 @@ class ResumeParser:
                 if metric_matches:
                     current_proj.metrics.extend(metric_matches)
                     current_proj.metrics = cls.deduplicate_metrics(current_proj.metrics)
+
+            prev_raw_line = line
 
         return projects
 
