@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { AnalysisReport } from '../types';
 import {
   CheckCircle2,
@@ -157,7 +157,7 @@ export const PrintReport: React.FC<PrintReportProps> = ({ report }) => {
               </span>
             </div>
             <div>
-              <span className="text-slate-500">Missing Keywords:</span>{' '}
+              <span className="text-slate-500">Skill Gaps:</span>{' '}
               <span className="font-bold text-rose-600">
                 {skills_analysis?.missing?.length || 0}
               </span>
@@ -362,24 +362,44 @@ export const PrintReport: React.FC<PrintReportProps> = ({ report }) => {
           )}
 
           <div>
-            <div className="flex items-center space-x-2 mb-1.5">
-              <span className="w-2 h-2 rounded-full bg-rose-500" />
-              <span className="font-bold uppercase tracking-wider text-rose-800 text-[8pt]">
-                Missing Critical Job Description Keywords ({skills_analysis?.missing?.length || 0})
-              </span>
+            <div className="flex items-center justify-between mb-1.5">
+              <div className="flex items-center space-x-2">
+                <span className="w-2 h-2 rounded-full bg-rose-500" />
+                <span className="font-bold uppercase tracking-wider text-rose-800 text-[8pt]">
+                  Job Description Skill Gaps ({skills_analysis?.missing?.length || 0})
+                </span>
+              </div>
+              <div className="text-[7.5pt] font-mono text-slate-500">
+                Required gaps: {skills_analysis?.missing_required?.length ?? skills_analysis?.missing?.length ?? 0}
+                {skills_analysis?.missing_preferred && skills_analysis.missing_preferred.length > 0 && (
+                  <span> • Preferred gaps: {skills_analysis.missing_preferred.length}</span>
+                )}
+              </div>
             </div>
             <div className="flex flex-wrap gap-1.5">
               {skills_analysis?.missing?.length ? (
-                skills_analysis.missing.map((sk, idx) => (
-                  <span
-                    key={idx}
-                    className="px-2 py-0.5 rounded text-[8pt] font-medium bg-rose-100/70 border border-rose-300 text-rose-900"
-                  >
-                    ✕ {sk}
-                  </span>
-                ))
+                <>
+                  {(skills_analysis.missing_required ?? skills_analysis.missing).map((sk, idx) => (
+                    <span
+                      key={`req-${idx}`}
+                      className="px-2 py-0.5 rounded text-[8pt] font-medium bg-rose-100/70 border border-rose-300 text-rose-900 inline-flex items-center space-x-1"
+                    >
+                      <span>✕ {sk}</span>
+                      <span className="text-[6.5pt] font-mono uppercase bg-rose-200/80 px-1 py-0.2 rounded text-rose-800 font-bold">Required</span>
+                    </span>
+                  ))}
+                  {skills_analysis.missing_preferred?.map((sk, idx) => (
+                    <span
+                      key={`pref-${idx}`}
+                      className="px-2 py-0.5 rounded text-[8pt] font-medium bg-purple-100/70 border border-purple-300 text-purple-900 inline-flex items-center space-x-1"
+                    >
+                      <span>~ {sk}</span>
+                      <span className="text-[6.5pt] font-mono uppercase bg-purple-200/80 px-1 py-0.2 rounded text-purple-800 font-bold">Preferred</span>
+                    </span>
+                  ))}
+                </>
               ) : (
-                <span className="text-emerald-700 font-medium text-[8pt]">No critical skills missing from job description!</span>
+                <span className="text-emerald-700 font-medium text-[8pt]">No skill gaps detected against job description!</span>
               )}
             </div>
           </div>
@@ -453,7 +473,7 @@ export const PrintReport: React.FC<PrintReportProps> = ({ report }) => {
               <div key={idx} className="bg-white border border-slate-200 rounded p-2.5 text-[8.5pt]">
                 <div className="flex items-center justify-between mb-1 text-[7.5pt]">
                   <span className="font-bold text-slate-500 uppercase tracking-wider">
-                    {item.section || 'Experience Bullet'}
+                    {item.section || 'Project / Experience Bullet'}
                   </span>
                   <span className="px-1.5 py-0.2 bg-blue-100 text-blue-800 font-bold rounded">
                     Impact: {item.impact}

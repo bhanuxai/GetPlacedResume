@@ -87,12 +87,13 @@ class RecommendationEngine:
         # 5. Bullet Quantification (Medium Priority)
         unquantified = [b for b in bullet_analyses if not b.is_quantified]
         if len(unquantified) >= 2:
+            total_b = len(bullet_analyses)
             recs.append(Recommendation(
                 id=f"rec_{uuid.uuid4().hex[:8]}",
                 priority="MEDIUM",
                 category="Content Quality",
                 title="Quantify Project and Experience Outcomes",
-                description=f"{len(unquantified)} of your bullet points describe duties without specifying measurable business or technical outcomes.",
+                description=f"{len(unquantified)} of {total_b} analyzed bullets lack measurable outcomes.",
                 action_item="Use the Action + What + How + Result formula to add numbers (e.g., % latency reduction, dataset volume, or user engagement)."
             ))
 
@@ -117,13 +118,14 @@ class RecommendationEngine:
     ) -> List[ImprovementSuggestion]:
         
         suggestions = []
+        section_name = "Project Bullet" if len(resume.experience) == 0 else "Experience / Projects"
 
         # Find genuine candidates for grounded bullet rewrites
         for b in bullet_analyses:
             if b.suggested_revision and b.original_text != b.suggested_revision:
                 suggestions.append(ImprovementSuggestion(
                     id=f"fix_{uuid.uuid4().hex[:8]}",
-                    section="Experience / Projects",
+                    section=section_name,
                     original=b.original_text,
                     suggested=b.suggested_revision,
                     why=b.rationale or "Improves active voice and structural impact.",

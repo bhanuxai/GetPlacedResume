@@ -35,11 +35,11 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
 }) => {
   const navItems = [
     { id: 'overview', label: 'Score & Overview', icon: LayoutDashboard },
-    { id: 'recruiter-lens', label: 'Recruiter vs Other ATS', icon: Eye },
+    { id: 'recruiter-lens', label: 'Recruiter Lens', icon: Eye },
     { id: 'scoring', label: '6-Axis Dimensions', icon: Layers },
     { id: 'requirements', label: 'Requirement Match', icon: CheckSquare },
     { id: 'skills', label: 'Skills Matrix', icon: Wrench },
-    { id: 'experience', label: 'Experience Bullets', icon: FileText },
+    { id: 'experience', label: 'Project & Experience Bullets', icon: FileText },
     { id: 'projects', label: 'Projects Audit', icon: FolderGit2 },
     { id: 'ats-format', label: 'ATS Parseability', icon: FileSearch },
     { id: 'improvements', label: 'Grounded Revisions', icon: Sparkles },

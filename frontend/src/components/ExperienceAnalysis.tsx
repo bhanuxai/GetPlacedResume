@@ -32,7 +32,7 @@ export const ExperienceAnalysis: React.FC<ExperienceAnalysisProps> = ({
         <div>
           <h3 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight flex items-center space-x-2">
             <span className="w-2 h-2 bg-[#2563EB] inline-block" />
-            <span>EXPERIENCE BULLET ANALYZER</span>
+            <span>{summary.roles_count === 0 ? 'PROJECT BULLET & ACHIEVEMENT ANALYZER' : 'EXPERIENCE BULLET ANALYZER'}</span>
           </h3>
           <p className="text-xs text-slate-600 dark:text-[#94A3B8] mt-1 font-mono">
             EVALUATING ACTION VERBS, QUANTIFICATION, AND ACTION + WHAT + HOW + RESULT STRUCTURE

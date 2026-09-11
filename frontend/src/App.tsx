@@ -617,15 +617,15 @@ export function App() {
                         <div className="flex items-center justify-between">
                           <span className="text-xs font-mono font-bold uppercase text-slate-900 dark:text-white flex items-center space-x-2">
                             <Eye className="w-4 h-4 text-[#2563EB]" />
-                            <span>The 6–8 Second Recruiter Reality</span>
+                            <span>6–8 SECOND SCAN MODEL</span>
                           </span>
                           <span className="text-[10px] font-mono px-2 py-0.5 bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-400 font-bold rounded-xs">
-                            EYE PATH SCAN
+                            RECRUITER SCAN HEURISTIC
                           </span>
                         </div>
 
                         <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                          Recruiters spend only <strong>6 to 8 seconds</strong> on an initial scan. They don&apos;t read full paragraphs—they follow an &quot;F-Pattern&quot; looking for title relevance, core stack keywords, and metrics.
+                          Our <strong>6–8 Second Scan Model</strong> is an internal simulation heuristic modeling rapid reviewer triage. Rather than reading full paragraphs initially, reviewers typically scan in an &quot;F-Pattern&quot; checking title relevance, core stack keywords, and metrics.
                         </p>
 
                         <div className="space-y-2.5 pt-1">
@@ -682,7 +682,7 @@ export function App() {
                         <div className="flex items-center justify-between">
                           <span className="text-xs font-mono font-bold uppercase text-slate-900 dark:text-white flex items-center space-x-2">
                             <Scale className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-                            <span>Other ATS Sites vs. GetPlacedResume</span>
+                            <span>Conventional Checkers vs. GetPlacedResume</span>
                           </span>
                           <span className="text-[10px] font-mono px-2 py-0.5 bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 font-bold rounded-xs">
                             ENGINE CONTRAST
@@ -695,17 +695,17 @@ export function App() {
                               <span className="font-bold text-slate-900 dark:text-white">1. Semantic Vector NLP vs Exact Keyword Counting</span>
                             </div>
                             <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
-                              <span className="text-red-500 font-semibold">Other ATS sites:</span> Demand exact repetitive keywords (penalizing natural writing).<br />
+                              <span className="text-slate-700 dark:text-slate-300 font-semibold">Keyword-oriented checkers:</span> May place greater emphasis on exact terminology and keyword coverage.<br />
                               <span className="text-emerald-600 dark:text-emerald-400 font-semibold">GetPlacedResume:</span> Uses cosine vector similarity to understand synonyms, frameworks, and equivalents.
                             </p>
                           </div>
 
                           <div className="p-2.5 rounded-xs bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626]">
                             <div className="flex items-center justify-between mb-1">
-                              <span className="font-bold text-slate-900 dark:text-white">2. Anti-Stuffing Guardrails vs Keyword Stuffing Pressure</span>
+                              <span className="font-bold text-slate-900 dark:text-white">2. Context Verification vs Keyword Stuffing Pressure</span>
                             </div>
                             <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
-                              <span className="text-red-500 font-semibold">Other ATS sites:</span> Urge you to force keywords 5–10 times (causing human recruiters to reject you).<br />
+                              <span className="text-slate-700 dark:text-slate-300 font-semibold">Keyword-heavy optimization:</span> Can encourage repetitive terminology; GetPlacedResume emphasizes contextual evidence instead.<br />
                               <span className="text-emerald-600 dark:text-emerald-400 font-semibold">GetPlacedResume:</span> Requires skills to appear inside real project &amp; experience achievement bullets.
                             </p>
                           </div>
@@ -715,7 +715,7 @@ export function App() {
                               <span className="font-bold text-slate-900 dark:text-white">3. Deterministic 6-Axis Scoring vs Black-Box Scores</span>
                             </div>
                             <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
-                              <span className="text-red-500 font-semibold">Other ATS sites:</span> Show a single arbitrary vanity percentage.<br />
+                              <span className="text-slate-700 dark:text-slate-300 font-semibold">Conventional tools:</span> Often report a single aggregate score without granular visibility.<br />
                               <span className="text-emerald-600 dark:text-emerald-400 font-semibold">GetPlacedResume:</span> Transparent mathematical weights across Relevance, Skills, Experience, Layout, Content &amp; Presentation.
                             </p>
                           </div>
@@ -725,7 +725,7 @@ export function App() {
                               <span className="font-bold text-slate-900 dark:text-white">4. PDF Geometry Parsing vs Flat Regex Scrapers</span>
                             </div>
                             <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
-                              <span className="text-red-500 font-semibold">Other ATS sites:</span> Blind to multi-column bleed and table traps.<br />
+                              <span className="text-slate-700 dark:text-slate-300 font-semibold">Linear text scrapers:</span> Can overlook multi-column reading flow and table traps.<br />
                               <span className="text-emerald-600 dark:text-emerald-400 font-semibold">GetPlacedResume:</span> Uses <code className="font-mono text-[10px]">pdfplumber</code> bounding boxes to verify real ATS reading order.
                             </p>
                           </div>

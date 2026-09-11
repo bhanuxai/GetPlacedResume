@@ -195,7 +195,7 @@ def run_pipeline(
     # Experience summary
     experience_summary = {
         "roles_count": len(resume.experience),
-        "total_bullets": sum(len(e.bullets) for e in resume.experience),
+        "total_bullets": len(bullet_analyses),
         "profile_type": resume.profile_type,
         "education_highest": resume.education[0].degree if resume.education else "Not Specified"
     }

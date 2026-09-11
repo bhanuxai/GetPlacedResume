@@ -176,6 +176,7 @@ def test_audit():
     print("\n8. Weaknesses & Categorization Audit:")
     for w in report.weaknesses:
         print(f"   - {w}")
+        assert "experience bullet points lack" not in w, f"Found misleading 'experience bullet points' in: {w}"
         if "Missing core competencies" in w:
             for pref in ["Hugging Face", "Pinecone", "Weaviate", "Milvus", "MLflow", "CI/CD", "Spark"]:
                 assert pref.lower() not in w.lower(), f"Preferred skill '{pref}' erroneously labeled as missing core competency in: {w}"
@@ -183,6 +184,9 @@ def test_audit():
     print("\n9. Recommendations Audit:")
     for rec in report.recommendations:
         print(f"   [{rec.priority}] {rec.title}: {rec.description}")
+        assert "describe duties without specifying" not in rec.description, f"Found outdated duty phrasing in: {rec.description}"
+        if "bullets lack" in rec.description:
+            assert "analyzed bullets lack measurable outcomes" in rec.description, f"Recommendation wording mismatch: {rec.description}"
 
     print("\n10. Project Analyses:")
     for pa in report.project_analyses:

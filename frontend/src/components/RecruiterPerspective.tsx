@@ -29,6 +29,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
 
   const totalBullets = report?.bullet_analyses?.length || 0;
   const quantifiedBullets = report?.bullet_analyses?.filter((b) => b.is_quantified)?.length || 0;
+  const unquantifiedBullets = totalBullets - quantifiedBullets;
   const quantifiedPct = totalBullets > 0 ? Math.round((quantifiedBullets / totalBullets) * 100) : 0;
   const readingRisk = report?.ats_format_report?.broken_reading_order_risk || 'LOW';
   const hasTwoColumn = report?.ats_format_report?.two_column_layout_detected || false;
@@ -49,7 +50,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
               How Recruiters See Your Resume &amp; Why GetPlacedResume Differs
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-[#94A3B8] max-w-3xl mt-2 leading-relaxed">
-              Passing an ATS algorithm is only step one. Once your resume clears the digital filter, a human recruiter spends an average of <span className="font-semibold text-slate-900 dark:text-white">6 to 8 seconds</span> deciding whether to interview or reject you. Here is the exact human triage process and how our intelligence engine differs from legacy ATS checkers.
+              Passing an ATS algorithm is only step one. Once your resume clears automated parsing, human reviewers often triage applications in rapid scan passes. Our <span className="font-semibold text-slate-900 dark:text-white">6–8 Second Scan Model</span> provides an internal product heuristic to simulate this scan, highlighting what reviewers observe first and how our evaluation engine assesses candidate strength.
             </p>
           </div>
 
@@ -94,21 +95,21 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
         {/* Quick Summary Pill Bar */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
           <div className="p-3.5 rounded-xs bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#262626]">
-            <span className="text-[10px] font-mono uppercase text-slate-400 dark:text-slate-500 block mb-1">RECRUITER REALITY</span>
+            <span className="text-[10px] font-mono uppercase text-slate-400 dark:text-slate-500 block mb-1">RECRUITER SCAN HEURISTIC</span>
             <p className="text-xs font-semibold text-slate-900 dark:text-white">
-              Recruiters scan in an &quot;F-Pattern&quot; looking for title alignment, stack fit, and metric proof.
+              Simulates rapid reviewer scanning in an &quot;F-Pattern&quot; looking for title alignment, stack fit, and metric proof.
             </p>
           </div>
           <div className="p-3.5 rounded-xs bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#262626]">
-            <span className="text-[10px] font-mono uppercase text-slate-400 dark:text-slate-500 block mb-1">THE LEGACY FLAW</span>
+            <span className="text-[10px] font-mono uppercase text-slate-400 dark:text-slate-500 block mb-1">KEYWORD-HEAVY LIMITATION</span>
             <p className="text-xs font-semibold text-slate-900 dark:text-white">
-              Other ATS sites force unnatural keyword stuffing that triggers human recruiter rejection.
+              Keyword-heavy optimization can encourage repetitive terminology; GetPlacedResume emphasizes contextual evidence instead.
             </p>
           </div>
           <div className="p-3.5 rounded-xs bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#262626]">
-            <span className="text-[10px] font-mono uppercase text-slate-400 dark:text-slate-500 block mb-1">OUR SOLUTION</span>
+            <span className="text-[10px] font-mono uppercase text-slate-400 dark:text-slate-500 block mb-1">CONTEXTUAL VERIFICATION</span>
             <p className="text-xs font-semibold text-slate-900 dark:text-white">
-              GetPlacedResume balances ATS vector parsing with human recruiter readability and proof.
+              GetPlacedResume balances ATS vector parsing with human reviewer readability and proof.
             </p>
           </div>
         </div>
@@ -135,7 +136,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
                   <span className="text-[11px] text-slate-500">({quantifiedBullets}/{totalBullets} bullets)</span>
                 </div>
                 <p className="text-[11px] text-slate-500 mt-1">
-                  {quantifiedPct >= 60 ? 'Strong metric backing catches recruiter attention quickly.' : 'Add metrics (%, $, scale) so recruiters see measurable business impact.'}
+                  {quantifiedPct >= 60 ? 'Strong metric backing catches reviewer attention quickly.' : `${unquantifiedBullets} of ${totalBullets} analyzed bullets lack measurable outcomes. Add metrics (%, scale, latency) to demonstrate impact.`}
                 </p>
               </div>
               <div className="p-3 bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#262626] rounded-xs">
@@ -177,14 +178,14 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
             <div>
               <div className="flex items-center space-x-2 text-blue-600 dark:text-blue-400 mb-1">
                 <Eye className="w-4 h-4" />
-                <span className="text-xs font-mono font-bold uppercase tracking-wider">Recruiter Triage Simulation</span>
+                <span className="text-xs font-mono font-bold uppercase tracking-wider">Recruiter Scan Heuristic</span>
               </div>
               <h3 className="text-xl font-bold font-display text-slate-900 dark:text-white tracking-tight">
-                How a Human Recruiter Scans in 6–8 Seconds
+                6–8 Second Scan Model
               </h3>
             </div>
             <span className="text-[11px] font-mono px-3 py-1 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800/60 rounded-full font-bold self-start sm:self-auto">
-              EYE-TRACKING BENCHMARK
+              RECRUITER SCAN HEURISTIC
             </span>
           </div>
 
@@ -249,7 +250,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
                 Impact &amp; Numbers
               </h4>
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                Eyes jump to the first 2 bullet points under your most recent role. Recruiters look for metrics: %, $, ms, users. A bullet without numbers reads like a generic job description.
+                Eyes jump to prominent bullets in your projects and experience. Reviewers look for measurable outcomes: %, scale, latency, users. Bullets without numbers lack empirical proof.
               </p>
               {report && (
                 <div className="mt-3 text-[10px] font-mono bg-purple-50 dark:bg-purple-950/40 p-1.5 rounded-xs border border-purple-200 dark:border-purple-900/50 text-purple-700 dark:text-purple-300">
@@ -273,7 +274,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
                 Credential &amp; Triage Call
               </h4>
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                Quick glance at degree, graduation date, and layout neatness. Decision is finalized: move to hiring manager short-list (15%) or discard into archive (85%).
+                Quick glance at degree credentials, graduation date, and layout neatness. {overallScore >= 80 ? 'Estimated Triage Signal: Strong — high requirement coverage and robust technical evidence.' : overallScore >= 60 ? 'Estimated Triage Signal: Moderate — based on demonstrated skills, requirement coverage, content quality, and ATS parseability.' : 'Estimated Triage Signal: Needs Work — identifiable qualification gaps and unverified competencies.'}
               </p>
               {report && (
                 <div className="mt-3 text-[10px] font-mono bg-emerald-50 dark:bg-emerald-950/40 p-1.5 rounded-xs border border-emerald-200 dark:border-emerald-900/50 text-emerald-700 dark:text-emerald-300">
@@ -375,7 +376,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
                 <span className="text-xs font-mono font-bold uppercase tracking-wider">Engine Architecture Comparison</span>
               </div>
               <h3 className="text-xl font-bold font-display text-slate-900 dark:text-white tracking-tight">
-                GetPlacedResume vs. Traditional ATS Checkers (Jobscan, Resume Worded, etc.)
+                GetPlacedResume vs. Conventional Keyword Checkers
               </h3>
             </div>
             <span className="text-[11px] font-mono px-3 py-1 bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800/60 rounded-full font-bold self-start sm:self-auto">
@@ -384,7 +385,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
           </div>
 
           <p className="text-xs sm:text-sm text-slate-600 dark:text-[#94A3B8] leading-relaxed">
-            Most commercial resume checkers use outdated keyword counters invented in 2012. They treat human resumes like search engines, forcing you to unnaturally repeat terms until your score turns green — ruining your resume for the real recruiter. Here is how GetPlacedResume is fundamentally re-architected.
+            Keyword-oriented resume checkers may place greater emphasis on exact terminology and keyword coverage, which can encourage repetitive phrasing. GetPlacedResume is architected to balance contextual evidence, structural ATS parsing, and human reviewer readability.
           </p>
 
           {/* Side-by-Side Comparison Table */}
@@ -395,8 +396,8 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
                   <th className="p-3.5 font-mono uppercase text-slate-700 dark:text-slate-300 font-bold w-1/4">
                     Evaluation Dimension
                   </th>
-                  <th className="p-3.5 font-mono uppercase text-red-600 dark:text-red-400 font-bold w-3/8 border-l border-slate-200 dark:border-[#262626]">
-                    Traditional ATS Checkers (Jobscan, etc.)
+                  <th className="p-3.5 font-mono uppercase text-slate-700 dark:text-slate-300 font-bold w-3/8 border-l border-slate-200 dark:border-[#262626]">
+                    Conventional Keyword Checkers
                   </th>
                   <th className="p-3.5 font-mono uppercase text-[#2563EB] dark:text-blue-400 font-bold w-3/8 border-l border-slate-200 dark:border-[#262626] bg-blue-50/40 dark:bg-blue-950/20">
                     GetPlacedResume Intelligence
@@ -410,7 +411,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
                     Keyword Matching
                   </td>
                   <td className="p-3.5 text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-[#262626]">
-                    <strong>Exact substring counting:</strong> If JD says &quot;CI/CD&quot; and you wrote &quot;Continuous Integration &amp; Deployment&quot;, it marks you 0% and tells you to add the exact string.
+                    <strong>Terminology emphasis:</strong> Keyword-oriented resume checkers may place greater emphasis on exact terminology and keyword coverage, potentially overlooking synonyms, framework equivalents, or contextual phrasing.
                   </td>
                   <td className="p-3.5 text-slate-900 dark:text-white border-l border-slate-200 dark:border-[#262626] bg-blue-50/20 dark:bg-blue-950/10">
                     <strong>Semantic Vector Cosine Similarity:</strong> Uses NLP vector embeddings and domain ontologies to recognize synonyms, sub-skills, and framework relationships.
@@ -422,10 +423,10 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
                     Keyword Stuffing Handling
                   </td>
                   <td className="p-3.5 text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-[#262626]">
-                    <strong>Encourages stuffing:</strong> Tells you to repeat words 5+ times to boost score, which makes your resume look unnatural and leads to instant human rejection.
+                    <strong>Repetition incentive:</strong> Keyword-heavy optimization can encourage repetitive terminology; GetPlacedResume emphasizes contextual evidence instead.
                   </td>
                   <td className="p-3.5 text-slate-900 dark:text-white border-l border-slate-200 dark:border-[#262626] bg-blue-50/20 dark:bg-blue-950/10">
-                    <strong>Anti-Stuffing Penalty &amp; Context Verification:</strong> Requires skills to appear in meaningful experience bullets with action verbs, protecting your human pass rate.
+                    <strong>Context Verification &amp; Anti-Stuffing Guardrails:</strong> Requires skills to appear in meaningful project and experience bullets with action verbs, protecting your human pass rate.
                   </td>
                 </tr>
 
@@ -434,7 +435,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
                     Scoring Methodology
                   </td>
                   <td className="p-3.5 text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-[#262626]">
-                    <strong>Opaque Black Box:</strong> Single vanity percentage with no breakdown of why you scored 62% or how each section contributed.
+                    <strong>Single Aggregate Score:</strong> Often relies on a single aggregate percentage without granular breakdown of how each dimension contributes.
                   </td>
                   <td className="p-3.5 text-slate-900 dark:text-white border-l border-slate-200 dark:border-[#262626] bg-blue-50/20 dark:bg-blue-950/10">
                     <strong>Deterministic 6-Axis Weighted Scoring:</strong> Mathematical breakdown across Job Relevance (30%), Skills (20%), Experience (20%), ATS Parseability (15%), Content (10%), Presentation (5%).
@@ -446,10 +447,10 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
                     Document Parsing Depth
                   </td>
                   <td className="p-3.5 text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-[#262626]">
-                    <strong>Plain text regex:</strong> Reads text in flat order, missing multi-column reading bugs, table flow traps, and corrupted header data.
+                    <strong>Linear text extraction:</strong> May read text linearly, which can overlook multi-column reading flow, table cell fragmentation, and header/footer boundary issues.
                   </td>
                   <td className="p-3.5 text-slate-900 dark:text-white border-l border-slate-200 dark:border-[#262626] bg-blue-50/20 dark:bg-blue-950/10">
-                    <strong>Geometric Layout Engine:</strong> Inspects PDF bounding boxes via <code className="text-[11px] font-mono bg-slate-200 dark:bg-[#141414] px-1 py-0.5 rounded-xs">pdfplumber</code> to check multi-column read order, table cells, header/footer collision, and glyph issues.
+                    <strong>PDF geometry analysis using pdfplumber:</strong> Inspects PDF bounding boxes to verify multi-column read order, table cells, header/footer collision, and glyph issues.
                   </td>
                 </tr>
 
@@ -458,7 +459,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
                     Candidate Profiling
                   </td>
                   <td className="p-3.5 text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-[#262626]">
-                    <strong>One-size-fits-all:</strong> Punishes students and freshers for not having 5+ years of corporate experience.
+                    <strong>Uniform Criteria:</strong> May apply uniform expectations that do not adapt to student/fresher project evidence or early-career profiles.
                   </td>
                   <td className="p-3.5 text-slate-900 dark:text-white border-l border-slate-200 dark:border-[#262626] bg-blue-50/20 dark:bg-blue-950/10">
                     <strong>Adaptive Profile Calibrations:</strong> Supports Campus/Fresher mode (prioritizes projects &amp; academic competencies) vs Experienced &amp; Career Transition modes.
@@ -470,7 +471,7 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
                     Actionable Improvements
                   </td>
                   <td className="p-3.5 text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-[#262626]">
-                    <strong>Generic paywalled tips:</strong> Hides meaningful advice behind $29/mo subscriptions or suggests generic canned bullet points.
+                    <strong>Keyword insertion prompts:</strong> Frequently recommends inserting missing words without structural guidance or evidence verification.
                   </td>
                   <td className="p-3.5 text-slate-900 dark:text-white border-l border-slate-200 dark:border-[#262626] bg-blue-50/20 dark:bg-blue-950/10">
                     <strong>Grounded Line-by-Line Evidence:</strong> Analyzes each bullet point against the Google XYZ formula and suggests contextual upgrades grounded in your verified stack.
@@ -482,10 +483,10 @@ export const RecruiterPerspective: React.FC<RecruiterPerspectiveProps> = ({
                     Data Privacy &amp; Retention
                   </td>
                   <td className="p-3.5 text-slate-600 dark:text-slate-400 border-l border-slate-200 dark:border-[#262626]">
-                    <strong>Data monetization:</strong> Saves resumes to databases, trains commercial models on your data, or sells recruitment leads.
+                    <strong>Variable Policies:</strong> Data retention and processing terms vary widely across commercial software providers.
                   </td>
                   <td className="p-3.5 text-slate-900 dark:text-white border-l border-slate-200 dark:border-[#262626] bg-blue-50/20 dark:bg-blue-950/10">
-                    <strong>100% In-Memory Ephemeral Analysis:</strong> Resumes are processed in RAM and discarded immediately. Zero third-party model training or storage.
+                    <strong>In-memory / Ephemeral Processing:</strong> Resumes are processed in RAM for the duration of the analysis session without persistent database retention.
                   </td>
                 </tr>
 

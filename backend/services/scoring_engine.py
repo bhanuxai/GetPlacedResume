@@ -186,7 +186,8 @@ class ScoringEngine:
         if ats_report.two_column_layout_detected:
             weaknesses.append("Multi-column layout presents a risk of fragmented text extraction in legacy ATS.")
         unquantified_count = len([b for b in bullet_analyses if not b.is_quantified])
+        total_bullets = len(bullet_analyses)
         if unquantified_count >= 3:
-            weaknesses.append(f"{unquantified_count} experience bullet points lack quantifiable verification or impact metrics.")
+            weaknesses.append(f"{unquantified_count} of {total_bullets} analyzed bullets lack quantifiable evidence.")
 
         return breakdown, exec_summary, strengths, weaknesses
