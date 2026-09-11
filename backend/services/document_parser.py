@@ -16,24 +16,10 @@ class DocumentParser:
         filename_lower = filename.lower()
         if filename_lower.endswith(".pdf"):
             return DocumentParser.parse_pdf(file_bytes)
-        elif filename_lower.endswith(".docx") or filename_lower.endswith(".doc"):
+        elif filename_lower.endswith(".docx"):
             return DocumentParser.parse_docx(file_bytes)
         else:
-            # Fallback to plain text decoding
-            try:
-                text = file_bytes.decode("utf-8")
-            except UnicodeDecodeError:
-                text = file_bytes.decode("latin-1", errors="ignore")
-            meta = {
-                "format": "text",
-                "page_count": 1,
-                "is_scanned": False,
-                "two_column": False,
-                "table_count": 0,
-                "header_footer_risk": False,
-                "issues": []
-            }
-            return text, meta
+            raise ValueError(f"Unsupported resume format '{filename}'. Only PDF (.pdf) and Word (.docx) files are supported.")
 
     @staticmethod
     def parse_pdf(file_bytes: bytes) -> Tuple[str, Dict[str, Any]]:

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import confetti from 'canvas-confetti';
 import { AnalysisReport, JobMatchRecord } from './types';
 import { Navbar } from './components/Navbar';
@@ -91,13 +91,34 @@ export function App() {
   const [presets, setPresets] = useState<Record<string, string>>({});
   const [sampleResume, setSampleResume] = useState<string>('');
 
-  // Fetch presets on load
+  // Ephemeral session token for anti-abuse protection
+  const sessionTokenRef = useRef<string | null>(null);
+
+  const ensureSessionToken = useCallback(async (): Promise<string | null> => {
+    if (sessionTokenRef.current) return sessionTokenRef.current;
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/session-token`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.token) {
+          sessionTokenRef.current = data.token;
+          return data.token;
+        }
+      }
+    } catch (err) {
+      console.warn('Could not fetch ephemeral session token:', err);
+    }
+    return null;
+  }, []);
+
+  // Fetch presets & initial session token on load
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/sample-data`)
       .then((res) => res.json())
       .then((data) => {
         if (data.sample_jobs) setPresets(data.sample_jobs);
         if (data.sample_resume) setSampleResume(data.sample_resume);
+        if (data.session_token) sessionTokenRef.current = data.session_token;
       })
       .catch((err) => {
         console.warn('Backend not yet reachable on mount, sample data ready as fallback.', err);
@@ -116,11 +137,19 @@ export function App() {
     setIsAnalyzing(true);
     setAnalysisError(null);
     try {
+      const token = await ensureSessionToken();
+      const headers: Record<string, string> = {};
+      if (token) {
+        headers['X-Session-Token'] = token;
+      }
+
       const res = await fetch(`${API_BASE_URL}/api/analyze-demo?preset=ml_engineer`, {
-        method: 'POST'
+        method: 'POST',
+        headers
       });
       if (!res.ok) {
-        throw new Error(`Demo failed: ${res.statusText}`);
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.detail || `Demo failed: ${res.statusText}`);
       }
       const data: AnalysisReport = await res.json();
       
@@ -180,14 +209,34 @@ export function App() {
     }
 
     try {
+      const token = await ensureSessionToken();
+      const headers: Record<string, string> = {};
+      if (token) {
+        headers['X-Session-Token'] = token;
+      }
+
       const res = await fetch(`${API_BASE_URL}/api/analyze`, {
         method: 'POST',
+        headers,
         body: formData
       });
 
       if (!res.ok) {
         const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.detail || `Server returned status ${res.status}`);
+        let message = errorData.detail;
+        if (!message) {
+          if (res.status === 429) {
+            const retryAfter = res.headers.get('Retry-After');
+            message = `Rate limit reached. Please wait ${retryAfter || 'a few'} seconds before analyzing again.`;
+          } else if (res.status === 413) {
+            message = 'Uploaded file exceeds the 5MB limit. Please upload a smaller document.';
+          } else if (res.status === 415) {
+            message = 'Unsupported file format. Please upload a genuine PDF (.pdf) or Word (.docx) file.';
+          } else {
+            message = `Server returned status ${res.status}`;
+          }
+        }
+        throw new Error(message);
       }
 
       const data: AnalysisReport = await res.json();

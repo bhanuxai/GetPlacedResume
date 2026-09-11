@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { X, Star, CheckCircle2, MessageSquarePlus, Send } from 'lucide-react';
 
 interface FeedbackModalProps {
@@ -62,17 +62,19 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose })
       saved.push({ ...payload, date: new Date().toISOString() });
       localStorage.setItem('getplaced_user_reviews', JSON.stringify(saved));
 
-      await fetch(`${API_BASE_URL}/api/feedback`, {
+      const res = await fetch(`${API_BASE_URL}/api/feedback`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
-      }).catch((err) => {
-        console.warn('Backend feedback endpoint offline, saved locally:', err);
       });
+
+      if (res.status === 429) {
+        throw new Error('Too many submissions. Please wait a moment before submitting feedback again.');
+      }
 
       setIsSubmitted(true);
     } catch (err: any) {
-      setErrorMsg('Failed to submit review. Please try again.');
+      setErrorMsg(err.message || 'Failed to submit review. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
