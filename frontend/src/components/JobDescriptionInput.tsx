@@ -1,5 +1,6 @@
 import React from 'react';
 import { FileCode } from 'lucide-react';
+import { DEFAULT_PRESETS } from '../constants/sampleData';
 
 interface JobDescriptionInputProps {
   jobDescription: string;
@@ -7,7 +8,7 @@ interface JobDescriptionInputProps {
   jobTitle: string;
   onJobTitleChange: (title: string) => void;
   onLoadPreset: (presetKey: string) => void;
-  presets: Record<string, string>;
+  presets?: Record<string, string>;
 }
 
 export const JobDescriptionInput: React.FC<JobDescriptionInputProps> = ({
@@ -15,7 +16,8 @@ export const JobDescriptionInput: React.FC<JobDescriptionInputProps> = ({
   onJobDescriptionChange,
   jobTitle,
   onJobTitleChange,
-  onLoadPreset
+  onLoadPreset,
+  presets = DEFAULT_PRESETS
 }) => {
   return (
     <div className="w-full bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] p-5 sm:p-6 rounded-xs transition-colors shadow-sm dark:shadow-none">
@@ -38,20 +40,35 @@ export const JobDescriptionInput: React.FC<JobDescriptionInputProps> = ({
           </span>
           <div className="flex flex-wrap gap-1.5">
             <button
+              type="button"
               onClick={() => onLoadPreset('ml_engineer')}
-              className="px-2 py-1 text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:bg-[#000000] dark:hover:bg-[#171717] text-slate-800 dark:text-[#F8FAFC] border border-slate-300 dark:border-[#262626] rounded-xs transition-colors"
+              className={`px-2.5 py-1 text-xs font-medium border rounded-xs transition-colors cursor-pointer ${
+                jobDescription && jobDescription === (presets?.ml_engineer || DEFAULT_PRESETS.ml_engineer)
+                  ? 'bg-[#2563EB] text-white border-[#2563EB]'
+                  : 'bg-slate-100 hover:bg-slate-200 dark:bg-[#000000] dark:hover:bg-[#171717] text-slate-800 dark:text-[#F8FAFC] border-slate-300 dark:border-[#262626]'
+              }`}
             >
               ML Engineer
             </button>
             <button
+              type="button"
               onClick={() => onLoadPreset('data_analyst')}
-              className="px-2 py-1 text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:bg-[#000000] dark:hover:bg-[#171717] text-slate-800 dark:text-[#F8FAFC] border border-slate-300 dark:border-[#262626] rounded-xs transition-colors"
+              className={`px-2.5 py-1 text-xs font-medium border rounded-xs transition-colors cursor-pointer ${
+                jobDescription && jobDescription === (presets?.data_analyst || DEFAULT_PRESETS.data_analyst)
+                  ? 'bg-[#2563EB] text-white border-[#2563EB]'
+                  : 'bg-slate-100 hover:bg-slate-200 dark:bg-[#000000] dark:hover:bg-[#171717] text-slate-800 dark:text-[#F8FAFC] border-slate-300 dark:border-[#262626]'
+              }`}
             >
               Data Analyst
             </button>
             <button
+              type="button"
               onClick={() => onLoadPreset('fullstack_engineer')}
-              className="px-2 py-1 text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:bg-[#000000] dark:hover:bg-[#171717] text-slate-800 dark:text-[#F8FAFC] border border-slate-300 dark:border-[#262626] rounded-xs transition-colors"
+              className={`px-2.5 py-1 text-xs font-medium border rounded-xs transition-colors cursor-pointer ${
+                jobDescription && jobDescription === (presets?.fullstack_engineer || DEFAULT_PRESETS.fullstack_engineer)
+                  ? 'bg-[#2563EB] text-white border-[#2563EB]'
+                  : 'bg-slate-100 hover:bg-slate-200 dark:bg-[#000000] dark:hover:bg-[#171717] text-slate-800 dark:text-[#F8FAFC] border-slate-300 dark:border-[#262626]'
+              }`}
             >
               Full Stack
             </button>

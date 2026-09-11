@@ -29,6 +29,7 @@ import GlareHover from './components/GlareHover';
 import CountUp from './components/CountUp';
 import { AboutSection } from './components/AboutSection';
 import { PrintReport } from './components/PrintReport';
+import { DEFAULT_PRESETS, DEFAULT_SAMPLE_RESUME } from './constants/sampleData';
 import {
   ArrowRight,
   CheckCircle2,
@@ -87,9 +88,9 @@ export function App() {
   const [history, setHistory] = useState<JobMatchRecord[]>([]);
   const [activeHistoryId, setActiveHistoryId] = useState<string | null>(null);
 
-  // Sample data presets
-  const [presets, setPresets] = useState<Record<string, string>>({});
-  const [sampleResume, setSampleResume] = useState<string>('');
+  // Sample data presets (initialized with instant local defaults, enriched on mount)
+  const [presets, setPresets] = useState<Record<string, string>>(DEFAULT_PRESETS);
+  const [sampleResume, setSampleResume] = useState<string>(DEFAULT_SAMPLE_RESUME);
 
   // Ephemeral session token for anti-abuse protection
   const sessionTokenRef = useRef<string | null>(null);
@@ -116,7 +117,9 @@ export function App() {
     fetch(`${API_BASE_URL}/api/sample-data`)
       .then((res) => res.json())
       .then((data) => {
-        if (data.sample_jobs) setPresets(data.sample_jobs);
+        if (data.sample_jobs && Object.keys(data.sample_jobs).length > 0) {
+          setPresets((prev) => ({ ...prev, ...data.sample_jobs }));
+        }
         if (data.sample_resume) setSampleResume(data.sample_resume);
         if (data.session_token) sessionTokenRef.current = data.session_token;
       })
@@ -126,9 +129,10 @@ export function App() {
   }, []);
 
   const handleLoadPreset = (key: string) => {
-    if (presets[key]) {
-      setJobDescription(presets[key]);
-      const titleMatch = presets[key].split('\n')[0];
+    const jd = presets[key] || DEFAULT_PRESETS[key];
+    if (jd) {
+      setJobDescription(jd);
+      const titleMatch = jd.split('\n')[0].trim();
       setJobTitle(titleMatch);
     }
   };
@@ -164,8 +168,8 @@ export function App() {
       };
 
       setReport(data);
-      setResumeText(sampleResume);
-      setJobDescription(presets['ml_engineer'] || '');
+      setResumeText(sampleResume || DEFAULT_SAMPLE_RESUME);
+      setJobDescription(presets['ml_engineer'] || DEFAULT_PRESETS['ml_engineer']);
       setJobTitle(data.job_title || 'Machine Learning Engineer');
       setHistory([record]);
       setActiveHistoryId(recordId);
