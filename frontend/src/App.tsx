@@ -22,6 +22,13 @@ import { FeedbackModal } from './components/FeedbackModal';
 import { ResumeKnowledgeBase } from './components/ResumeKnowledgeBase';
 import { RecruiterPerspective } from './components/RecruiterPerspective';
 import { Footer } from './components/Footer';
+import { PrivacyPolicyView } from './components/legal/PrivacyPolicyView';
+import { TermsOfServiceView } from './components/legal/TermsOfServiceView';
+import { CookiePolicyView } from './components/legal/CookiePolicyView';
+import { AboutUsView } from './components/legal/AboutUsView';
+import { ContactUsView } from './components/legal/ContactUsView';
+import { ATSGuidesHub } from './components/guides/ATSGuidesHub';
+import { AdBanner } from './components/AdBanner';
 import TextLoop from './components/TextLoop';
 import ScrollVelocity from './components/ScrollVelocity';
 import CursorGrid from './components/CursorGrid';
@@ -37,7 +44,8 @@ import {
   Play,
   Sparkles,
   Eye,
-  Scale
+  Scale,
+  BookOpen
 } from 'lucide-react';
 
 const API_BASE_URL = 
@@ -67,10 +75,56 @@ export function App() {
   };
 
   // Navigation & View states
-  const [view, setView] = useState<'landing' | 'upload' | 'dashboard'>('landing');
+  type AppView = 'landing' | 'upload' | 'dashboard' | 'guides' | 'privacy' | 'terms' | 'cookies' | 'about-us' | 'contact';
+  const [view, setView] = useState<AppView>('landing');
   const [activeTab, setActiveTab] = useState<string>('overview');
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+
+  const navigateTo = useCallback((newView: AppView, hash?: string) => {
+    setView(newView);
+    if (hash) {
+      window.location.hash = hash;
+    } else {
+      if (window.location.hash) {
+        window.history.pushState('', document.title, window.location.pathname + window.location.search);
+      }
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.toLowerCase().replace(/^#/, '');
+      if (hash === 'guides' || hash === 'career-guides') {
+        setView('guides');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (hash === 'privacy' || hash === 'privacy-policy') {
+        setView('privacy');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (hash === 'terms' || hash === 'terms-of-service') {
+        setView('terms');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (hash === 'cookies' || hash === 'cookie-policy') {
+        setView('cookies');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (hash === 'about-us' || hash === 'about') {
+        setView('about-us');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (hash === 'contact' || hash === 'contact-us') {
+        setView('contact');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (!hash) {
+        if (view !== 'dashboard') {
+          setView('landing');
+        }
+      }
+    };
+
+    handleHashChange();
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, [view]);
 
   // Form Inputs
   const [file, setFile] = useState<File | null>(null);
@@ -302,8 +356,11 @@ export function App() {
       {/* Global Navbar with Theme Switcher */}
       <Navbar
         onTryDemo={handleTryDemo}
-        onNavigateLanding={() => setView('landing')}
-        onOpenPrivacy={() => setIsPrivacyOpen(true)}
+        onNavigateLanding={() => navigateTo('landing')}
+        onNavigateGuides={() => navigateTo('guides', 'guides')}
+        onNavigateAbout={() => navigateTo('about-us', 'about-us')}
+        onNavigateContact={() => navigateTo('contact', 'contact')}
+        onOpenPrivacy={() => navigateTo('privacy', 'privacy')}
         onOpenFeedback={() => setIsFeedbackOpen(true)}
         currentView={view}
         theme={theme}
@@ -558,7 +615,79 @@ export function App() {
               }}
             />
 
+            {/* Career & ATS Masterclasses Portal Banner */}
+            <section className="py-12 border-b border-slate-200 dark:border-[#262626] bg-blue-50/40 dark:bg-blue-950/20 transition-colors">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="p-6 sm:p-8 bg-white dark:bg-[#0A0A0A] border border-blue-200 dark:border-blue-900/60 rounded-xs flex flex-col md:flex-row items-center justify-between gap-6 shadow-xs">
+                  <div className="space-y-2">
+                    <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 font-mono text-[11px] font-bold">
+                      <BookOpen className="w-3.5 h-3.5" />
+                      <span>In-Depth Editorial Masterclasses</span>
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-bold font-display text-slate-900 dark:text-white">
+                      Want to Master the ATS Hiring Pipeline?
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
+                      Explore our 5 peer-reviewed editorial guides covering enterprise ATS architectures (Workday, Taleo, Greenhouse), formatting geometry, the Google XYZ bullet formula, and recruiter scan behavior.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => navigateTo('guides', 'guides')}
+                    className="flex items-center space-x-2 px-6 py-3 bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-semibold rounded-xs transition-colors shadow-xs whitespace-nowrap cursor-pointer flex-shrink-0"
+                  >
+                    <span>Read All 5 Masterclasses</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            {/* Google AdSense Compliant Banner Slot */}
+            <AdBanner className="my-10" />
+
           </div>
+        )}
+
+        {/* VIEW: CAREER GUIDES MASTERCLASSES */}
+        {view === 'guides' && (
+          <ATSGuidesHub
+            onBack={() => navigateTo('landing')}
+            onNavigateToAnalyzer={() => {
+              navigateTo('landing');
+              setTimeout(() => {
+                const el = document.getElementById('analyze');
+                el?.scrollIntoView({ behavior: 'smooth' });
+              }, 100);
+            }}
+          />
+        )}
+
+        {/* VIEW: PRIVACY POLICY (ADSENSE & GDPR COMPLIANT) */}
+        {view === 'privacy' && (
+          <PrivacyPolicyView onBack={() => navigateTo('landing')} />
+        )}
+
+        {/* VIEW: TERMS OF SERVICE */}
+        {view === 'terms' && (
+          <TermsOfServiceView onBack={() => navigateTo('landing')} />
+        )}
+
+        {/* VIEW: COOKIE POLICY */}
+        {view === 'cookies' && (
+          <CookiePolicyView onBack={() => navigateTo('landing')} />
+        )}
+
+        {/* VIEW: ABOUT US & MISSION */}
+        {view === 'about-us' && (
+          <AboutUsView 
+            onBack={() => navigateTo('landing')} 
+            onNavigateContact={() => navigateTo('contact', 'contact')}
+          />
+        )}
+
+        {/* VIEW: CONTACT US */}
+        {view === 'contact' && (
+          <ContactUsView onBack={() => navigateTo('landing')} />
         )}
 
         {/* VIEW 2: DASHBOARD VIEW */}
@@ -918,7 +1047,12 @@ export function App() {
 
       {/* Global Footer */}
       <Footer 
-        onOpenPrivacy={() => setIsPrivacyOpen(true)} 
+        onOpenPrivacy={() => navigateTo('privacy', 'privacy')}
+        onOpenTerms={() => navigateTo('terms', 'terms')}
+        onOpenCookies={() => navigateTo('cookies', 'cookies')}
+        onOpenAbout={() => navigateTo('about-us', 'about-us')}
+        onOpenContact={() => navigateTo('contact', 'contact')}
+        onOpenGuides={() => navigateTo('guides', 'guides')}
         onOpenFeedback={() => setIsFeedbackOpen(true)}
       />
 
