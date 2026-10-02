@@ -1,0 +1,13 @@
+# Robots.txt for GetPlacedResume
+User-agent: *
+Allow: /
+
+# Google AdSense Crawler
+User-agent: Mediapartners-Google
+Allow: /
+
+# Google Search Crawler
+User-agent: Googlebot
+Allow: /
+
+Sitemap: https://getplacedresume.vercel.app/sitemap.xml
