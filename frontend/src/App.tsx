@@ -94,36 +94,43 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    const handleHashChange = () => {
+    const resolveViewFromLocation = () => {
       const hash = window.location.hash.toLowerCase().replace(/^#/, '');
-      if (hash === 'guides' || hash === 'career-guides') {
+      const path = window.location.pathname.toLowerCase().replace(/^\//, '').replace(/\/$/, '');
+      const route = hash || path;
+
+      if (route === 'guides' || route === 'career-guides') {
         setView('guides');
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (hash === 'privacy' || hash === 'privacy-policy') {
+      } else if (route === 'privacy' || route === 'privacy-policy') {
         setView('privacy');
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (hash === 'terms' || hash === 'terms-of-service') {
+      } else if (route === 'terms' || route === 'terms-of-service') {
         setView('terms');
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (hash === 'cookies' || hash === 'cookie-policy') {
+      } else if (route === 'cookies' || route === 'cookie-policy') {
         setView('cookies');
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (hash === 'about-us' || hash === 'about') {
+      } else if (route === 'about-us' || route === 'about') {
         setView('about-us');
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (hash === 'contact' || hash === 'contact-us') {
+      } else if (route === 'contact' || route === 'contact-us') {
         setView('contact');
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (!hash) {
+      } else if (!route) {
         if (view !== 'dashboard') {
           setView('landing');
         }
       }
     };
 
-    handleHashChange();
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    resolveViewFromLocation();
+    window.addEventListener('hashchange', resolveViewFromLocation);
+    window.addEventListener('popstate', resolveViewFromLocation);
+    return () => {
+      window.removeEventListener('hashchange', resolveViewFromLocation);
+      window.removeEventListener('popstate', resolveViewFromLocation);
+    };
   }, [view]);
 
   // Form Inputs

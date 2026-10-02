@@ -20,7 +20,11 @@ export const AdBanner: React.FC<AdBannerProps> = ({
   const adRef = useRef<HTMLModElement | null>(null);
   const isLoaded = useRef(false);
 
+  // During site review phase or when no production slot is provided, don't display dummy empty boxes
+  const isValidSlot = slotId && slotId !== '1234567890' && /^\d{10,}$/.test(slotId);
+
   useEffect(() => {
+    if (!isValidSlot) return;
     try {
       if (typeof window !== 'undefined' && !isLoaded.current) {
         (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -29,7 +33,11 @@ export const AdBanner: React.FC<AdBannerProps> = ({
     } catch (e) {
       // Ignore adsbygoogle errors during development or pending site review
     }
-  }, []);
+  }, [isValidSlot]);
+
+  if (!isValidSlot) {
+    return null;
+  }
 
   return (
     <div className={`w-full max-w-5xl mx-auto my-8 px-4 sm:px-6 transition-colors ${className}`}>
@@ -46,7 +54,7 @@ export const AdBanner: React.FC<AdBannerProps> = ({
             className="adsbygoogle"
             style={{ display: 'block', textAlign: 'center', width: '100%' }}
             data-ad-client="ca-pub-9348521072257318"
-            data-ad-slot={slotId || "1234567890"}
+            data-ad-slot={slotId}
             data-ad-format={format}
             data-full-width-responsive="true"
           />
