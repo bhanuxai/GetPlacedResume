@@ -133,6 +133,39 @@ export function App() {
     };
   }, [view]);
 
+  // Dynamic SEO metadata management across views and routes
+  useEffect(() => {
+    const metaTitles: Record<AppView, string> = {
+      landing: 'Free AI Resume Checker & ATS Resume Scanner | GetPlacedResume',
+      upload: 'Upload Resume — Free AI ATS Scanner & Keyword Match | GetPlacedResume',
+      dashboard: 'Resume ATS Analysis Report & Score Breakdown | GetPlacedResume',
+      guides: 'Resume & ATS Career Guides: Architecture, Formats & Google XYZ Formula | GetPlacedResume',
+      'about-us': 'About GetPlacedResume — Transparent AI Resume Scoring & Evaluation',
+      contact: 'Contact Support — GetPlacedResume Resume Evaluation Help',
+      privacy: 'Privacy Policy — GetPlacedResume Secure Document Processing',
+      terms: 'Terms of Service — GetPlacedResume',
+      cookies: 'Cookie Policy — GetPlacedResume',
+    };
+
+    const metaDescriptions: Record<AppView, string> = {
+      landing: 'Free AI Resume Checker and ATS Resume Scanner. Optimize your resume for applicant tracking systems, match job description keywords, calculate your resume score, and pass recruiter screenings.',
+      upload: 'Upload your PDF or DOCX resume to test ATS parseability, identify missing keywords, and get instant resume score improvements.',
+      dashboard: 'Comprehensive resume ATS audit: keyword match rate, experience evidence verification, formatting check, and recruiter perspective breakdown.',
+      guides: 'Comprehensive career masterclasses on enterprise ATS architectures, resume vs. CV differences, Google XYZ bullet points, and recruiter scan behaviors.',
+      'about-us': 'Learn about GetPlacedResume mission to empower job seekers with transparent, explainable AI resume evaluation tools.',
+      contact: 'Reach out to the GetPlacedResume team for questions, feedback, or assistance with your resume evaluation.',
+      privacy: 'Learn how GetPlacedResume protects your uploaded resume documents with ephemeral in-memory processing and strict zero-retention policies.',
+      terms: 'Read the terms of service governing usage of the GetPlacedResume AI ATS analyzer platform.',
+      cookies: 'Information on how GetPlacedResume uses cookies to remember user preferences.',
+    };
+
+    document.title = metaTitles[view] || metaTitles.landing;
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', metaDescriptions[view] || metaDescriptions.landing);
+    }
+  }, [view]);
+
   // Form Inputs
   const [file, setFile] = useState<File | null>(null);
   const [resumeText, setResumeText] = useState<string>('');

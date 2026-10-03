@@ -1,0 +1,19 @@
+{
+  "short_name": "GetPlacedResume",
+  "name": "GetPlacedResume — Free AI Resume Checker & ATS Scanner",
+  "description": "Free AI Resume Checker and ATS Resume Scanner. Optimize your resume for applicant tracking systems, calculate your score, and match job keywords.",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#0f172a",
+  "theme_color": "#2563eb",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "categories": ["business", "productivity", "utilities"]
+}

@@ -75,12 +75,12 @@ export const Hero: React.FC<HeroProps> = ({ onTryDemo, onScrollToUpload, theme =
 
             {/* Main Headline */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 dark:text-white leading-[1.08] font-display">
-              Know how well your resume fits the job.
+              Free AI Resume Checker &amp; ATS Resume Scanner
             </h1>
 
             {/* Subtitle */}
             <p className="text-base sm:text-lg text-slate-600 dark:text-[#94A3B8] max-w-2xl leading-relaxed">
-              Applicant Tracking Systems reject 75% of qualified applicants due to formatting traps and shallow keyword queries. GetPlacedResume performs deep document understanding, vector-based semantic matching, and evidence verification — before you submit.
+              Know how well your resume fits any job description. Scan for ATS formatting traps, audit keyword match, boost your resume score, and pass recruiter screenings with explainable AI evaluation.
             </p>
 
             {/* Core Verification Pillars */}
