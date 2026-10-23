@@ -70,7 +70,7 @@ export const PrivacyPolicyView: React.FC<PrivacyPolicyViewProps> = ({ onBack }) 
               <span>1. Introduction &amp; Scope</span>
             </h2>
             <p className="text-slate-700 dark:text-slate-300">
-              Welcome to <strong>GetPlacedResume</strong> (&quot;we&quot;, &quot;our&quot;, &quot;us&quot;), accessible via <a href="https://getplacedresume.vercel.app" className="text-[#2563EB] dark:text-[#60A5FA] underline">https://getplacedresume.vercel.app</a>. We are dedicated to maintaining the confidentiality, privacy, and integrity of your personal and professional career data.
+              Welcome to <strong>GetPlacedResume</strong> (&quot;we&quot;, &quot;our&quot;, &quot;us&quot;), accessible via <a href="https://www.getplacedresume.online" className="text-[#2563EB] dark:text-[#60A5FA] underline">https://www.getplacedresume.online</a>. We are dedicated to maintaining the confidentiality, privacy, and integrity of your personal and professional career data.
             </p>
             <p className="text-slate-700 dark:text-slate-300">
               This Privacy Policy explains how information about you is collected, processed, and maintained when you use our website, tools, and resume evaluation services. By accessing or using GetPlacedResume, you acknowledge that you have read and agreed to the data collection and usage practices outlined herein.
@@ -215,7 +215,7 @@ export const PrivacyPolicyView: React.FC<PrivacyPolicyViewProps> = ({ onBack }) 
               If you have any questions, clarifications, or requests concerning this Privacy Policy or our advertising practices, please reach out to our dedicated privacy contact:
             </p>
             <div className="p-4 bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-xs font-mono text-xs space-y-1">
-              <div><strong>Website:</strong> GetPlacedResume (https://getplacedresume.vercel.app)</div>
+              <div><strong>Website:</strong> GetPlacedResume (https://www.getplacedresume.online)</div>
               <div><strong>Email:</strong> privacy@getplacedresume.com / support@getplacedresume.com</div>
               <div><strong>Response SLA:</strong> All formal privacy inquiries receive a response within 48 business hours.</div>
             </div>

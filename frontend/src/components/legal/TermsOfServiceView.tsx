@@ -42,7 +42,7 @@ export const TermsOfServiceView: React.FC<TermsOfServiceViewProps> = ({ onBack }
             <span>Summary of Key Provisions</span>
           </h2>
           <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-            By accessing GetPlacedResume (https://getplacedresume.vercel.app), you agree to these Terms. You retain full ownership of your uploaded resume content. Our ATS evaluation metrics are educational diagnostic tools designed to assist your job search, not guarantees of employment, interview callbacks, or hiring decisions.
+            By accessing GetPlacedResume (https://www.getplacedresume.online), you agree to these Terms. You retain full ownership of your uploaded resume content. Our ATS evaluation metrics are educational diagnostic tools designed to assist your job search, not guarantees of employment, interview callbacks, or hiring decisions.
           </p>
         </div>
 
@@ -146,7 +146,7 @@ export const TermsOfServiceView: React.FC<TermsOfServiceViewProps> = ({ onBack }
             </p>
             <div className="p-3 bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-xs font-mono text-xs">
               <div>Email: legal@getplacedresume.com / support@getplacedresume.com</div>
-              <div>Platform: GetPlacedResume (https://getplacedresume.vercel.app)</div>
+              <div>Platform: GetPlacedResume (https://www.getplacedresume.online)</div>
             </div>
           </section>
 

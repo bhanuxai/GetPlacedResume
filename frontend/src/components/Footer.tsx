@@ -36,7 +36,7 @@ export const Footer: React.FC<FooterProps> = ({
               Explainable AI-powered resume analysis evaluating semantic relevance, evidence verification, document structure, and ATS parseability. Helping candidates overcome the automated hiring filter.
             </p>
             <div className="pt-2 text-[11px] font-mono text-slate-400 space-y-1">
-              <div>Domain: getplacedresume.vercel.app</div>
+              <div>Domain: www.getplacedresume.online</div>
               <div>Processing Standard: 100% In-Memory Transient RAM</div>
             </div>
           </div>
@@ -179,7 +179,7 @@ export const Footer: React.FC<FooterProps> = ({
         {/* Bottom Disclaimer */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono text-slate-500 dark:text-[#64748B]">
           <p>
-            &copy; {new Date().getFullYear()} GETPLACEDRESUME (getplacedresume.vercel.app). All rights reserved. Diagnostic scores and recruiter heuristics are educational guidance tools and do not constitute guarantees of hiring decisions.
+            &copy; {new Date().getFullYear()} GETPLACEDRESUME (www.getplacedresume.online). All rights reserved. Diagnostic scores and recruiter heuristics are educational guidance tools and do not constitute guarantees of hiring decisions.
           </p>
           <div className="flex items-center space-x-4">
             <span>SECURE IN-MEMORY INFERENCE</span>

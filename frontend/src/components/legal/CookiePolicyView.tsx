@@ -38,7 +38,7 @@ export const CookiePolicyView: React.FC<CookiePolicyViewProps> = ({ onBack }) =>
         {/* Introduction */}
         <div className="p-6 bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-xs shadow-xs space-y-3 text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
           <p>
-            This Cookie Policy explains how <strong>GetPlacedResume</strong> (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;) uses cookies, web beacons, browser local storage, and related tracking technologies when you visit our website at <a href="https://getplacedresume.vercel.app" className="text-[#2563EB] dark:text-[#60A5FA] underline font-semibold">https://getplacedresume.vercel.app</a>.
+            This Cookie Policy explains how <strong>GetPlacedResume</strong> (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;) uses cookies, web beacons, browser local storage, and related tracking technologies when you visit our website at <a href="https://www.getplacedresume.online" className="text-[#2563EB] dark:text-[#60A5FA] underline font-semibold">https://www.getplacedresume.online</a>.
           </p>
           <p>
             We believe in radical transparency. We do not use cookies to track your personal identity or sell your resume data. However, third-party services, such as Google AdSense, use cookies to display contextually relevant advertisements that support our free service.
